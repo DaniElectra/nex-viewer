@@ -58,7 +58,6 @@ typings/
 .env
 
 # custom
-nex-keys.txt
+dist
+*.pcap
 *.pcapng
-t.js
-builds

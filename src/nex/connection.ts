@@ -1,0 +1,349 @@
+import os from 'node:os';
+import fs from 'fs-extra';
+import Substream from '@/nex/substream';
+import RMCMessage from '@/nex/rmc-message';
+import { keyDerivationOld, keyDerivationNew, Ticket } from '@/nex/kerberos';
+import getProtocol from '@/nex/protocols/manager';
+import TicketGrantingProtocol from '@/nex/protocols/ticket-granting';
+import type Packet from '@/types/nex/packet';
+import type NEXByteStreamSettings from '@/types/nex/byte-stream-settings';
+import type StationURL from '@/nex/types/station-url';
+
+// TODO - Maybe this should be broken out into .ts files for each game? That way a game can define it's own signature calculation functions and such?
+import titles from '@/nex/titles.json';
+
+// TODO - TypeScript does not allow bigint (the type of PIDs here) to be used as an index type. Update this when TypeScript allows this
+const GAME_SERVER_PASSWORDS: Record<any, string> = {};
+
+export function populateGameServerPasswords(): void {
+	const paths: string[] = [];
+	const home = os.homedir();
+
+	// TODO - Support more paths? Old viewer supported more local paths, was this useful?
+	if (process.platform === 'win32') {
+		fs.ensureDirSync(`${process.env.APPDATA}/NEXViewer`);
+
+		paths.push(`${process.env.APPDATA}/NEXViewer/game-server-passwords.txt`);
+	} else {
+		fs.ensureDirSync(`${home}/.config/nex-viewer`);
+
+		paths.push(`${home}/.config/nex-viewer/game-server-passwords.txt`);
+	}
+
+	for (const path of paths) {
+		if (fs.existsSync(path)) {
+			const credentials = fs.readFileSync(path, {
+				encoding: 'utf8'
+			}).split('\n').filter(line => line).map(line => {
+				const parts = line.split(':');
+				const pid = parts.shift();
+				const password = parts.join(':'); // * Passwords may contain ":". Need to rejoin just in case
+
+				return {
+					pid,
+					password
+				};
+			});
+
+			for (const credential of credentials) {
+				const pid = Number(credential.pid);
+
+				GAME_SERVER_PASSWORDS[pid] = credential.password;
+			}
+		}
+	}
+
+	if (Object.keys(GAME_SERVER_PASSWORDS).length === 0) {
+		// TODO - Better explain the file format?
+		let error = `Failed to load game server passwords. Populate "${home}/.config/nex-viewer/game-server-passwords.txt"`;
+
+		if (process.platform === 'win32') {
+			error = `Failed to load game server passwords. Populate "${process.env.APPDATA}/NEXViewer/game-server-passwords.txt"`;
+		}
+
+		throw new Error(error);
+	}
+}
+
+// TODO - This should be moved to the main window process, so that the error thrown can be shown as a popup
+populateGameServerPasswords();
+
+// * Represents an individual connection to a specific game server
+export default class Connection {
+	public clientAddress: string;
+	public clientPort: number;
+	public serverAddress: string;
+	public serverPort: number;
+
+	public clientStreamType: number;
+	public clientStreamID: number;
+	public serverStreamType: number;
+	public serverStreamID: number;
+	public packets: Packet[] = []; // * Stores all packets in the connection regardless of substream, reliability, etc. Used to display all packets in order as they are sent
+
+	public title: {
+		name: string;
+		game_server_id: string;
+		access_key: string;
+		library_versions: {
+			main: string;
+			ranking: string;
+			datastore: string;
+			match_making: string;
+			messaging: string;
+			utility: string;
+		};
+		settings: NEXByteStreamSettings;
+		title_ids: string[];
+	};
+
+	public mainSecureStationTicket: Ticket;
+	public specialSecureStationTicket: Ticket; // TODO - Currently unused. Also is this even accurate?
+	public mainSecureStation: StationURL;
+	public specialSecureStation: StationURL; // TODO - Currently unused
+	public cipherKey: Buffer | string = 'CD&ML';
+	public sessionKey = Buffer.alloc(0);
+
+	private clientSubstreams: Record<number, Substream> = {};
+	private serverSubstreams: Record<number, Substream> = {};
+	private serverConnectionSignature = Buffer.alloc(0);
+	private clientConnectionSignature = Buffer.alloc(0);
+	private ticketRequestPIDs: Record<number, bigint> = {}; // * Track the PIDs of users tickets are requested for with TicketGranting::RequestTicket. Key is the RMC call ID, value is PID
+
+	private reset(): void {
+		this.cipherKey = 'CD&ML';
+		this.sessionKey = Buffer.alloc(0);
+
+		this.clientSubstreams = {};
+		this.serverSubstreams = {};
+		this.serverConnectionSignature = Buffer.alloc(0);
+		this.clientConnectionSignature = Buffer.alloc(0);
+		this.ticketRequestPIDs = {};
+	}
+
+	private clientSubstream(substreamID: number): Substream {
+		return this.substream(substreamID, true);
+	}
+
+	private serverSubstream(substreamID: number): Substream {
+		return this.substream(substreamID, false);
+	}
+
+	private substream(substreamID: number, isClient: boolean): Substream  {
+		const substreams = isClient ? this.clientSubstreams : this.serverSubstreams;
+		let substream = substreams[substreamID];
+
+		// TODO - This is wrong. Only the first substream gets the original key. All other substreams get a modified key. Need to properly init these
+		if (!substream) {
+			substream = new Substream();
+			substream.setKey(this.cipherKey);
+
+			substreams[substreamID] = substream;
+		}
+
+		return substream;
+	}
+
+	public processPacket(packet: Packet): void {
+		if (packet.isTypeSyn() && packet.fromClientToServer && this.mainSecureStationTicket) {
+			this.reset(); // * Assume a new connection has started
+		}
+
+		if (packet.isTypeSyn() && packet.fromServerToClient) {
+			this.serverConnectionSignature = packet.connectionSignature;
+		}
+
+		if (packet.isTypeConnect() && packet.fromClientToServer) {
+			this.clientConnectionSignature = packet.connectionSignature;
+		}
+
+		if (packet.version !== -1 && packet.hasFlagAck() || packet.hasFlagMultiAck()) {
+			// TODO - Actually handle these?
+			this.packets.push(packet);
+			return;
+		}
+
+		if (packet.version !== -1 && packet.isTypeData() && !packet.hasFlagReliable()) {
+			// * Packet is an unreliable DATA packet.
+			// * These packets use their own RC4 stream
+			// * and are not yet supported.
+
+			this.packets.push(packet);
+			return;
+		}
+
+		if (packet.isTypePing()) {
+			// * Don't worry about handling PING packets
+
+			this.packets.push(packet);
+			return;
+		}
+
+		if (!this.title) {
+			for (const title of titles) {
+				if (packet.version === -1) {
+					if (title.title_ids.includes(packet.titleID)) {
+						this.title = title;
+						break;
+					}
+				} else if (packet.version === 0) {
+					const expectedChecksum = packet.checksum;
+					const calculatedChecksum = packet.calculateChecksum(title.access_key);
+
+					if (expectedChecksum === calculatedChecksum) {
+						this.title = title;
+						break;
+					}
+				} else {
+					// TODO - Legacy connection signature
+					const connectionSignature = packet.fromClientToServer ? this.clientConnectionSignature : this.serverConnectionSignature;
+					const expectedSignature = packet.signature;
+					const calculatedSignature = packet.calculateSignature(title.access_key, this.sessionKey, connectionSignature);
+
+					if (expectedSignature.equals(calculatedSignature)) {
+						this.title = title;
+						break;
+					}
+				}
+			}
+		}
+
+		let packets: Packet[];
+
+		if (packet.version !== -1) {
+			const substream = packet.fromClientToServer ? this.clientSubstream(packet.substreamID) : this.serverSubstream(packet.substreamID);
+			packets = substream.update(packet);
+		} else {
+			packets = [packet];
+		}
+
+		for (const packet of packets) {
+			if (packet.isTypeData()) {
+				// TODO - This whole section needs to be reworked to support different encryption and compression settings. Currently assumes RC4 and no compression
+				let defragmentedPayload: Buffer;
+
+				if (packet.version !== -1) {
+					const substream = this.clientSubstream(packet.substreamID);
+					defragmentedPayload = substream.addFragment(packet);
+				} else {
+					defragmentedPayload = packet.payload;
+				}
+
+				if (packet.fragmentID === 0) {
+					packet.defragmentedPayload = defragmentedPayload;
+					this.processPacketMessage(packet);
+				}
+			}
+		}
+
+		this.packets.push(packet);
+	}
+
+	private processPacketMessage(packet: Packet): void {
+		packet.message = new RMCMessage(packet.defragmentedPayload);
+		packet.message.connection = this;
+
+		const protocol = getProtocol(packet.message);
+
+		if (protocol) {
+			packet.message.protocolName = protocol.Name;
+
+			if (!packet.message.error) {
+				protocol.handlePacket(packet);
+			} else {
+				const substream = packet.fromClientToServer ? this.clientSubstream(packet.substreamID) : this.serverSubstream(packet.substreamID);
+				const seenPackets = packet.fromClientToServer ? substream.servertoClientSeenPackets : substream.clientToServerSeenPackets; // * Search packets from the other end
+				const requestPacket = seenPackets.find(p => {
+					if (
+						p.message.type === RMCMessage.REQUEST &&
+						p.message.protocolID === packet.message.protocolID &&
+						p.message.callID === packet.message.callID
+					) {
+						return true;
+					}
+				});
+
+				if (requestPacket) {
+					packet.message.methodName = requestPacket.message.methodName;
+				} else {
+					packet.message.methodName = 'UnknownMethod';
+				}
+			}
+		} else {
+			const protocolID = packet.message.extendedProtocolID ? packet.message.extendedProtocolID : packet.message.protocolID;
+
+			packet.message.protocolName = `UnknownProtocol_0x${protocolID.toString(16).toUpperCase().padStart(2, '0')}`;
+			packet.message.methodName = `UnknownMethod_0x${packet.message.methodID.toString(16).toUpperCase().padStart(2, '0')}`;
+		}
+
+		if (packet.message.protocolID === TicketGrantingProtocol.ID && !packet.message.error) {
+			const methodID = packet.message.methodID;
+
+			if (
+				(methodID === TicketGrantingProtocol.Methods.Login || methodID === TicketGrantingProtocol.Methods.LoginEx) &&
+				packet.message.type === RMCMessage.RESPONSE
+			) {
+				if (packet.message.parameters.retval.isSuccess()) {
+					const sourcePID = packet.message.parameters.pidPrincipal.value;
+					const ticketData = packet.message.parameters.pbufResponse.value;
+
+					this.mainSecureStation = packet.message.parameters.pConnectionData.m_urlRegularProtocols;
+					this.specialSecureStation = packet.message.parameters.pConnectionData.m_urlSpecialProtocols;
+
+					this.processKerberosTicket(ticketData, sourcePID, '');
+				}
+			}
+
+			if (methodID === TicketGrantingProtocol.Methods.RequestTicket && packet.message.type === RMCMessage.REQUEST) {
+				this.ticketRequestPIDs[packet.message.callID] = packet.message.parameters.idSource.value;
+			}
+
+			if (methodID === TicketGrantingProtocol.Methods.RequestTicket && packet.message.type === RMCMessage.RESPONSE) {
+				// TODO - Error when not found
+				// TODO - RequestTicket also has a retval, is it treated the same as Login/LoginEx?
+				if (this.ticketRequestPIDs[packet.message.callID]) {
+					const sourcePID = this.ticketRequestPIDs[packet.message.callID];
+					const ticketData = packet.message.parameters.bufResponse.value;
+					const sourceKey = packet.message.parameters.pSourceKey.value ? packet.message.parameters.pSourceKey.value : '';
+
+					delete this.ticketRequestPIDs[packet.message.callID];
+
+					this.processKerberosTicket(ticketData, sourcePID, sourceKey);
+				}
+			}
+		}
+	}
+
+	private processKerberosTicket(ticketData: Buffer, sourcePID: bigint, sourceKey: string): void {
+		let key = Buffer.from(sourceKey, 'hex');
+
+		if (key.length === 0) {
+			// TODO - Remove "as any" when TypeScript updates to allow bigint as an index type
+			const sourcePassword = GAME_SERVER_PASSWORDS[sourcePID as any];
+
+			if (!sourcePassword) {
+				throw new Error(`No password set for PID ${sourcePID}`);
+			}
+
+			if (this.title.settings.kerberos_key_version === 0) {
+				key = keyDerivationOld(sourcePID, sourcePassword);
+			} else {
+				key = keyDerivationNew(sourcePID, sourcePassword);
+			}
+		}
+
+		const ticket = new Ticket(ticketData, key, this.title.settings);
+
+		// TODO - Is this accurate to how special stations are handled?
+		const mainTarget = BigInt(this.mainSecureStation.getParam('PID') || 0);
+		const specialTarget = BigInt(this.specialSecureStation.getParam('PID') || 0);
+
+		if (mainTarget === ticket.target.value) {
+			this.mainSecureStationTicket = ticket;
+		}
+
+		if (specialTarget === ticket.target.value) {
+			this.specialSecureStationTicket = ticket;
+		}
+	}
+}

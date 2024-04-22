@@ -1,55 +1,27 @@
 # NEX Viewer
-### Utility for parsing and (eventually) viewing NEX connections from PCAP(NG) network dumps
-
-## TODO:
-### This tool is still VERY early in development, so nearly nothing is finished
-- [x] PRUDP v0 packet parsing
-- [x] PRUDP v1 packet parsing
-- [ ] Fragmented payloads
-- [ ] SMM DataStore method 50 (0x32) (`DataStoreSMM::GetCustomRankingByDataId`) is completely busted
-- [ ] NEX Protocols (there is mixed support, some protocols are partially implemented)
-- [ ] CLI Display
-
-
-## Installation
-```
-npm i https://github.com/PretendoNetwork/nex-viewer
-```
-
-## Example usage
-```js
-const NEXParser = require('../..');
-const parser = new NEXParser();
-
-parser.on('packet', packet => {
-	// DO SOMETHING
-	console.log(packet);
-});
-
-parser.parse(__dirname + '/smm.pcapng');
-```
+### Utility for viewing PRUDP connections and NEX/Rendez-Vous sessions.
 
 ## NEX keys
-PRUDP packet payloads get encrypted using a key which is encrypted using a key which is derived from your NEX account PID and password. In order to read packets, `nex-viewer` requires a `nex-keys.txt` file to be placed in any of these locations:
+> [!WARNING]
+> Older versions of NEX Viewer precomputed the Kerberos keys for each password. These precomputed keys are NOT usable in newer versions of NEX Viewer. Password files must now always contain the raw game server password for each PID
 
-- `src` folder of this repo
-- Root folder of this repo
-- `%AppData%/Wireshark/nex-keys.txt` (Windows)
-- `~/.config/wireshark/nex-keys.txt` (Linux/MacOS)
+In order to decrypt PRUDP packet payloads for the games secure server(s) your game server account credentials must be known by NEX Viewer. populate your credentials file in one of the following locations
 
-`nex-viewer` will check the local repo first then look elsewhere for the file depending on your operating system. `nex-keys.txt` must be in the following format:
+- `%AppData%/NEXViewer/game-server-passwords.txt` (Windows)
+- `~/.config/nex-viewer/game-server-passwords.txt` (Linux/MacOS)
+
+`game-server-passwords.txt` must be in the following format:
 
 ```
-NEX_PID:NEX_PASSWORD
-NEX_PID:NEX_PASSWORD
-NEX_PID:NEX_PASSWORD
-NEX_PID:NEX_PASSWORD
+PID:PASSWORD
+PID:PASSWORD
+PID:PASSWORD
+PID:PASSWORD
+etc...
 ```
 
-With each NEX account details on a new line. Each time `nex-viewer` runs it will derive the correct crypto key from each PID:PASSWORD and write it back to `nex-keys.txt`. This way your NEX password does not stay in plain-text on disk
-
-## WARNING!
-DO NOT SHARE YOUR NEX PID AND PASSWORD WITH ANYBODY UNLESS YOU ABSOLUTELY KNOW WHAT YOU ARE DOING OR YOU DO NOT CARE ABOUT THE ACCOUNT. THIS PID/PASSWORD COMBINATION IS WHAT THE CONSOLE USES TO VERIFY YOU WHEN PLAYING ONLINE, NOT YOUR NNID USERNAME/PASSWORD. SHARING THESE DETAILS CAN ALLOW ANYONE TO LOGIN TO ANY GAME UNDER YOUR ACCOUNT
+> [!CAUTION]
+DO NOT SHARE YOUR NEX PID AND PASSWORD WITH ANYBODY UNLESS YOU ABSOLUTELY KNOW WHAT YOU ARE DOING OR YOU DO NOT CARE ABOUT THE ACCOUNT. THIS PID/PASSWORD COMBINATION IS WHAT THE CONSOLE USES TO AUTHENTICATE YOU WHEN PLAYING ONLINE, NOT YOUR NNID USERNAME/PASSWORD. SHARING THESE DETAILS CAN ALLOW ANYONE TO LOGIN TO ANY GAME UNDER YOUR ACCOUNT.
 
 ## Obtaining NEX account details
 NEX accounts are _**not**_ the same thing as NNIDs. How you obtain your NEX account details depends on your system. See below for details

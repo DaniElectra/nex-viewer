@@ -1,52 +1,32 @@
 {
-  "name": "nex-viewer",
+  "name": "nex-viewer-rewrite",
   "version": "1.0.0",
   "description": "Utility for parsing and viewing NEX connections from packet captures",
-  "main": "src/parser.js",
+  "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint .",
-    "start": "electron ./app/",
-    "app:dir": "electron-builder --dir",
-    "app:dist": "electron-builder"
+    "lint": "./node_modules/.bin/eslint ./src",
+    "clean": "rimraf ./dist",
+	"copy-html": "mkdir -p ./dist/renderers/main && cp ./src/renderers/main/index.html ./dist/renderers/main/index.html",
+    "build": "npm run lint && npm run clean && npx tsc && npx tsc-alias && npm run copy-html",
+    "start": "electron dist/windows/main/index.js"
   },
   "keywords": [],
-  "author": {
-    "name": "Jonathan Barrow",
-    "email": "jonbarrow1998@gmail.com",
-    "url": "https://jonbarrow.dev/"
-  },
-  "license": "ISC",
-  "dependencies": {
-    "private-ip": "^2.3.4",
-    "semver": "^7.5.4"
-  },
+  "author": "Pretendo Network",
+  "license": "AGPL-3.0",
   "devDependencies": {
-    "electron": "^27.0.3",
-    "electron-builder": "^24.6.4",
-    "eslint": "^8.24.0",
-    "eslint-plugin-jsdoc": "^39.3.6"
+    "@eslint/js": "^9.1.1",
+    "@types/fs-extra": "^11.0.4",
+    "@types/semver": "^7.5.8",
+    "electron": "^30.0.1",
+    "eslint": "^8.57.0",
+    "rimraf": "^5.0.5",
+    "tsc-alias": "^1.8.8",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.1"
   },
-  "build": {
-    "productName": "NEX Viewer",
-    "appId": "network.pretendo.nex-viewer",
-    "directories": {
-      "output": "builds"
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ],
-      "category": "Development"
-    },
-    "files": [
-      "!builds",
-      "!test",
-      "!.gitignore",
-      "!README.md",
-      "!access.txt",
-      "!nex.txt",
-      "!build_games_list.js"
-    ]
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "semver": "^7.6.0"
   }
 }
