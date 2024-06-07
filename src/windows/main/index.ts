@@ -1,3 +1,5 @@
+// TODO - Should we just merge the "renderers" and "windows" folders?
+
 import path from 'node:path';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import fs from 'fs-extra';
