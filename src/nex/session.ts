@@ -69,6 +69,7 @@ export default class Session extends EventEmitter {
 
 		for (const packet of packets) {
 			this.processPacket(packet);
+			this.emit('packet', packet);
 		}
 	}
 
