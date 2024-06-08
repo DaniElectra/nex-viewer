@@ -165,6 +165,8 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 	public toJSON(): Record<string, any> {
 		const serialized = this.serialize();
 
+		serialized.substream_id = this.substreamID;
+
 		if (this.supportedFunctions) {
 			serialized.supported_functions = this.supportedFunctions;
 		}

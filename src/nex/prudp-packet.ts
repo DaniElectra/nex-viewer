@@ -164,23 +164,27 @@ export default class PRUDPPacket {
 			sequence_id: this.sequenceID
 		};
 
-		if (this.version === 1) {
-			serialized.substream_id = this.substreamID;
-		}
-
 		if (this.connectionSignature) {
 			serialized.connection_signature = this.connectionSignature;
 		}
 
-		serialized.payload = this.payload;
-		serialized.decrypted_payload = this.decryptedPayload;
+		if (this.payload) {
+			serialized.payload = this.payload;
+		}
+
+		if (this.decryptedPayload) {
+			serialized.decrypted_payload = this.decryptedPayload;
+		}
 
 		if (this.isTypeData()) {
 			serialized.fragment_id = this.fragmentID;
 
 			if (this.fragmentID === 0) {
-				serialized.message = this.message;
 				serialized.defragmented_payload = this.defragmentedPayload;
+			}
+
+			if (this.message) {
+				serialized.message = this.message;
 			}
 		}
 
