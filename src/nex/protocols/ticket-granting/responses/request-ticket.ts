@@ -12,7 +12,7 @@ export default class RequestTicketResponse {
 	private pSourceKey = new RVString();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
 
 		this.retval.extractFrom(stream);
 

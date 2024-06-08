@@ -9,7 +9,7 @@ export default class RequestTicketRequest {
 	private idTarget = new PID();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
 
 		this.idSource.extractFrom(stream);
 		this.idTarget.extractFrom(stream);

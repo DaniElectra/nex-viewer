@@ -8,7 +8,7 @@ export default class LoginRequest {
 	private strUserName = new RVString();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
 
 		this.strUserName.extractFrom(stream);
 	}

@@ -11,7 +11,7 @@ export default class RegisterExRequest {
 	private hCustomData = new AnyDataHolder();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
 
 		this.vecMyURLs.extractFrom(stream);
 		this.hCustomData.extractFrom(stream);

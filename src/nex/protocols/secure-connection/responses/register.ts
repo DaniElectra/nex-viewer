@@ -12,7 +12,7 @@ export default class RegisterResponse {
 	private urlPublic = new StationURL();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
 
 		this.retval.extractFrom(stream);
 
