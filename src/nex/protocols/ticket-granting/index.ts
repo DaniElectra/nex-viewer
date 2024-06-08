@@ -32,6 +32,11 @@ export default class TicketGrantingProtocol {
 	};
 
 	static handlePacket(packet: Packet): void {
+		if (!packet.message) {
+			// * This will never happen. Only checked to make TypeScript happy
+			return;
+		}
+
 		const methodID = packet.message.methodID;
 
 		// TODO - Use Switch names when parsing Switch packets

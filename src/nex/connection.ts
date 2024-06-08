@@ -149,11 +149,11 @@ export default class Connection {
 			this.reset(); // * Assume a new connection has started
 		}
 
-		if (packet.isTypeSyn() && packet.fromServerToClient) {
+		if (packet.isTypeSyn() && packet.fromServerToClient && packet.connectionSignature) {
 			this.serverConnectionSignature = packet.connectionSignature;
 		}
 
-		if (packet.isTypeConnect() && packet.fromClientToServer) {
+		if (packet.isTypeConnect() && packet.fromClientToServer && packet.connectionSignature) {
 			this.clientConnectionSignature = packet.connectionSignature;
 		}
 
@@ -209,9 +209,10 @@ export default class Connection {
 		}
 
 		let packets: Packet[];
+		const substreamID = packet.substreamID || 0;
 
 		if (packet.version !== -1) {
-			const substream = packet.fromClientToServer ? this.clientSubstream(packet.substreamID) : this.serverSubstream(packet.substreamID);
+			const substream = packet.fromClientToServer ? this.clientSubstream(substreamID) : this.serverSubstream(substreamID);
 			packets = substream.update(packet);
 		} else {
 			packets = [packet];
@@ -220,16 +221,16 @@ export default class Connection {
 		for (const packet of packets) {
 			if (packet.isTypeData()) {
 				// TODO - This whole section needs to be reworked to support different encryption and compression settings. Currently assumes RC4 and no compression
-				let defragmentedPayload: Buffer;
+				let defragmentedPayload: Buffer | null = null;
 
 				if (packet.version !== -1) {
-					const substream = this.clientSubstream(packet.substreamID);
+					const substream = this.clientSubstream(substreamID);
 					defragmentedPayload = substream.addFragment(packet);
-				} else {
+				} else if (packet.payload) {
 					defragmentedPayload = packet.payload;
 				}
 
-				if (packet.fragmentID === 0) {
+				if (packet.fragmentID === 0 && defragmentedPayload) {
 					packet.defragmentedPayload = defragmentedPayload;
 					this.processPacketMessage(packet);
 				}
@@ -240,7 +241,7 @@ export default class Connection {
 	}
 
 	private processPacketMessage(packet: Packet): void {
-		packet.message = new RMCMessage(packet.defragmentedPayload);
+		packet.message = new RMCMessage(packet.defragmentedPayload!);
 		packet.message.connection = this;
 
 		const protocol = getProtocol(packet.message);
@@ -251,19 +252,20 @@ export default class Connection {
 			if (!packet.message.error) {
 				protocol.handlePacket(packet);
 			} else {
-				const substream = packet.fromClientToServer ? this.clientSubstream(packet.substreamID) : this.serverSubstream(packet.substreamID);
+				const substreamID = packet.substreamID || 0;
+				const substream = packet.fromClientToServer ? this.clientSubstream(substreamID) : this.serverSubstream(substreamID);
 				const seenPackets = packet.fromClientToServer ? substream.servertoClientSeenPackets : substream.clientToServerSeenPackets; // * Search packets from the other end
 				const requestPacket = seenPackets.find(p => {
 					if (
-						p.message.type === RMCMessage.REQUEST &&
-						p.message.protocolID === packet.message.protocolID &&
-						p.message.callID === packet.message.callID
+						p.message?.type === RMCMessage.REQUEST &&
+						p.message?.protocolID === packet.message?.protocolID &&
+						p.message?.callID === packet.message?.callID
 					) {
 						return true;
 					}
 				});
 
-				if (requestPacket) {
+				if (requestPacket && requestPacket.message?.methodName) {
 					packet.message.methodName = requestPacket.message.methodName;
 				} else {
 					packet.message.methodName = 'UnknownMethod';

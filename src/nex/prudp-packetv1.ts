@@ -9,6 +9,9 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 	private payloadLength: number;
 	private headerBytes: Buffer; // * Used for the signature calculation
 	private optionsBytes: Buffer; // * Used for the signature calculation
+	private supportedFunctions?: Buffer;
+	private initialUnreliableSequenceID?: number;
+	private maximumSubstreamID?: number;
 
 	static Magic = Buffer.from([0xEA, 0xD0]);
 
@@ -99,8 +102,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 					throw new Error('Invalid PRUDPv1 option ID');
 				}
 
-				// * Supported functions. Not needed here
-				optionsStream.skip(optionSize);
+				this.supportedFunctions = optionsStream.readBytes(optionSize);
 			}
 
 			if (optionID === 1) {
@@ -124,8 +126,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 					throw new Error('Invalid PRUDPv1 option ID');
 				}
 
-				// * Initial sequence id for unreliable data packets. Not needed here
-				optionsStream.skip(optionSize);
+				this.initialUnreliableSequenceID = optionsStream.readUInt16LE();
 			}
 
 			if (optionID === 4) {
@@ -133,8 +134,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 					throw new Error('Invalid PRUDPv1 option ID');
 				}
 
-				// * Maximum substream ID. Not needed here
-				optionsStream.skip(optionSize);
+				this.maximumSubstreamID = optionsStream.readUInt8();
 			}
 		}
 	}
@@ -154,8 +154,29 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 		mac.update(accessKeySumBytes);
 		mac.update(connectionSignature);
 		mac.update(this.optionsBytes);
-		mac.update(this.payload);
+
+		if (this.payload) {
+			mac.update(this.payload);
+		}
 
 		return mac.digest();
+	}
+
+	public toJSON(): Record<string, any> {
+		const serialized = this.serialize();
+
+		if (this.supportedFunctions) {
+			serialized.supported_functions = this.supportedFunctions;
+		}
+
+		if (this.initialUnreliableSequenceID) {
+			serialized.initial_unreliable_sequence_id = this.initialUnreliableSequenceID;
+		}
+
+		if (this.maximumSubstreamID) {
+			serialized.maximum_substream_id = this.maximumSubstreamID;
+		}
+
+		return serialized;
 	}
 }

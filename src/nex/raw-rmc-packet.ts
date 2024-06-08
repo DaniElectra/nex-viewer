@@ -45,4 +45,8 @@ export default class RawRMCPacket extends PRUDPPacket {
 		this.destinationStreamType = -1;
 		this.destinationStreamID = -1;
 	}
+
+	public toJSON(): Record<string, any> {
+		return this.serialize();
+	}
 }

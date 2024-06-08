@@ -22,14 +22,14 @@ export default class PRUDPPacket {
 	public sessionID: number;
 	public signature: Buffer;
 	public sequenceID: number;
-	public connectionSignature: Buffer;
-	public fragmentID: number;
-	public substreamID: number;
-	public payload: Buffer;
-	public decryptedPayload: Buffer;
-	public defragmentedPayload: Buffer;
+	public connectionSignature?: Buffer;
+	public fragmentID?: number;
+	public substreamID?: number;
+	public payload?: Buffer;
+	public decryptedPayload?: Buffer;
+	public defragmentedPayload?: Buffer;
 	public connection: Connection;
-	public message: RMCMessage;
+	public message?: RMCMessage;
 
 	protected stream: ByteStream;
 
@@ -144,5 +144,120 @@ export default class PRUDPPacket {
 
 	public hasFlagMultiAck(): boolean {
 		return this.hasFlag(PRUDPPacket.FLAGS.MULTI_ACK);
+	}
+
+	public serialize(): Record<string, any> {
+		const serialized: Record<string, any> = {
+			version: this.version,
+			source_address: this.sourceAddress,
+			source_port: this.sourcePort,
+			destination_address: this.destinationAddress,
+			destination_port: this.destinationPort,
+			source_stream_id: this.sourceStreamID,
+			source_stream_type: this.serializeStreamType(this.sourceStreamType),
+			destination_stream_id: this.destinationStreamID,
+			destination_stream_type: this.serializeStreamType(this.destinationStreamType),
+			type: this.serializeType(),
+			flags: this.serializeFlags(),
+			session_id: this.sessionID,
+			signature: this.signature,
+			sequence_id: this.sequenceID
+		};
+
+		if (this.version === 1) {
+			serialized.substream_id = this.substreamID;
+		}
+
+		if (this.connectionSignature) {
+			serialized.connection_signature = this.connectionSignature;
+		}
+
+		serialized.payload = this.payload;
+		serialized.decrypted_payload = this.decryptedPayload;
+
+		if (this.isTypeData()) {
+			serialized.fragment_id = this.fragmentID;
+
+			if (this.fragmentID === 0) {
+				serialized.message = this.message;
+				serialized.defragmented_payload = this.defragmentedPayload;
+			}
+		}
+
+		return serialized;
+	}
+
+	private serializeStreamType(streamType: number): string {
+		switch(streamType) {
+			case 1:
+				return 'DO';
+			case 2:
+				return 'RV';
+			case 3:
+				return 'OldRVSec';
+			case 4:
+				return 'SBMGMT';
+			case 5:
+				return 'NAT';
+			case 6:
+				return 'SessionDiscovery';
+			case 7:
+				return 'NATEcho';
+			case 8:
+				return 'Routing';
+			case 9:
+				return 'Game';
+			case 10:
+				return 'RVSecure';
+			case 11:
+				return 'Relay';
+		}
+
+		throw new Error(`Unsupported stream type ${streamType}`);
+	}
+
+	private serializeType(): string {
+		switch(this.type) {
+			case 0:
+				return 'SYN';
+			case 1:
+				return 'CONNECT';
+			case 2:
+				return 'DATA';
+			case 3:
+				return 'DISCONNECT';
+			case 4:
+				return 'PING';
+			case 5:
+				return 'USER';
+		}
+
+		throw new Error(`Unsupported packet type ${this.type}`);
+	}
+
+	private serializeFlags(): string[] {
+		const flags: string[] = [];
+
+		if (this.hasFlagAck()) {
+			flags.push('ACK');
+		}
+
+		if (this.hasFlagReliable()) {
+			flags.push('RELIABLE');
+		}
+
+		if (this.hasFlagNeedAck()) {
+			flags.push('NEED_ACK');
+		}
+
+		if (this.hasFlagHasSize()) {
+			flags.push('HAS_SIZE');
+		}
+
+		if (this.hasFlagMultiAck()) {
+			flags.push('MULTI_ACK');
+		}
+
+		return flags;
 	}
 }

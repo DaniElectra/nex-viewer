@@ -57,7 +57,7 @@ export default class Substream {
 		let payload = packet.payload;
 
 		// * Raw RMC packets and PRUDP Lite do not encrypt payloads
-		if (packet.version === 0 || packet.version === 1) {
+		if ((packet.version === 0 || packet.version === 1) && payload) {
 			payload = cipher.update(payload);
 		}
 
@@ -65,7 +65,7 @@ export default class Substream {
 
 		payload = Buffer.concat([
 			fragmentedPayload,
-			payload,
+			payload || Buffer.alloc(0),
 		]);
 
 		seenPackets.push(packet);

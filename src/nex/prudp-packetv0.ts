@@ -93,4 +93,12 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 
 		return checksum & 0xFF;
 	}
+
+	public toJSON(): Record<string, any> {
+		const serialized = this.serialize();
+
+		serialized.checksum = this.checksum;
+
+		return serialized;
+	}
 }
