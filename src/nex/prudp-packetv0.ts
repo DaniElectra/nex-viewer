@@ -1,5 +1,6 @@
 import ByteStream from '@/byte-stream';
 import PRUDPPacket from '@/nex/prudp-packet';
+import type { SerializedPRUDPV0Packet } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacketV0 extends PRUDPPacket {
 	public readonly version = 0;
@@ -94,8 +95,8 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 		return checksum & 0xFF;
 	}
 
-	public toJSON(): Record<string, any> {
-		const serialized = this.serialize();
+	public toJSON(): SerializedPRUDPV0Packet {
+		const serialized = this.serialize() as SerializedPRUDPV0Packet;
 
 		serialized.checksum = this.checksum;
 

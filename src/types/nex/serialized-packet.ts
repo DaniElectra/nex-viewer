@@ -1,6 +1,6 @@
 import type SerializedRMCMessage from '@/types/nex/serialized-rmc-message';
 
-type SerializedPRUDPPacket = {
+export type SerializedPRUDPPacket = {
 	version: number;
 	source_address: string;
 	source_port: number;
@@ -23,12 +23,12 @@ type SerializedPRUDPPacket = {
 	message?: SerializedRMCMessage;
 };
 
-type SerializedPRUDPV0Packet = SerializedPRUDPPacket & {
+export type SerializedPRUDPV0Packet = SerializedPRUDPPacket & {
 	version: 0;
 	checksum: number;
 };
 
-type SerializedPRUDPV1Packet = SerializedPRUDPPacket & {
+export type SerializedPRUDPV1Packet = SerializedPRUDPPacket & {
 	version: 1;
 	substream_id: number;
 	supported_functions?: Buffer;

@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import ByteStream from '@/byte-stream';
 import PRUDPPacket from '@/nex/prudp-packet';
+import type { SerializedPRUDPV1Packet } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacketV1 extends PRUDPPacket {
 	public readonly version = 1;
@@ -162,10 +163,10 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 		return mac.digest();
 	}
 
-	public toJSON(): Record<string, any> {
-		const serialized = this.serialize();
+	public toJSON(): SerializedPRUDPV1Packet {
+		const serialized = this.serialize() as SerializedPRUDPV1Packet;
 
-		serialized.substream_id = this.substreamID;
+		serialized.substream_id = this.substreamID!;
 
 		if (this.supportedFunctions) {
 			serialized.supported_functions = this.supportedFunctions;

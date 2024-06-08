@@ -1,6 +1,7 @@
 import ByteStream from '@/byte-stream';
 import QResult from '@/nex/types/qresult';
 import type Connection from '@/nex/connection';
+import type SerializedRMCMessage from '@/types/nex/serialized-rmc-message';
 
 export default class RMCMessage {
 	static readonly REQUEST  = 0;
@@ -102,8 +103,8 @@ export default class RMCMessage {
 		}
 	}
 
-	public toJSON(): Record<string, any> {
-		const serialized: Record<string, any> = {
+	public toJSON(): SerializedRMCMessage {
+		const serialized: SerializedRMCMessage = {
 			type: this._type,
 			protocol_id: this._protocolID,
 			protocol_name: this.protocolName,

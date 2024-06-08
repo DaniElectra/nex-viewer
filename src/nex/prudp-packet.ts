@@ -1,6 +1,7 @@
 import ByteStream from '@/byte-stream';
 import RMCMessage from '@/nex/rmc-message';
 import Connection from '@/nex/connection';
+import type { SerializedPRUDPPacket } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacket {
 	public readonly version: number;
@@ -146,8 +147,8 @@ export default class PRUDPPacket {
 		return this.hasFlag(PRUDPPacket.FLAGS.MULTI_ACK);
 	}
 
-	public serialize(): Record<string, any> {
-		const serialized: Record<string, any> = {
+	public serialize(): SerializedPRUDPPacket {
+		const serialized: SerializedPRUDPPacket = {
 			version: this.version,
 			source_address: this.sourceAddress,
 			source_port: this.sourcePort,
@@ -184,7 +185,7 @@ export default class PRUDPPacket {
 			}
 
 			if (this.message) {
-				serialized.message = this.message;
+				serialized.message = this.message.toJSON();
 			}
 		}
 
