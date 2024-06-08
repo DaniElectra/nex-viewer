@@ -6,8 +6,10 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src",
     "clean": "rimraf ./dist",
-	"copy-html": "mkdir -p ./dist/renderers/main && cp ./src/renderers/main/index.html ./dist/renderers/main/index.html",
-    "build": "npm run lint && npm run clean && npx tsc && npx tsc-alias && npm run copy-html",
+    "copy-html": "mkdir -p ./dist/renderers/main && cp ./src/renderers/main/index.html ./dist/renderers/main/index.html",
+    "build": "npm run lint && npm run clean && npm run compile && npm run browserify",
+    "compile": "npx tsc && npx tsc-alias && npm run copy-html",
+	"browserify": "browserify ./dist/renderers/main/assets/js/util.js ./dist/renderers/main/assets/js/renderer.js -o ./dist/renderers/main/assets/js/bundle.js",
     "start": "electron dist/windows/main/index.js"
   },
   "keywords": [],
@@ -17,6 +19,7 @@
     "@eslint/js": "^9.1.1",
     "@types/fs-extra": "^11.0.4",
     "@types/semver": "^7.5.8",
+    "browserify": "^17.0.0",
     "electron": "^30.0.1",
     "eslint": "^8.57.0",
     "rimraf": "^5.0.5",
