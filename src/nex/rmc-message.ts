@@ -117,7 +117,10 @@ export default class RMCMessage {
 		}
 
 		if (this._error) {
-			serialized.error = this._error;
+			serialized.error = {
+				code: this._error.code,
+				name: this._error.name()
+			};
 		}
 
 		return serialized;

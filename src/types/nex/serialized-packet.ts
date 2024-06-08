@@ -1,4 +1,4 @@
-import type RMCMessage from '@/nex/rmc-message';
+import type SerializedRMCMessage from '@/types/nex/serialized-rmc-message';
 
 type SerializedPRUDPPacket = {
 	version: number;
@@ -20,7 +20,7 @@ type SerializedPRUDPPacket = {
 	payload?: Buffer;
 	decrypted_payload?: Buffer;
 	defragmented_payload?: Buffer;
-	message?: RMCMessage;
+	message?: SerializedRMCMessage;
 };
 
 type SerializedPRUDPV0Packet = SerializedPRUDPPacket & {
