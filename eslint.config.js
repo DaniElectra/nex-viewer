@@ -1,3 +1,4 @@
+const globals = require('globals');
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 
@@ -7,6 +8,7 @@ module.exports = [
 	{
 		languageOptions: {
 			globals: {
+				...globals.browser,
 				node: true,
 				commonjs: true,
 				es6: true,
