@@ -12,7 +12,7 @@ export default class RMCMessage {
 	private _methodID: number;
 	private _callID: number;
 	private _error?: QResult;
-	private _parametersData: Buffer;
+	private _parametersData?: Buffer;
 
 	public parameters?: any;
 	public methodName: string;
@@ -43,7 +43,7 @@ export default class RMCMessage {
 		return this._error;
 	}
 
-	get parametersData(): Buffer {
+	get parametersData(): Buffer | undefined {
 		return this._parametersData;
 	}
 
@@ -103,16 +103,23 @@ export default class RMCMessage {
 	}
 
 	public toJSON(): Record<string, any> {
-		const json: Record<string, any> = {
+		const serialized: Record<string, any> = {
 			type: this._type,
-			protocolID: this._protocolID,
-			protocolName: this.protocolName,
-			methodID: this._methodID,
-			methodName: this.methodName,
-			callID: this._callID,
-			parameters: this.parameters
+			protocol_id: this._protocolID,
+			protocol_name: this.protocolName,
+			method_id: this._methodID,
+			method_name: this.methodName,
+			call_id: this._callID
 		};
 
-		return json;
+		if (this.parameters) {
+			serialized.parameters = this.parameters;
+		}
+
+		if (this._error) {
+			serialized._error = this._error;
+		}
+
+		return serialized;
 	}
 }
