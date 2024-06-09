@@ -301,7 +301,7 @@ export default class QResult {
 	public code: number;
 
 	public extractFrom(stream: ByteStream): void {
-		this.code = stream.readInt32LE();
+		this.code = stream.readUInt32LE();
 	}
 
 	public isSuccess(): boolean {
