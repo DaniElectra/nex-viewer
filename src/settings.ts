@@ -5,8 +5,6 @@ import fs from 'fs-extra';
 const appUserDataPath = app.getPath('userData');
 const settingsRootPath = path.join(appUserDataPath, 'settings.json');
 
-console.log(settingsRootPath);
-
 let settings = {
 	recent_files: [],
 	accounts: []
