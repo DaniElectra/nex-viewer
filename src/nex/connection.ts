@@ -1,5 +1,4 @@
-import os from 'node:os';
-import fs from 'fs-extra';
+import settings, { saveSettings } from '@/settings';
 import Substream from '@/nex/substream';
 import RMCMessage from '@/nex/rmc-message';
 import { keyDerivationOld, keyDerivationNew, Ticket } from '@/nex/kerberos';
@@ -11,62 +10,6 @@ import type StationURL from '@/nex/types/station-url';
 
 // TODO - Maybe this should be broken out into .ts files for each game? That way a game can define it's own signature calculation functions and such?
 import titles from '@/nex/titles.json';
-
-// TODO - TypeScript does not allow bigint (the type of PIDs here) to be used as an index type. Update this when TypeScript allows this
-const GAME_SERVER_PASSWORDS: Record<any, string> = {};
-
-export function populateGameServerPasswords(): void {
-	const paths: string[] = [];
-	const home = os.homedir();
-
-	// TODO - Support more paths? Old viewer supported more local paths, was this useful?
-	if (process.platform === 'win32') {
-		fs.ensureDirSync(`${process.env.APPDATA}/NEXViewer`);
-
-		paths.push(`${process.env.APPDATA}/NEXViewer/game-server-passwords.txt`);
-	} else {
-		fs.ensureDirSync(`${home}/.config/nex-viewer`);
-
-		paths.push(`${home}/.config/nex-viewer/game-server-passwords.txt`);
-	}
-
-	for (const path of paths) {
-		if (fs.existsSync(path)) {
-			const credentials = fs.readFileSync(path, {
-				encoding: 'utf8'
-			}).split('\n').filter(line => line).map(line => {
-				const parts = line.split(':');
-				const pid = parts.shift();
-				const password = parts.join(':'); // * Passwords may contain ":". Need to rejoin just in case
-
-				return {
-					pid,
-					password
-				};
-			});
-
-			for (const credential of credentials) {
-				const pid = Number(credential.pid);
-
-				GAME_SERVER_PASSWORDS[pid] = credential.password;
-			}
-		}
-	}
-
-	if (Object.keys(GAME_SERVER_PASSWORDS).length === 0) {
-		// TODO - Better explain the file format?
-		let error = `Failed to load game server passwords. Populate "${home}/.config/nex-viewer/game-server-passwords.txt"`;
-
-		if (process.platform === 'win32') {
-			error = `Failed to load game server passwords. Populate "${process.env.APPDATA}/NEXViewer/game-server-passwords.txt"`;
-		}
-
-		throw new Error(error);
-	}
-}
-
-// TODO - This should be moved to the main window process, so that the error thrown can be shown as a popup
-populateGameServerPasswords();
 
 // * Represents an individual connection to a specific game server
 export default class Connection {
@@ -320,18 +263,34 @@ export default class Connection {
 		let key = Buffer.from(sourceKey, 'hex');
 
 		if (key.length === 0) {
-			// TODO - Remove "as any" when TypeScript updates to allow bigint as an index type
-			const sourcePassword = GAME_SERVER_PASSWORDS[sourcePID as any];
+			const account = settings.accounts.find(({ pid }) => BigInt(pid) === sourcePID);
 
-			if (!sourcePassword) {
-				throw new Error(`No password set for PID ${sourcePID}`);
+			if (!account) {
+				console.log(settings.accounts);
+				throw new Error(`No account found for PID ${sourcePID}`);
 			}
 
 			if (this.title.settings.kerberos_key_version === 0) {
-				key = keyDerivationOld(sourcePID, sourcePassword);
+				if (account.password_hash_old) {
+					key = Buffer.from(account.password_hash_old, 'hex');
+				} else if (account.password) {
+					key = keyDerivationOld(sourcePID, account.password);
+					account.password_hash_old = key.toString('hex').toUpperCase();
+				} else {
+					throw new Error(`Title ${this.title.name} uses old Kerberos key derivation and no password is set for PID ${sourcePID}`);
+				}
 			} else {
-				key = keyDerivationNew(sourcePID, sourcePassword);
+				if (account.password_hash_new) {
+					key = Buffer.from(account.password_hash_new, 'hex');
+				} else if (account.password) {
+					key = keyDerivationNew(sourcePID, account.password);
+					account.password_hash_new = key.toString('hex').toUpperCase();
+				} else {
+					throw new Error(`Title ${this.title.name} uses new Kerberos key derivation and no password is set for PID ${sourcePID}`);
+				}
 			}
+
+			saveSettings();
 		}
 
 		const ticket = new Ticket(ticketData, key, this.title.settings);
