@@ -266,7 +266,6 @@ export default class Connection {
 			const account = settings.accounts.find(({ pid }) => BigInt(pid) === sourcePID);
 
 			if (!account) {
-				console.log(settings.accounts);
 				throw new Error(`No account found for PID ${sourcePID}`);
 			}
 
