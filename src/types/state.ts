@@ -1,8 +1,8 @@
+import type { Settings } from '@/types/settings';
+
 type State = {
 	raw_rmc: boolean;
-	settings: {
-		recent_files: string[];
-	};
+	settings: Settings;
 };
 
 export default State;

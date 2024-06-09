@@ -1,4 +1,4 @@
-import type { EnhancedPacketBlock } from '@/types/pcapng-parser';
+import type { EnhancedPacketBlock, SimplePacketBlock } from '@/types/pcapng-parser';
 
 type SimpleFrame = {
 	timestamp: {
@@ -10,6 +10,6 @@ type SimpleFrame = {
 	data: Buffer;
 };
 
-type Frame = SimpleFrame | EnhancedPacketBlock;
+type Frame = EnhancedPacketBlock | SimplePacketBlock | SimpleFrame;
 
 export default Frame;
