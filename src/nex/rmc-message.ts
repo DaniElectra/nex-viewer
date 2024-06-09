@@ -10,13 +10,13 @@ export default class RMCMessage {
 	private _type: 0 | 1;
 	private _protocolID: number;
 	private _extendedProtocolID?: number;
-	private _methodID: number;
 	private _callID: number;
 	private _error?: QResult;
 	private _parametersData?: Buffer;
 
 	public parameters?: any;
 	public methodName: string;
+	public methodID: number;
 	public protocolName: string;
 	public connection: Connection;
 
@@ -30,10 +30,6 @@ export default class RMCMessage {
 
 	get extendedProtocolID(): number | undefined {
 		return this._extendedProtocolID;
-	}
-
-	get methodID(): number {
-		return this._methodID;
 	}
 
 	get callID(): number {
@@ -85,7 +81,7 @@ export default class RMCMessage {
 
 	private parseRequest(stream: ByteStream): void {
 		this._callID = stream.readUInt32LE();
-		this._methodID = stream.readUInt32LE();
+		this.methodID = stream.readUInt32LE();
 		this._parametersData = stream.readRest();
 	}
 
@@ -94,7 +90,7 @@ export default class RMCMessage {
 
 		if (success) {
 			this._callID = stream.readUInt32LE();
-			this._methodID = stream.readUInt32LE() & ~0x8000;
+			this.methodID = stream.readUInt32LE() & ~0x8000;
 			this._parametersData = stream.readRest();
 		} else {
 			this._error = new QResult();
@@ -108,7 +104,7 @@ export default class RMCMessage {
 			type: this._type,
 			protocol_id: this._protocolID,
 			protocol_name: this.protocolName,
-			method_id: this._methodID,
+			method_id: this.methodID,
 			method_name: this.methodName,
 			call_id: this._callID
 		};

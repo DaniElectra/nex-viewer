@@ -187,6 +187,30 @@ export default class Connection {
 		packet.message = new RMCMessage(packet.defragmentedPayload!);
 		packet.message.connection = this;
 
+		if (packet.message.error) {
+			const substreamID = packet.substreamID || 0;
+			const requestPacket = this.packets.find(p => {
+				if (
+					p.substreamID === substreamID &&
+					p.message?.type === RMCMessage.REQUEST &&
+					p.message?.protocolID === packet.message?.protocolID &&
+					p.message?.callID === packet.message?.callID
+				) {
+					return true;
+				}
+			});
+
+			if (requestPacket && requestPacket.message) {
+				packet.message.methodID = requestPacket.message.methodID;
+
+				if (requestPacket.message.methodName) {
+					packet.message.methodName = requestPacket.message.methodName;
+				} else {
+					packet.message.methodName = 'UnknownMethod';
+				}
+			}
+		}
+
 		const protocol = getProtocol(packet.message);
 
 		if (protocol) {
@@ -194,25 +218,6 @@ export default class Connection {
 
 			if (!packet.message.error) {
 				protocol.handlePacket(packet);
-			} else {
-				const substreamID = packet.substreamID || 0;
-				const substream = packet.fromClientToServer ? this.clientSubstream(substreamID) : this.serverSubstream(substreamID);
-				const seenPackets = packet.fromClientToServer ? substream.servertoClientSeenPackets : substream.clientToServerSeenPackets; // * Search packets from the other end
-				const requestPacket = seenPackets.find(p => {
-					if (
-						p.message?.type === RMCMessage.REQUEST &&
-						p.message?.protocolID === packet.message?.protocolID &&
-						p.message?.callID === packet.message?.callID
-					) {
-						return true;
-					}
-				});
-
-				if (requestPacket && requestPacket.message?.methodName) {
-					packet.message.methodName = requestPacket.message.methodName;
-				} else {
-					packet.message.methodName = 'UnknownMethod';
-				}
 			}
 		} else {
 			const protocolID = packet.message.extendedProtocolID ? packet.message.extendedProtocolID : packet.message.protocolID;
