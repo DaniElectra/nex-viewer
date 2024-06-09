@@ -3,7 +3,7 @@ import path from 'node:path';
 import fs from 'fs-extra';
 import ByteStream from '@/byte-stream';
 import PCAPParser from '@/pcap-parser';
-import PCAPNGParser from '@/pcap-parser';
+import PCAPNGParser from '@/pcapng-parser';
 import Connection from '@/nex/connection';
 import PRUDPPacketV1 from '@/nex/prudp-packetv1';
 import PRUDPPacketV0 from '@/nex/prudp-packetv0';
