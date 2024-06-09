@@ -5,8 +5,8 @@ import { keyDerivationOld, keyDerivationNew, Ticket } from '@/nex/kerberos';
 import getProtocol from '@/nex/protocols/manager';
 import TicketGrantingProtocol from '@/nex/protocols/ticket-granting';
 import type Packet from '@/types/nex/packet';
-import type NEXByteStreamSettings from '@/types/nex/byte-stream-settings';
 import type StationURL from '@/nex/types/station-url';
+import type { SerializedConnection, Title } from '@/types/nex/serialized-connection';
 
 // TODO - Maybe this should be broken out into .ts files for each game? That way a game can define it's own signature calculation functions and such?
 import titles from '@/nex/titles.json';
@@ -24,21 +24,7 @@ export default class Connection {
 	public serverStreamID: number;
 	public packets: Packet[] = []; // * Stores all packets in the connection regardless of substream, reliability, etc. Used to display all packets in order as they are sent
 
-	public title: {
-		name: string;
-		game_server_id: string;
-		access_key: string;
-		library_versions: {
-			main: string;
-			ranking: string;
-			datastore: string;
-			match_making: string;
-			messaging: string;
-			utility: string;
-		};
-		settings: NEXByteStreamSettings;
-		title_ids: string[];
-	};
+	public title: Title;
 
 	public mainSecureStationTicket: Ticket;
 	public specialSecureStationTicket: Ticket; // TODO - Currently unused. Also is this even accurate?
@@ -310,5 +296,11 @@ export default class Connection {
 		if (specialTarget === ticket.target.value) {
 			this.specialSecureStationTicket = ticket;
 		}
+	}
+
+	toJSON(): SerializedConnection {
+		return {
+			title: this.title
+		};
 	}
 }
