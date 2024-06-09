@@ -205,7 +205,7 @@ export default class PCAPNGParser {
 			timestamp: {
 				high: timestampHigh,
 				low: timestampLow,
-				sectonds: timestampSeconds
+				seconds: timestampSeconds
 			},
 			storedLength,
 			realLength,

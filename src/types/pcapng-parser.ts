@@ -20,7 +20,7 @@ export type EnhancedPacketBlock = {
 	timestamp: {
 		high: number;
 		low: number;
-		sectonds: number;
+		seconds: number;
 	},
 	storedLength: number;
 	realLength: number;
