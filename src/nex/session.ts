@@ -184,6 +184,11 @@ export default class Session extends EventEmitter {
 		const destinationPort = udpStream.readUInt16BE();
 		const udpPacketLength = udpStream.readUInt16BE();
 
+		if (sourcePort === 53 || destinationPort === 53) {
+			// * DNS packet
+			return;
+		}
+
 		if (udpPacketLength !== udpLength) {
 			throw new Error(`Got bad UDP packet length. Expected ${udpLength}, got ${udpPacketLength}`);
 		}
