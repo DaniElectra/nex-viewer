@@ -20,6 +20,8 @@ function int2ip(int: number): string {
 export default class Session extends EventEmitter {
 	private connections: Connection[] = [];
 	private rawRMCMode = false;
+	private lastPacketTime = 0;
+	private elapsedTime = 0;
 
 	constructor() {
 		super();
@@ -46,13 +48,23 @@ export default class Session extends EventEmitter {
 		}
 
 		for (const packet of parser.packets()) {
-			this.handlePacket(packet);
+			let time = 0;
+			if ('timestamp' in packet) {
+				if (this.lastPacketTime !== 0) {
+					this.elapsedTime += packet.timestamp.seconds - this.lastPacketTime;
+					time = this.elapsedTime;
+				}
+
+				this.lastPacketTime = packet.timestamp.seconds;
+			}
+
+			this.handlePacket(packet, time);
 		}
 
 		this.emit('finished', this.connections);
 	}
 
-	private handlePacket(frame: Frame): void {
+	private handlePacket(frame: Frame, time?: number): void {
 		// * HokakuCTR produces dumps whose payloads are:
 		// * - u8  Revision (1)
 		// * - u64 Title ID
@@ -69,6 +81,11 @@ export default class Session extends EventEmitter {
 
 		for (const packet of packets) {
 			this.processPacket(packet);
+
+			if (!this.rawRMCMode) {
+				packet.time = time;
+			}
+
 			this.emit('packet', packet);
 		}
 	}

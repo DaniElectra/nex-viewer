@@ -4,6 +4,7 @@ import Connection from '@/nex/connection';
 import type { SerializedPRUDPPacket } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacket {
+	public time?: number;
 	public readonly version: number;
 
 	public fromClientToServer: boolean;
@@ -149,6 +150,7 @@ export default class PRUDPPacket {
 
 	public serialize(): SerializedPRUDPPacket {
 		const serialized: SerializedPRUDPPacket = {
+			time: this.time,
 			version: this.version,
 			source_address: this.sourceAddress,
 			source_port: this.sourcePort,
