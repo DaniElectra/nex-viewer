@@ -1,0 +1,111 @@
+import { createElement } from '@pretendonetwork/yeah';
+import RMCMessage from '@/nex/rmc-message';
+import type SerializedPacket from '@/types/nex/serialized-packet';
+import type SerializedConnection from '@/types/nex/serialized-connection';
+import { removeAllChildNodes } from '@/renderers/main/assets/js/util';
+
+export const packetsListSection = document.querySelector('#packet-list tbody')!;
+export const connectionsListSection = document.querySelector('#connections')!;
+export const packetDetailsSection = document.getElementById('packet-details')!;
+
+export function addPacketToList(packet: SerializedPacket): void {
+	const infoData: string[] = [];
+
+	if (packet.version !== -1) { // * Raw RMC packet
+		infoData.push(packet.type);
+
+		if (packet.flags.includes('MULTI_ACK')) {
+			infoData.push('MULTI_ACK');
+		} else {
+			infoData.push(`SEQ=${packet.sequence_id}`);
+
+			if (packet.flags.includes('ACK')) {
+				infoData.push('ACK');
+			}
+		}
+
+		if (packet.type === 'DATA' && !packet.flags.includes('ACK') && !packet.flags.includes('MULTI_ACK')) {
+			infoData.push(`FRAGMENT=${packet.fragment_id}`);
+		}
+	}
+
+	if (packet.message) {
+		infoData.push(`${packet.message.protocol_name}->${packet.message.method_name}`);
+
+		if (packet.message.type === RMCMessage.REQUEST) {
+			infoData.push('REQUEST');
+		} else {
+			infoData.push('RESPONSE');
+
+			if (packet.message.error) {
+				infoData.push('FAILURE');
+				infoData.push(`ERROR ${packet.message.error.name} (0x${packet.message.error.code.toString(16)})`);
+			} else {
+				infoData.push('SUCCESS');
+			}
+		}
+	}
+
+	const timeString = packet.time !== undefined ? packet.time.toFixed(6) : '';
+	const sourceString = packet.source_address;
+	const destinationString = packet.destination_address;
+	const versionString = packet.version === -1 ? 'Raw RMC' : `v${packet.version}`;
+	const infoString = infoData.join(', ');
+
+	const row = (
+		<tr
+			data-serialized={JSON.stringify(packet)}
+			data-packet-type={packet.type}
+			className={packet.stack_trace ? 'error' : ''}
+		>
+			<td>{timeString}</td>
+			<td>{sourceString}</td>
+			<td>{destinationString}</td>
+			<td>{versionString}</td>
+			<td>{infoString}</td>
+		</tr>
+	);
+
+	packetsListSection.appendChild(row as any);
+}
+
+export function addConnectionToList(connection: SerializedConnection): void {
+	const row = (
+		<div>
+			<span>{connection.title.name}</span>
+		</div>
+	);
+
+	connectionsListSection.appendChild(row as any);
+}
+
+function setSelectedPacketRow(tr: HTMLElement): void {
+	document.querySelector('tr.selected')?.classList.toggle('selected');
+	tr.classList.toggle('selected');
+
+	updatePacketDetails(JSON.parse(tr.dataset.serialized!));
+}
+
+function updatePacketDetails(_packet: SerializedPacket): void {
+	const root = document.createElement('details');
+
+	removeAllChildNodes(packetDetailsSection);
+
+	packetDetailsSection.appendChild(root);
+}
+
+document.addEventListener('click', event => {
+	event.stopPropagation();
+
+	if (!event.target || !(event.target instanceof HTMLElement)) {
+		return;
+	}
+
+	if (event.target.tagName.toLowerCase() === 'td') {
+		setSelectedPacketRow(event.target.parentElement!);
+	}
+
+	if (event.target.tagName.toLowerCase() === 'tr') {
+		setSelectedPacketRow(event.target);
+	}
+});

@@ -1,16 +1,18 @@
 {
-  "name": "nex-viewer-rewrite",
+  "name": "nex-viewer",
   "version": "1.0.0",
   "description": "Utility for parsing and viewing NEX connections from packet captures",
-  "main": "index.js",
+  "main": "dist/windows/main",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src",
     "clean": "rimraf ./dist",
+    "copy-static": "npm run copy-html && npm run copy-css",
     "copy-html": "mkdir -p ./dist/renderers/main && cp ./src/renderers/main/index.html ./dist/renderers/main/index.html",
+    "copy-css": "mkdir -p ./dist/renderers/main/assets/css && cp ./src/renderers/main/assets/css/* ./dist/renderers/main/assets/css/",
     "build": "npm run lint && npm run clean && npm run compile && npm run browserify",
-    "compile": "npx tsc && npx tsc-alias && npm run copy-html",
-	"browserify": "browserify ./dist/renderers/main/assets/js/util.js ./dist/renderers/main/assets/js/renderer.js -o ./dist/renderers/main/assets/js/bundle.js",
-    "start": "electron dist/windows/main/index.js"
+    "compile": "npx tsc && npx tsc-alias && npm run copy-static",
+    "browserify": "browserify ./dist/renderers/main/assets/js/*.js -o ./dist/renderers/main/assets/js/bundle.js",
+    "start": "electron ."
   },
   "keywords": [],
   "author": "Pretendo Network",
@@ -18,10 +20,13 @@
   "devDependencies": {
     "@eslint/js": "^9.1.1",
     "@types/fs-extra": "^11.0.4",
+    "@types/react": "^18.3.3",
     "@types/semver": "^7.5.8",
+    "@types/source-map-support": "^0.5.10",
     "browserify": "^17.0.0",
     "electron": "^30.0.1",
     "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.2",
     "rimraf": "^5.0.5",
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
@@ -29,7 +34,9 @@
     "typescript-eslint": "^7.7.1"
   },
   "dependencies": {
+    "@pretendonetwork/yeah": "^1.0.0",
     "fs-extra": "^11.2.0",
-    "semver": "^7.6.0"
+    "semver": "^7.6.0",
+    "source-map-support": "^0.5.21"
   }
 }

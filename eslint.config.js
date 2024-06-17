@@ -14,7 +14,7 @@ module.exports = [
 				es6: true,
 				BigInt: true
 			},
-			parser: tseslint.parser,
+			parser: tseslint.parser
 		},
 		plugins: {
 			'@typescript-eslint': tseslint.plugin
@@ -32,7 +32,8 @@ module.exports = [
 			'@typescript-eslint/no-unused-vars': [
 				'error',
 				{
-					'argsIgnorePattern': '^_'
+					'argsIgnorePattern': '^_',
+					'varsIgnorePattern': 'createElement'
 				}
 			],
 			'no-extra-semi': 'off',

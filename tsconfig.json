@@ -13,6 +13,8 @@
 		"allowJs": true,
 		"target": "es2022",
 		"noEmitOnError": true,
+		"jsx": "react",
+		"jsxFactory": "createElement",
 		"paths": {
 			"@/*": ["./*"]
 		}
