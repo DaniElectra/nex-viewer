@@ -74,99 +74,104 @@ export default class Connection {
 	}
 
 	public processPacket(packet: Packet): void {
-		if (packet.isTypeSyn() && packet.fromClientToServer && this.mainSecureStationTicket) {
-			this.reset(); // * Assume a new connection has started
-		}
+		try {
+			if (packet.isTypeSyn() && packet.fromClientToServer && this.mainSecureStationTicket) {
+				this.reset(); // * Assume a new connection has started
+			}
 
-		if (packet.isTypeSyn() && packet.fromServerToClient && packet.connectionSignature) {
-			this.serverConnectionSignature = packet.connectionSignature;
-		}
+			if (packet.isTypeSyn() && packet.fromServerToClient && packet.connectionSignature) {
+				this.serverConnectionSignature = packet.connectionSignature;
+			}
 
-		if (packet.isTypeConnect() && packet.fromClientToServer && packet.connectionSignature) {
-			this.clientConnectionSignature = packet.connectionSignature;
-		}
+			if (packet.isTypeConnect() && packet.fromClientToServer && packet.connectionSignature) {
+				this.clientConnectionSignature = packet.connectionSignature;
+			}
 
-		if (packet.version !== -1 && packet.hasFlagAck() || packet.hasFlagMultiAck()) {
-			// TODO - Actually handle these?
-			this.packets.push(packet);
-			return;
-		}
+			if (packet.version !== -1 && packet.hasFlagAck() || packet.hasFlagMultiAck()) {
+				// TODO - Actually handle these?
+				return;
+			}
 
-		if (packet.version !== -1 && packet.isTypeData() && !packet.hasFlagReliable()) {
-			// * Packet is an unreliable DATA packet.
-			// * These packets use their own RC4 stream
-			// * and are not yet supported.
+			if (packet.version !== -1 && packet.isTypeData() && !packet.hasFlagReliable()) {
+				// * Packet is an unreliable DATA packet.
+				// * These packets use their own RC4 stream
+				// * and are not yet supported.
+				return;
+			}
 
-			this.packets.push(packet);
-			return;
-		}
+			if (packet.isTypePing()) {
+				// * Don't worry about handling PING packets
+				return;
+			}
 
-		if (packet.isTypePing()) {
-			// * Don't worry about handling PING packets
+			if (!this.title) {
+				for (const title of titles) {
+					if (packet.version === -1) {
+						if (title.title_ids.includes(packet.titleID)) {
+							this.title = title;
+							break;
+						}
+					} else if (packet.version === 0) {
+						const expectedChecksum = packet.checksum;
+						const calculatedChecksum = packet.calculateChecksum(title.access_key);
 
-			this.packets.push(packet);
-			return;
-		}
+						if (expectedChecksum === calculatedChecksum) {
+							this.title = title;
+							break;
+						}
+					} else {
+						// TODO - Legacy connection signature
+						const connectionSignature = packet.fromClientToServer ? this.clientConnectionSignature : this.serverConnectionSignature;
+						const expectedSignature = packet.signature;
+						const calculatedSignature = packet.calculateSignature(title.access_key, this.sessionKey, connectionSignature);
 
-		if (!this.title) {
-			for (const title of titles) {
-				if (packet.version === -1) {
-					if (title.title_ids.includes(packet.titleID)) {
-						this.title = title;
-						break;
-					}
-				} else if (packet.version === 0) {
-					const expectedChecksum = packet.checksum;
-					const calculatedChecksum = packet.calculateChecksum(title.access_key);
-
-					if (expectedChecksum === calculatedChecksum) {
-						this.title = title;
-						break;
-					}
-				} else {
-					// TODO - Legacy connection signature
-					const connectionSignature = packet.fromClientToServer ? this.clientConnectionSignature : this.serverConnectionSignature;
-					const expectedSignature = packet.signature;
-					const calculatedSignature = packet.calculateSignature(title.access_key, this.sessionKey, connectionSignature);
-
-					if (expectedSignature.equals(calculatedSignature)) {
-						this.title = title;
-						break;
+						if (expectedSignature.equals(calculatedSignature)) {
+							this.title = title;
+							break;
+						}
 					}
 				}
 			}
-		}
 
-		let packets: Packet[];
-		const substreamID = packet.substreamID || 0;
+			let packets: Packet[];
+			const substreamID = packet.substreamID || 0;
 
-		if (packet.version !== -1) {
-			const substream = packet.fromClientToServer ? this.clientSubstream(substreamID) : this.serverSubstream(substreamID);
-			packets = substream.update(packet);
-		} else {
-			packets = [packet];
-		}
+			if (packet.version !== -1) {
+				const substream = packet.fromClientToServer ? this.clientSubstream(substreamID) : this.serverSubstream(substreamID);
+				packets = substream.update(packet);
+			} else {
+				packets = [packet];
+			}
 
-		for (const packet of packets) {
-			if (packet.isTypeData()) {
-				// TODO - This whole section needs to be reworked to support different encryption and compression settings. Currently assumes RC4 and no compression
-				let defragmentedPayload: Buffer | null = null;
+			for (const packet of packets) {
+				if (packet.isTypeData()) {
+					// TODO - This whole section needs to be reworked to support different encryption and compression settings. Currently assumes RC4 and no compression
+					let defragmentedPayload: Buffer | null = null;
 
-				if (packet.version !== -1) {
-					const substream = this.clientSubstream(substreamID);
-					defragmentedPayload = substream.addFragment(packet);
-				} else if (packet.payload) {
-					defragmentedPayload = packet.payload;
-				}
+					if (packet.version !== -1) {
+						const substream = this.clientSubstream(substreamID);
+						defragmentedPayload = substream.addFragment(packet);
+					} else if (packet.payload) {
+						defragmentedPayload = packet.payload;
+					}
 
-				if (packet.fragmentID === 0 && defragmentedPayload) {
-					packet.defragmentedPayload = defragmentedPayload;
-					this.processPacketMessage(packet);
+					if (packet.fragmentID === 0 && defragmentedPayload) {
+						packet.defragmentedPayload = defragmentedPayload;
+						this.processPacketMessage(packet);
+					}
 				}
 			}
+		} catch (error) {
+			if (typeof error === 'string') {
+				packet.stackTrace = error;
+			} else if (error instanceof Error) {
+				packet.stackTrace = error.message;
+			} else {
+				packet.stackTrace = `Unknown error type: ${error}`;
+			}
+		} finally {
+			this.packets.push(packet);
 		}
-
-		this.packets.push(packet);
 	}
 
 	private processPacketMessage(packet: Packet): void {

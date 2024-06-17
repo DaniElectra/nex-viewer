@@ -32,6 +32,7 @@ export default class PRUDPPacket {
 	public defragmentedPayload?: Buffer;
 	public connection: Connection;
 	public message?: RMCMessage;
+	public stackTrace?: string;
 
 	protected stream: ByteStream;
 
@@ -189,6 +190,10 @@ export default class PRUDPPacket {
 			if (this.message) {
 				serialized.message = this.message.toJSON();
 			}
+		}
+
+		if (this.stackTrace) {
+			serialized.stack_trace = this.stackTrace;
 		}
 
 		return serialized;

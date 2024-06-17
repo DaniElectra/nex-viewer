@@ -22,6 +22,7 @@ export type SerializedPRUDPPacket = {
 	decrypted_payload?: Buffer;
 	defragmented_payload?: Buffer;
 	message?: SerializedRMCMessage;
+	stack_trace?: string;
 };
 
 export type SerializedPRUDPV0Packet = SerializedPRUDPPacket & {
