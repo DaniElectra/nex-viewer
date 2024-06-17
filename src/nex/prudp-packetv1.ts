@@ -169,7 +169,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 		serialized.substream_id = this.substreamID!;
 
 		if (this.supportedFunctions) {
-			serialized.supported_functions = this.supportedFunctions;
+			serialized.supported_functions = [...this.supportedFunctions.values()];
 		}
 
 		if (this.initialUnreliableSequenceID) {

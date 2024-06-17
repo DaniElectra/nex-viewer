@@ -19,7 +19,7 @@ export default class QBuffer {
 		return {
 			__displayTypeName: this.typeName,
 			__typeName: this.typeName,
-			__value: this.value
+			__value: [...this.value.values()]
 		};
 	}
 }

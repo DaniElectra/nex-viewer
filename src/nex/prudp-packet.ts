@@ -164,27 +164,27 @@ export default class PRUDPPacket {
 			type: this.serializeType(),
 			flags: this.serializeFlags(),
 			session_id: this.sessionID,
-			signature: this.signature,
+			signature: [...this.signature.values()],
 			sequence_id: this.sequenceID
 		};
 
 		if (this.connectionSignature) {
-			serialized.connection_signature = this.connectionSignature;
+			serialized.connection_signature = [...this.connectionSignature.values()];
 		}
 
 		if (this.payload) {
-			serialized.payload = this.payload;
+			serialized.payload = [...this.payload.values()];
 		}
 
 		if (this.decryptedPayload) {
-			serialized.decrypted_payload = this.decryptedPayload;
+			serialized.decrypted_payload = [...this.decryptedPayload.values()];
 		}
 
 		if (this.isTypeData()) {
 			serialized.fragment_id = this.fragmentID;
 
-			if (this.fragmentID === 0) {
-				serialized.defragmented_payload = this.defragmentedPayload;
+			if (this.fragmentID === 0 && this.defragmentedPayload) {
+				serialized.defragmented_payload = [...this.defragmentedPayload.values()];
 			}
 
 			if (this.message) {
