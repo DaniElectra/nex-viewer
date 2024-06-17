@@ -1,34 +1,83 @@
 import path from 'node:path';
 import { app } from 'electron';
 import fs from 'fs-extra';
-import type { Settings } from '@/types/settings';
+import type { Account, SettingsJSON } from '@/types/settings';
 
-const appUserDataPath = app.getPath('userData');
-const settingsRootPath = path.join(appUserDataPath, 'settings.json');
+class SizedArray<T> {
+	private elements: T[] = [];
+	private maxSize: number;
 
-let settings: Settings = {
-	recent_files: [],
-	accounts: []
-};
+	constructor(maxSize: number) {
+		this.maxSize = maxSize;
+	}
 
-if (fs.existsSync(settingsRootPath)) {
-	settings = fs.readJSONSync(settingsRootPath);
-} else {
-	saveSettings();
+	public fromData(data: T[]): void {
+		this.elements = [...data];
+	}
+
+	public add(item: T): void {
+		if (this.elements.length >= this.maxSize) {
+			this.elements.pop();
+		}
+
+		this.elements.unshift(item);
+	}
+
+	public getItems(): T[] {
+		return this.elements;
+	}
 }
 
-if (!settings.recent_files) {
-	settings.recent_files = [];
+export class Settings {
+	private path = path.join(app.getPath('userData'), 'settings.json');
+	private _recentFiles = new SizedArray<string>(10);
+	private _accounts: Account[] = [];
+
+	constructor() {
+		this.load();
+	}
+
+	private load(): void {
+		if (!fs.existsSync(this.path)) {
+			this.save();
+		}
+
+		const settings: SettingsJSON = fs.readJSONSync(this.path);
+
+		this._recentFiles.fromData(settings.recent_files);
+		this._accounts = settings.accounts;
+	}
+
+	public save(): void {
+		const settings = {
+			recent_files: this.recentFiles(),
+			accounts: this.accounts()
+		};
+
+		fs.writeJSONSync(this.path, settings, {
+			spaces: '\t'
+		});
+	}
+
+	public recentFiles(): string[] {
+		return this._recentFiles.getItems();
+	}
+
+	public addRecentFile(path: string): string[] {
+		this._recentFiles.add(path);
+		this.save();
+
+		return this._recentFiles.getItems();
+	}
+
+	public clearRecentFiles(): void {
+		this._recentFiles = new SizedArray<string>(10);
+		this.save();
+	}
+
+	public accounts(): Account[] {
+		return this._accounts;
+	}
 }
 
-if (!settings.accounts) {
-	settings.accounts = [];
-}
-
-export function saveSettings(): void {
-	fs.writeJSONSync(settingsRootPath, settings, {
-		spaces: '\t'
-	});
-}
-
-export default settings;
+export default new Settings();

@@ -1,10 +1,15 @@
 // TODO - Should we just merge the "renderers" and "windows" folders?
 
 import path from 'node:path';
-import { app, BrowserWindow, ipcMain, Menu } from 'electron';
-import fs from 'fs-extra';
+import sourceMapSupport from 'source-map-support';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import createMenu from '@/windows/main/menu';
+import settings from '@/settings';
 import type State from '@/types/state';
+
+// * Required for getting source maps to work in Electron apps
+// * See https://github.com/electron/electron/issues/38875
+sourceMapSupport.install();
 
 global.Object.defineProperty(global.BigInt.prototype, 'toJSON', {
 	value: function() { return this.toString(); },
@@ -15,48 +20,30 @@ global.Object.defineProperty(global.BigInt.prototype, 'toJSON', {
 
 app.setName('NEX Viewer');
 
-const appUserDataPath = app.getPath('userData');
-const settingsRootPath = path.join(appUserDataPath, 'settings.json');
-
-if (!fs.existsSync(settingsRootPath)) {
-	fs.writeFileSync(settingsRootPath, JSON.stringify({
-		recent_files: []
-	}));
-}
-
+// TODO - Should all of this just be combined into the Settings class and remove State?
 const state: State = {
 	raw_rmc: false,
-	settings: fs.readJSONSync(settingsRootPath)
+	settings: settings
 };
-
-for (const recentFile of state.settings.recent_files) {
-	// TODO - Actually store these
-	app.addRecentDocument(recentFile);
-}
 
 function createWindow(): void {
 	const window = new BrowserWindow({
-		width: 800,
-		height: 600,
-		webPreferences: { // TODO - Use Electron's contextBridge instead
-			nodeIntegration: true,
-			contextIsolation: false
+		webPreferences: {
+			preload: path.join(__dirname, 'preload.js') // * Target the transpiled JS
 		}
 	});
 
 	window.webContents.openDevTools();
 
 	ipcMain.on('renderer-ready', () => {
-		Menu.setApplicationMenu(createMenu(state));
+		window.setMenu(createMenu(state));
 	});
 
 	window.maximize();
-	window.loadFile('../../renderers/main/index.html');
+	window.loadFile(path.join(__dirname, '../../renderers/main/index.html'));
 }
 
 app.whenReady().then(() => {
-	Menu.setApplicationMenu(Menu.buildFromTemplate([])); // * Clear menu before frontend loads
-
 	createWindow();
 
 	app.on('activate', () => {

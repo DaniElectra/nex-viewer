@@ -1,4 +1,4 @@
-import settings, { saveSettings } from '@/settings';
+import settings from '@/settings';
 import Substream from '@/nex/substream';
 import RMCMessage from '@/nex/rmc-message';
 import { keyDerivationOld, keyDerivationNew, Ticket } from '@/nex/kerberos';
@@ -259,7 +259,7 @@ export default class Connection {
 		let key = Buffer.from(sourceKey, 'hex');
 
 		if (key.length === 0) {
-			const account = settings.accounts.find(({ pid }) => BigInt(pid) === sourcePID);
+			const account = settings.accounts().find(({ pid }) => BigInt(pid) === sourcePID);
 
 			if (!account) {
 				throw new Error(`No account found for PID ${sourcePID}`);
@@ -285,7 +285,7 @@ export default class Connection {
 				}
 			}
 
-			saveSettings();
+			settings.save();
 		}
 
 		const ticket = new Ticket(ticketData, key, this.title.settings);

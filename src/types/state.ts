@@ -1,4 +1,4 @@
-import type { Settings } from '@/types/settings';
+import type { Settings } from '@/settings';
 
 type State = {
 	raw_rmc: boolean;

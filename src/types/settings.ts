@@ -6,7 +6,7 @@ export type Account = {
 	password_hash_new?: string;
 }
 
-export type Settings = {
+export type SettingsJSON = {
 	recent_files: string[];
 	accounts: Account[];
 }
