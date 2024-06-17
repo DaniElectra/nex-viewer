@@ -14,13 +14,13 @@ export type SerializedPRUDPPacket = {
 	type: string
 	flags: string[]
 	session_id: number;
-	signature: Buffer;
+	signature: number[];
 	sequence_id: number;
-	connection_signature?: Buffer;
+	connection_signature?: number[];
 	fragment_id?: number;
-	payload?: Buffer;
-	decrypted_payload?: Buffer;
-	defragmented_payload?: Buffer;
+	payload?: number[];
+	decrypted_payload?: number[];
+	defragmented_payload?: number[];
 	message?: SerializedRMCMessage;
 	stack_trace?: string;
 };
@@ -33,7 +33,7 @@ export type SerializedPRUDPV0Packet = SerializedPRUDPPacket & {
 export type SerializedPRUDPV1Packet = SerializedPRUDPPacket & {
 	version: 1;
 	substream_id: number;
-	supported_functions?: Buffer;
+	supported_functions?: number[];
 	initial_unreliable_sequence_id?: number;
 	maximum_substream_id?: number;
 };
