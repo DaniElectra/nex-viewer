@@ -164,7 +164,7 @@ export default class PRUDPPacket {
 			type: this.serializeType(),
 			flags: this.serializeFlags(),
 			session_id: this.sessionID,
-			signature: [...this.signature.values()],
+			signature: this.signature ? [...this.signature.values()] : [], // * Raw RMC packets have no signature
 			sequence_id: this.sequenceID
 		};
 
@@ -200,6 +200,11 @@ export default class PRUDPPacket {
 	}
 
 	private serializeStreamType(streamType: number): string {
+		// * Raw RMC packets have no VirtualPorts
+		if (this.version === -1) {
+			return '';
+		}
+
 		switch(streamType) {
 			case 1:
 				return 'DO';
@@ -229,6 +234,11 @@ export default class PRUDPPacket {
 	}
 
 	private serializeType(): string {
+		// * Raw RMC packets have no VirtualPorts
+		if (this.version === -1) {
+			return '';
+		}
+
 		switch(this.type) {
 			case 0:
 				return 'SYN';
