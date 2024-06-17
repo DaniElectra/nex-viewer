@@ -3,9 +3,7 @@ import Session from '@/nex/session';
 import type { MenuItemConstructorOptions } from 'electron';
 import type State from '@/types/state';
 
-function openSession(path: string, state: State): void {
-	const browserWindow = BrowserWindow.getFocusedWindow()!;
-
+function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
 	browserWindow.webContents.send('clear-sections');
 	browserWindow.setTitle(`NEX Viewer - ${path}`);
 
@@ -29,7 +27,12 @@ function openSession(path: string, state: State): void {
 export default function createMenu(state: State): Menu {
 	let recentFiles: MenuItemConstructorOptions[] = state.settings.recentFiles().map(path => ({
 		label: path,
-		click: (): void => openSession(path, state)
+		click: (): void => {
+			// TODO - Track the current window and pass it to openSession
+			dialog.showMessageBox({
+				message: 'Recent files not yet implemented'
+			});
+		}
 	}));
 
 	if (recentFiles.length) {
@@ -71,7 +74,7 @@ export default function createMenu(state: State): Menu {
 							return;
 						}
 
-						openSession(result.filePaths[0], state);
+						openSession(result.filePaths[0], browserWindow, state);
 					}
 				},
 				{
