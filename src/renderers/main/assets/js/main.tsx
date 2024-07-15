@@ -86,8 +86,12 @@ function setSelectedPacketRow(tr: HTMLElement): void {
 	updatePacketDetails(JSON.parse(tr.dataset.serialized!));
 }
 
-function updatePacketDetails(_packet: SerializedPacket): void {
+function updatePacketDetails(packet: SerializedPacket): void {
 	const root = document.createElement('details');
+	const pre = document.createElement('pre');
+
+	pre.appendChild(document.createTextNode(JSON.stringify(packet, null, '\t')));
+	root.appendChild(pre);
 
 	removeAllChildNodes(packetDetailsSection);
 
