@@ -1,10 +1,10 @@
 import NEXByteStream from '@/nex/byte-stream';
-import RMCMessage from '@/nex/rmc-message';
 import RVString from '@/nex/types/string';
 import QResult from '@/nex/types/qresult';
 import PID from '@/nex/types/pid';
 import RVBuffer from '@/nex/types/buffer';
 import RVConnectionData from '@/nex/types/rv-connection-data';
+import type RMCMessage from '@/nex/rmc-message';
 
 export class Request {
 	public static Name = 'Login';

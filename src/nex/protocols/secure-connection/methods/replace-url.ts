@@ -1,6 +1,6 @@
 import NEXByteStream from '@/nex/byte-stream';
-import RMCMessage from '@/nex/rmc-message';
 import StationURL from '@/nex/types/station-url';
+import type RMCMessage from '@/nex/rmc-message';
 
 export class Request {
 	public static Name = 'ReplaceURL';

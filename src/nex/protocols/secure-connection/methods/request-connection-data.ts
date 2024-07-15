@@ -1,9 +1,9 @@
 import NEXByteStream from '@/nex/byte-stream';
-import RMCMessage from '@/nex/rmc-message';
 import UInt32 from '@/nex/types/uint32';
 import Bool from '@/nex/types/bool';
 import List from '@/nex/types/list';
 import ConnectionData from '@/nex/protocols/secure-connection/types/connection-data';
+import type RMCMessage from '@/nex/rmc-message';
 
 export class Request {
 	public static Name = 'RequestConnectionData';

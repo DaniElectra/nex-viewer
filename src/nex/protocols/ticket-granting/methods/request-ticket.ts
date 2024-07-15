@@ -1,9 +1,9 @@
 import NEXByteStream from '@/nex/byte-stream';
-import RMCMessage from '@/nex/rmc-message';
 import PID from '@/nex/types/pid';
 import QResult from '@/nex/types/qresult';
 import RVBuffer from '@/nex/types/buffer';
 import RVString from '@/nex/types/string';
+import type RMCMessage from '@/nex/rmc-message';
 
 export class Request {
 	public static Name = 'RequestTicket';

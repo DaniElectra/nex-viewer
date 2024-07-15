@@ -1,7 +1,7 @@
 import NEXByteStream from '@/nex/byte-stream';
-import RMCMessage from '@/nex/rmc-message';
 import UInt32 from '@/nex/types/uint32';
 import QBuffer from '@/nex/types/qbuffer';
+import type RMCMessage from '@/nex/rmc-message';
 
 export class Request {
 	public static Name = 'SendReport';

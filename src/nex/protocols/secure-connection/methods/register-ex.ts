@@ -1,10 +1,10 @@
 import NEXByteStream from '@/nex/byte-stream';
-import RMCMessage from '@/nex/rmc-message';
 import StationURL from '@/nex/types/station-url';
 import List from '@/nex/types/list';
 import AnyDataHolder from '@/nex/types/any-data-holder';
 import QResult from '@/nex/types/qresult';
 import UInt32 from '@/nex/types/uint32';
+import type RMCMessage from '@/nex/rmc-message';
 
 
 export class Request {

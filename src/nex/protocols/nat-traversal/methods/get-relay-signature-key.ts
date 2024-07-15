@@ -1,10 +1,10 @@
 import NEXByteStream from '@/nex/byte-stream';
-import RMCMessage from '@/nex/rmc-message';
 import Int32 from '@/nex/types/int32';
 import DateTime from '@/nex/types/datetime';
 import RVString from '@/nex/types/string';
 import UInt16 from '@/nex/types/uint16';
 import UInt32 from '@/nex/types/uint32';
+import type RMCMessage from '@/nex/rmc-message';
 
 // * No request data
 export class Request {
