@@ -8,6 +8,35 @@ export const packetsListSection = document.querySelector('#packet-list tbody')!;
 export const connectionsListSection = document.querySelector('#connections')!;
 export const packetDetailsSection = document.getElementById('packet-details')!;
 
+let selectedPacket: HTMLElement;
+
+document.querySelector('#header-search')!.addEventListener('keyup', event => {
+	if (!event.target || !(event.target instanceof HTMLInputElement)) {
+		return;
+	}
+
+	const filter = event.target.value;
+
+	const packets = packetsListSection.querySelectorAll<HTMLTableRowElement>('tr[data-serialized]');
+
+	for (const packet of packets) {
+		if (packet.dataset.serialized?.toLowerCase().includes(filter.toLowerCase())) {
+			packet.classList.remove('search-hidden');
+		} else {
+			packet.classList.add('search-hidden');
+		}
+	}
+
+	if (filter.trim() === '') {
+		if (selectedPacket) {
+			selectedPacket.scrollIntoView({
+				block: 'nearest',
+				inline: 'nearest'
+			});
+		}
+	}
+});
+
 export function addPacketToList(packet: SerializedPacket): void {
 	const infoData: string[] = [];
 
@@ -82,6 +111,8 @@ export function addConnectionToList(connection: SerializedConnection): void {
 function setSelectedPacketRow(tr: HTMLElement): void {
 	document.querySelector('tr.selected')?.classList.toggle('selected');
 	tr.classList.toggle('selected');
+
+	selectedPacket = tr;
 
 	updatePacketDetails(JSON.parse(tr.dataset.serialized!));
 }

@@ -60,3 +60,7 @@
 	white-space: nowrap;
 	cursor: pointer;
 }
+
+.search-hidden {
+	display: none;
+}
