@@ -1,2 +1,0 @@
-export { default as RegisterResponse } from '@/nex/protocols/secure-connection/responses/register';
-export { default as RegisterExResponse } from '@/nex/protocols/secure-connection/responses/register-ex';

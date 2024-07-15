@@ -1,10 +1,34 @@
 import NEXByteStream from '@/nex/byte-stream';
 import RMCMessage from '@/nex/rmc-message';
+import StationURL from '@/nex/types/station-url';
+import List from '@/nex/types/list';
+import AnyDataHolder from '@/nex/types/any-data-holder';
 import QResult from '@/nex/types/qresult';
 import UInt32 from '@/nex/types/uint32';
-import StationURL from '@/nex/types/station-url';
 
-export default class RegisterExResponse {
+
+export class Request {
+	public static Name = 'RegisterEx';
+
+	private vecMyURLs = new List(new StationURL());
+	private hCustomData = new AnyDataHolder();
+
+	constructor(message: RMCMessage) {
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
+
+		this.vecMyURLs.extractFrom(stream);
+		this.hCustomData.extractFrom(stream);
+	}
+
+	public toJSON(): Record<string, any> {
+		return {
+			vecMyURLs: this.vecMyURLs,
+			hCustomData: this.hCustomData
+		};
+	}
+}
+
+export class Response {
 	public static Name = 'RegisterEx';
 
 	private retval = new QResult();

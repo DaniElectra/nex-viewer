@@ -1,6 +1,5 @@
 import RMCMessage from '@/nex/rmc-message';
-import * as Requests from '@/nex/protocols/ticket-granting/requests';
-import * as Responses from '@/nex/protocols/ticket-granting/responses';
+import * as Methods from '@/nex/protocols/ticket-granting/methods';
 import type Packet from '@/types/nex/packet';
 
 export default class TicketGrantingProtocol {
@@ -53,27 +52,27 @@ export default class TicketGrantingProtocol {
 		packet.message.methodName = messageDecoder.Name;
 	}
 
-	private static Login(message: RMCMessage): typeof Requests.LoginRequest | typeof Responses.LoginResponse {
+	private static Login(message: RMCMessage): typeof Methods.Login.Request | typeof Methods.Login.Response {
 		if (message.type === RMCMessage.REQUEST) {
-			return Requests.LoginRequest;
+			return Methods.Login.Request;
 		} else {
-			return Responses.LoginResponse;
+			return Methods.Login.Response;
 		}
 	}
 
-	private static LoginEx(message: RMCMessage): typeof Requests.LoginExRequest | typeof Responses.LoginExResponse {
+	private static LoginEx(message: RMCMessage): typeof Methods.LoginEx.Request | typeof Methods.LoginEx.Response {
 		if (message.type === RMCMessage.REQUEST) {
-			return Requests.LoginExRequest;
+			return Methods.LoginEx.Request;
 		} else {
-			return Responses.LoginExResponse;
+			return Methods.LoginEx.Response;
 		}
 	}
 
-	private static RequestTicket(message: RMCMessage): typeof Requests.RequestTicketRequest | typeof Responses.RequestTicketResponse {
+	private static RequestTicket(message: RMCMessage): typeof Methods.RequestTicket.Request | typeof Methods.RequestTicket.Response {
 		if (message.type === RMCMessage.REQUEST) {
-			return Requests.RequestTicketRequest;
+			return Methods.RequestTicket.Request;
 		} else {
-			return Responses.RequestTicketResponse;
+			return Methods.RequestTicket.Response;
 		}
 	}
 }

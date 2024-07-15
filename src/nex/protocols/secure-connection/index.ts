@@ -1,6 +1,5 @@
 import RMCMessage from '@/nex/rmc-message';
-import * as Requests from '@/nex/protocols/secure-connection/requests';
-import * as Responses from '@/nex/protocols/secure-connection/responses';
+import * as Methods from '@/nex/protocols/secure-connection/methods';
 import type Packet from '@/types/nex/packet';
 
 export default class SecureConnectionProtocol {
@@ -45,19 +44,19 @@ export default class SecureConnectionProtocol {
 		packet.message.methodName = messageDecoder.Name;
 	}
 
-	private static Register(message: RMCMessage): typeof Requests.RegisterRequest | typeof Responses.RegisterResponse {
+	private static Register(message: RMCMessage): typeof Methods.Register.Request | typeof Methods.Register.Response {
 		if (message.type === RMCMessage.REQUEST) {
-			return Requests.RegisterRequest;
+			return Methods.Register.Request;
 		} else {
-			return Responses.RegisterResponse;
+			return Methods.Register.Response;
 		}
 	}
 
-	private static RegisterEx(message: RMCMessage): typeof Requests.RegisterExRequest | typeof Responses.RegisterExResponse {
+	private static RegisterEx(message: RMCMessage): typeof Methods.RegisterEx.Request | typeof Methods.RegisterEx.Response {
 		if (message.type === RMCMessage.REQUEST) {
-			return Requests.RegisterExRequest;
+			return Methods.RegisterEx.Request;
 		} else {
-			return Responses.RegisterExResponse;
+			return Methods.RegisterEx.Response;
 		}
 	}
 }

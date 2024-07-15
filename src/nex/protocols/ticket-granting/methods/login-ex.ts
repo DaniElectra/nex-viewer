@@ -1,12 +1,34 @@
 import NEXByteStream from '@/nex/byte-stream';
 import RMCMessage from '@/nex/rmc-message';
+import RVString from '@/nex/types/string';
+import AnyDataHolder from '@/nex/types/any-data-holder';
 import QResult from '@/nex/types/qresult';
 import PID from '@/nex/types/pid';
 import RVBuffer from '@/nex/types/buffer';
 import RVConnectionData from '@/nex/types/rv-connection-data';
-import RVString from '@/nex/types/string';
 
-export default class LoginExResponse {
+export class Request {
+	public static Name = 'LoginEx';
+
+	private strUserName = new RVString();
+	private oExtraData = new AnyDataHolder();
+
+	constructor(message: RMCMessage) {
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
+
+		this.strUserName.extractFrom(stream);
+		this.oExtraData.extractFrom(stream);
+	}
+
+	public toJSON(): Record<string, any> {
+		return {
+			strUserName: this.strUserName,
+			oExtraData: this.oExtraData
+		};
+	}
+}
+
+export class Response {
 	public static Name = 'LoginEx';
 
 	private retval = new QResult();
