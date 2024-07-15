@@ -1,6 +1,7 @@
 import NEXByteStream from '@/nex/byte-stream';
 import StationURL from '@/nex/types/station-url';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/secure-connection/replace-url';
 
 export class Request {
 	public static Name = 'ReplaceURL';
@@ -15,7 +16,7 @@ export class Request {
 		this.url.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			target: this.target,
 			url: this.url
@@ -29,7 +30,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {};
 	}
 }

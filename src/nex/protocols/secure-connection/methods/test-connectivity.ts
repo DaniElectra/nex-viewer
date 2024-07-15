@@ -1,3 +1,4 @@
+import type * as RMCs from '@/types/nex/rmcs/secure-connection/test-connectivity';
 
 // * No request data
 export class Request {
@@ -5,7 +6,7 @@ export class Request {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {};
 	}
 }
@@ -16,7 +17,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {};
 	}
 }

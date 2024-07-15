@@ -2,6 +2,7 @@ import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
 import QBuffer from '@/nex/types/qbuffer';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/secure-connection/send-report';
 
 export class Request {
 	public static Name = 'SendReport';
@@ -16,7 +17,7 @@ export class Request {
 		this.reportData.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			reportId: this.reportId,
 			reportData: this.reportData
@@ -30,7 +31,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {};
 	}
 }

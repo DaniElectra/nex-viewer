@@ -2,6 +2,7 @@ import NEXByteStream from '@/nex/byte-stream';
 import List from '@/nex/types/list';
 import StationURL from '@/nex/types/station-url';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/nat-traversal/request-probe-initiation-ext';
 
 export class Request {
 	public static Name = 'RequestProbeInitiationExt';
@@ -16,7 +17,7 @@ export class Request {
 		this.urlStationToProbe.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			urlTargetList: this.urlTargetList,
 			urlStationToProbe: this.urlStationToProbe
@@ -30,7 +31,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {};
 	}
 }

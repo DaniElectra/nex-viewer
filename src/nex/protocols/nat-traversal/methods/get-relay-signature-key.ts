@@ -5,6 +5,7 @@ import RVString from '@/nex/types/string';
 import UInt16 from '@/nex/types/uint16';
 import UInt32 from '@/nex/types/uint32';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/nat-traversal/get-relay-signature-key';
 
 // * No request data
 export class Request {
@@ -12,7 +13,7 @@ export class Request {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {};
 	}
 }
@@ -38,7 +39,7 @@ export class Response {
 		this.gameServerID.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {
 			relayMode: this.relayMode,
 			currentUTCTime: this.currentUTCTime,

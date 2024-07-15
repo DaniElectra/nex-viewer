@@ -1,6 +1,7 @@
 import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/nat-traversal/report-nat-properties';
 
 export class Request {
 	public static Name = 'ReportNATProperties';
@@ -17,7 +18,7 @@ export class Request {
 		this.rtt.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			natmapping: this.natmapping,
 			natfiltering: this.natfiltering,
@@ -32,7 +33,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {};
 	}
 }

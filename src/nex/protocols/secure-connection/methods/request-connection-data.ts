@@ -4,6 +4,7 @@ import Bool from '@/nex/types/bool';
 import List from '@/nex/types/list';
 import ConnectionData from '@/nex/protocols/secure-connection/types/connection-data';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/secure-connection/request-connection-data';
 
 export class Request {
 	public static Name = 'RequestConnectionData';
@@ -18,7 +19,7 @@ export class Request {
 		this.pidTarget.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			cidTarget: this.cidTarget,
 			pidTarget: this.pidTarget
@@ -39,7 +40,7 @@ export class Response {
 		this.pvecConnectionsData.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {
 			retval: this.retval,
 			pvecConnectionsData: this.pvecConnectionsData

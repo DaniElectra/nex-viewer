@@ -4,6 +4,7 @@ import StationURL from '@/nex/types/station-url';
 import QResult from '@/nex/types/qresult';
 import UInt32 from '@/nex/types/uint32';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/secure-connection/register';
 
 export class Request {
 	public static Name = 'Register';
@@ -16,7 +17,7 @@ export class Request {
 		this.vecMyURLs.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			vecMyURLs: this.vecMyURLs
 		};
@@ -42,7 +43,7 @@ export class Response {
 		}
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {
 			retval: this.retval,
 			pidConnectionID: this.pidConnectionID,

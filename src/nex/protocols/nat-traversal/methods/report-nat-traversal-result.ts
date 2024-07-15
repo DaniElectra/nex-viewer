@@ -1,7 +1,8 @@
 import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
-import Bool from '@/nex/types/int32';
+import Bool from '@/nex/types/bool';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/nat-traversal/report-nat-traversal-result';
 
 export class Request {
 	public static Name = 'ReportNATTraversalResult';
@@ -22,8 +23,8 @@ export class Request {
 		}
 	}
 
-	public toJSON(): Record<string, any> {
-		const json: Record<string, any> = {
+	public toJSON(): RMCs.Request {
+		const json: RMCs.Request = {
 			cid: this.cid,
 			result: this.result,
 			rtt: this.rtt
@@ -43,7 +44,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {};
 	}
 }

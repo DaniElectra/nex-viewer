@@ -6,6 +6,7 @@ import PID from '@/nex/types/pid';
 import RVBuffer from '@/nex/types/buffer';
 import RVConnectionData from '@/nex/types/rv-connection-data';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/ticket-granting/login-ex';
 
 export class Request {
 	public static Name = 'LoginEx';
@@ -20,7 +21,7 @@ export class Request {
 		this.oExtraData.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			strUserName: this.strUserName,
 			oExtraData: this.oExtraData
@@ -53,13 +54,13 @@ export class Response {
 		}
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {
 			retval: this.retval,
 			pidPrincipal: this.pidPrincipal,
 			pbufResponse: this.pbufResponse,
 			pConnectionData: this.pConnectionData,
-			strReturnMsg: this.strReturnMsg.value
+			strReturnMsg: this.strReturnMsg
 		};
 	}
 }

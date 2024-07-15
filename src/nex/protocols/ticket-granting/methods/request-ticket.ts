@@ -4,6 +4,7 @@ import QResult from '@/nex/types/qresult';
 import RVBuffer from '@/nex/types/buffer';
 import RVString from '@/nex/types/string';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/ticket-granting/request-ticket';
 
 export class Request {
 	public static Name = 'RequestTicket';
@@ -18,7 +19,7 @@ export class Request {
 		this.idTarget.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			idSource: this.idSource,
 			idTarget: this.idTarget
@@ -31,7 +32,7 @@ export class Response {
 
 	private retval = new QResult();
 	private bufResponse = new RVBuffer();
-	private pSourceKey = new RVString();
+	private pSourceKey: RVString;
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
@@ -47,16 +48,22 @@ export class Response {
 			// * Only on the Switch
 			// TODO - Is this a good enough check?
 			if (stream.hasDataLeft()) {
+				this.pSourceKey = new RVString();
 				this.pSourceKey.extractFrom(stream);
 			}
 		}
 	}
 
-	public toJSON(): Record<string, any> {
-		return {
+	public toJSON(): RMCs.Response {
+		const json: RMCs.Response = {
 			retval: this.retval,
-			bufResponse: this.bufResponse,
-			pSourceKey: this.pSourceKey.value
+			bufResponse: this.bufResponse
 		};
+
+		if (this.pSourceKey !== undefined) {
+			json.pSourceKey = this.pSourceKey;
+		}
+
+		return json;
 	}
 }

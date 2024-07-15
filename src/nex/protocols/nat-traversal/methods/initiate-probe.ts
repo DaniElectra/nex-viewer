@@ -1,6 +1,7 @@
 import NEXByteStream from '@/nex/byte-stream';
 import StationURL from '@/nex/types/station-url';
 import type RMCMessage from '@/nex/rmc-message';
+import type * as RMCs from '@/types/nex/rmcs/nat-traversal/initiate-probe';
 
 export class Request {
 	public static Name = 'InitiateProbe';
@@ -13,7 +14,7 @@ export class Request {
 		this.urlStationToProbe.extractFrom(stream);
 	}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Request {
 		return {
 			urlStationToProbe: this.urlStationToProbe
 		};
@@ -26,7 +27,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): Record<string, any> {
+	public toJSON(): RMCs.Response {
 		return {};
 	}
 }
