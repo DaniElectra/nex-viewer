@@ -9,7 +9,7 @@ export default class SecureConnectionProtocol {
 	static Methods = {
 		Register: 0x1,
 		RequestConnectionData: 0x2,
-		RequestUrls: 0x3,
+		RequestURLs: 0x3,
 		RegisterEx: 0x4,
 		TestConnectivity: 0x5,
 		UpdateURLs: 0x6,
@@ -19,7 +19,13 @@ export default class SecureConnectionProtocol {
 
 	private static handlers: Record<number, (message: RMCMessage) => any> = {
 		0x1: SecureConnectionProtocol.Register,
-		0x4: SecureConnectionProtocol.RegisterEx
+		0x2: SecureConnectionProtocol.RequestConnectionData,
+		0x3: SecureConnectionProtocol.RequestURLs,
+		0x4: SecureConnectionProtocol.RegisterEx,
+		0x5: SecureConnectionProtocol.TestConnectivity,
+		0x6: SecureConnectionProtocol.UpdateURLs,
+		0x7: SecureConnectionProtocol.ReplaceURL,
+		0x8: SecureConnectionProtocol.SendReport
 	};
 
 	static handlePacket(packet: Packet): void {
@@ -52,11 +58,59 @@ export default class SecureConnectionProtocol {
 		}
 	}
 
+	private static RequestConnectionData(message: RMCMessage): typeof Methods.RequestConnectionData.Request | typeof Methods.RequestConnectionData.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.RequestConnectionData.Request;
+		} else {
+			return Methods.RequestConnectionData.Response;
+		}
+	}
+
+	private static RequestURLs(message: RMCMessage): typeof Methods.RequestURLs.Request | typeof Methods.RequestURLs.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.RequestURLs.Request;
+		} else {
+			return Methods.RequestURLs.Response;
+		}
+	}
+
 	private static RegisterEx(message: RMCMessage): typeof Methods.RegisterEx.Request | typeof Methods.RegisterEx.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.RegisterEx.Request;
 		} else {
 			return Methods.RegisterEx.Response;
+		}
+	}
+
+	private static TestConnectivity(message: RMCMessage): typeof Methods.TestConnectivity.Request | typeof Methods.TestConnectivity.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.TestConnectivity.Request;
+		} else {
+			return Methods.TestConnectivity.Response;
+		}
+	}
+
+	private static UpdateURLs(message: RMCMessage): typeof Methods.UpdateURLs.Request | typeof Methods.UpdateURLs.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.UpdateURLs.Request;
+		} else {
+			return Methods.UpdateURLs.Response;
+		}
+	}
+
+	private static ReplaceURL(message: RMCMessage): typeof Methods.ReplaceURL.Request | typeof Methods.ReplaceURL.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.ReplaceURL.Request;
+		} else {
+			return Methods.ReplaceURL.Response;
+		}
+	}
+
+	private static SendReport(message: RMCMessage): typeof Methods.SendReport.Request | typeof Methods.SendReport.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.SendReport.Request;
+		} else {
+			return Methods.SendReport.Response;
 		}
 	}
 }
