@@ -245,7 +245,7 @@ export default class Connection {
 				if (this.ticketRequestPIDs[packet.message.callID]) {
 					const sourcePID = this.ticketRequestPIDs[packet.message.callID];
 					const ticketData = packet.message.parameters.bufResponse.value;
-					const sourceKey = packet.message.parameters.pSourceKey.value ? packet.message.parameters.pSourceKey.value : '';
+					const sourceKey = packet.message.parameters.pSourceKey?.value ? packet.message.parameters.pSourceKey.value : '';
 
 					delete this.ticketRequestPIDs[packet.message.callID];
 
