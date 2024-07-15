@@ -1,30 +1,29 @@
 import NEXByteStream from '@/nex/byte-stream';
-import List from '@/nex/types/list';
-import StationURL from '@/nex/types/station-url';
+import NotificationEvent from '@/nex/protocols/notification-events/types/notification-event';
 import type RMCMessage from '@/nex/rmc-message';
-import type * as RMCs from '@/types/nex/rmcs/secure-connection/update-urls';
+import type * as RMCs from '@/types/nex/rmcs/notification-events/process-notification-event';
 
 export class Request {
-	public static Name = 'UpdateURLs';
+	public static Name = 'ProcessNotificationEvent';
 
-	private vecMyURLs = new List(new StationURL());
+	private oEvent = new NotificationEvent();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.vecMyURLs.extractFrom(stream);
+		this.oEvent.extractFrom(stream);
 	}
 
 	public toJSON(): RMCs.Request {
 		return {
-			vecMyURLs: this.vecMyURLs
+			oEvent: this.oEvent
 		};
 	}
 }
 
 // * No response data
 export class Response {
-	public static Name = 'UpdateURLs';
+	public static Name = 'ProcessNotificationEvent';
 
 	constructor() {}
 

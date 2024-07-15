@@ -8,13 +8,13 @@ export default class PID {
 	private size: number;
 
 	public extractFrom(stream: NEXByteStream): void {
-		if (stream.settings.pid_size === 8) {
+		if (stream.title.settings.pid_size === 8) {
 			this.value = stream.readUInt64LE();
 		} else {
 			this.value = BigInt(stream.readUInt32LE());
 		}
 
-		this.size = stream.settings.pid_size;
+		this.size = stream.title.settings.pid_size;
 	}
 
 	public new(): PID {

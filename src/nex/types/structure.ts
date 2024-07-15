@@ -8,7 +8,7 @@ export default class Structure {
 	}
 
 	protected extractHeaderFrom(stream: NEXByteStream): void {
-		if (stream.settings.use_structure_header) {
+		if (stream.title.settings.use_structure_header) {
 			this._structureVersion = stream.readUInt8();
 			stream.skip(4); // * Ignore the size
 		}

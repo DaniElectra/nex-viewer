@@ -1,7 +1,8 @@
-import RMCMessage from '@/nex/rmc-message';
 import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import TicketGrantingProtocol from '@/nex/protocols/ticket-granting';
 import SecureConnectionProtocol from '@/nex/protocols/secure-connection';
+import NotificationEventsProtocol from '@/nex/protocols/notification-events';
+import type RMCMessage from '@/nex/rmc-message';
 import type ServiceProtocol from '@/types/nex/service-protocol';
 
 export default function getProtocol(message: RMCMessage): ServiceProtocol | null {
@@ -14,8 +15,9 @@ export default function getProtocol(message: RMCMessage): ServiceProtocol | null
 			return TicketGrantingProtocol;
 		case SecureConnectionProtocol.ID:
 			return SecureConnectionProtocol;
-
-		default:
-			return null;
+		case NotificationEventsProtocol.ID:
+			return NotificationEventsProtocol;
 	}
+
+	return null;
 }

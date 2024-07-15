@@ -3,7 +3,7 @@ import RC4Stream from '@/rc4';
 import NEXByteStream from '@/nex/byte-stream';
 import PID from '@/nex/types/pid';
 import RVBuffer from '@/nex/types/buffer';
-import type NEXByteStreamSettings from '@/types/nex/byte-stream-settings';
+import type { Title } from '@/types/nex/serialized-connection';
 
 // * Only define the client ticket, since we can never decrypt the server ticket
 export class Ticket {
@@ -12,12 +12,12 @@ export class Ticket {
 
 	private internal = new RVBuffer(); // TODO - Is this useful to expose?
 
-	constructor(data: Buffer, key: Buffer, settings: NEXByteStreamSettings) {
+	constructor(data: Buffer, key: Buffer, title: Title) {
 		const decrypted = decrypt(data, key);
 
-		const stream = new NEXByteStream(decrypted, settings);
+		const stream = new NEXByteStream(decrypted, title);
 
-		this.sessionKey = stream.read(settings.session_key_size);
+		this.sessionKey = stream.read(title.settings.session_key_size);
 		this.target.extractFrom(stream);
 		this.internal.extractFrom(stream);
 	}

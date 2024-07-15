@@ -1,12 +1,12 @@
 import ByteStream from '@/byte-stream';
-import type NEXByteStreamSettings from '@/types/nex/byte-stream-settings';
+import type { Title } from '@/types/nex/serialized-connection';
 
 export default class NEXByteStream extends ByteStream {
-	public settings: NEXByteStreamSettings;
+	public title: Title;
 
-	constructor(buffer: Buffer, settings: NEXByteStreamSettings) {
+	constructor(buffer: Buffer, title: Title) {
 		super(buffer);
 
-		this.settings = settings;
+		this.title = title;
 	}
 }

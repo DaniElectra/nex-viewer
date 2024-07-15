@@ -13,7 +13,7 @@ export class Request {
 	private pidTarget = new UInt32(); // TODO - Is this actually a PID type? Check the Switch
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
 		this.cidTarget.extractFrom(stream);
 		this.pidTarget.extractFrom(stream);
@@ -34,7 +34,7 @@ export class Response {
 	private pvecConnectionsData = new List(new ConnectionData());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
 		this.retval.extractFrom(stream);
 		this.pvecConnectionsData.extractFrom(stream);

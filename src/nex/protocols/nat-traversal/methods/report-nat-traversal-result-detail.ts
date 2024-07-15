@@ -14,7 +14,7 @@ export class Request {
 	private rtt = new UInt32(); // * ReportNATTraversalResult does not send this on the 3DS, is that true here too?
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
 		this.cid.extractFrom(stream);
 		this.result.extractFrom(stream);

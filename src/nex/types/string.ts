@@ -9,7 +9,7 @@ export default class RVString {
 	public extractFrom(stream: NEXByteStream): void {
 		let length = 0;
 
-		if (stream.settings.string_length_size === 4) {
+		if (stream.title.settings.string_length_size === 4) {
 			length = stream.readUInt32LE();
 		} else {
 			length = stream.readUInt16LE();

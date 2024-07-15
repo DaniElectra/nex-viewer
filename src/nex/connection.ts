@@ -288,7 +288,7 @@ export default class Connection {
 			settings.save();
 		}
 
-		const ticket = new Ticket(ticketData, key, this.title.settings);
+		const ticket = new Ticket(ticketData, key, this.title);
 
 		// TODO - Is this accurate to how special stations are handled?
 		const mainTarget = BigInt(this.mainSecureStation.getParam('PID') || 0);

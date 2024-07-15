@@ -12,7 +12,7 @@ export class Request {
 	private rtt: UInt32; // * Not seen on the 3DS. NEX version difference?
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
 		this.cid.extractFrom(stream);
 		this.result.extractFrom(stream);
