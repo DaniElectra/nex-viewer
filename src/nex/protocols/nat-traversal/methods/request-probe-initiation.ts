@@ -1,0 +1,33 @@
+import NEXByteStream from '@/nex/byte-stream';
+import RMCMessage from '@/nex/rmc-message';
+import List from '@/nex/types/list';
+import StationURL from '@/nex/types/station-url';
+
+export class Request {
+	public static Name = 'RequestProbeInitiationExt';
+
+	private urlTargetList = new List(new StationURL());
+
+	constructor(message: RMCMessage) {
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title.settings);
+
+		this.urlTargetList.extractFrom(stream);
+	}
+
+	public toJSON(): Record<string, any> {
+		return {
+			urlTargetList: this.urlTargetList
+		};
+	}
+}
+
+// * No response data
+export class Response {
+	public static Name = 'RequestProbeInitiationExt';
+
+	constructor() {}
+
+	public toJSON(): Record<string, any> {
+		return {};
+	}
+}
