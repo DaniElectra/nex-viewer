@@ -1,42 +1,45 @@
 import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
-import List from '@/nex/types/list';
-import StationURL from '@/nex/types/station-url';
+import RVString from '@/nex/types/string';
+import Bool from '@/nex/types/bool';
 import type RMCMessage from '@/nex/rmc-message';
-import type * as RMCs from '@/types/nex/rmcs/match-making/get-session-urls';
+import type * as RMCs from '@/types/nex/rmcs/match-making-ext/end-participation';
 
 export class Request {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'EndParticipation';
 
-	private gid = new UInt32();
+	private idGathering = new UInt32();
+	private strMessage = new RVString();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.gid.extractFrom(stream);
+		this.idGathering.extractFrom(stream);
+		this.strMessage.extractFrom(stream);
 	}
 
 	public toJSON(): RMCs.Request {
 		return {
-			gid: this.gid
+			idGathering: this.idGathering,
+			strMessage: this.strMessage
 		};
 	}
 }
 
 export class Response {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'EndParticipation';
 
-	private lstURLs = new List(new StationURL());
+	private retval = new Bool();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.lstURLs.extractFrom(stream);
+		this.retval.extractFrom(stream);
 	}
 
 	public toJSON(): RMCs.Response {
 		return {
-			lstURLs: this.lstURLs
+			retval: this.retval
 		};
 	}
 }

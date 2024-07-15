@@ -1,0 +1,1 @@
+export * as EndParticipation from '@/nex/protocols/match-making-ext/methods/end-participation';
