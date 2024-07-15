@@ -33,8 +33,6 @@ export default class NATTraversalProtocol {
 		}
 
 		const methodID = packet.message.methodID;
-
-		// TODO - Use Switch names when parsing Switch packets
 		const handler = NATTraversalProtocol.handlers[methodID];
 
 		if (!handler) {

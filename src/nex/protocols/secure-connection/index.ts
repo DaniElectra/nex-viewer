@@ -35,8 +35,6 @@ export default class SecureConnectionProtocol {
 		}
 
 		const methodID = packet.message.methodID;
-
-		// TODO - Use Switch names when parsing Switch packets
 		const handler = SecureConnectionProtocol.handlers[methodID];
 
 		if (!handler) {
