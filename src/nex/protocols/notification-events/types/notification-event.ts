@@ -5,7 +5,6 @@ import UInt32 from '@/nex/types/uint32';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
-
 // * ONLY IMPLEMENTS THE 3DS AND WII U VERSION!
 // * THE SWITCH USES A DIFFERENT STRUCTURE!
 export default class NotificationEvent extends Structure {

@@ -4,6 +4,7 @@ import SecureConnectionProtocol from '@/nex/protocols/secure-connection';
 import NotificationEventsProtocol from '@/nex/protocols/notification-events';
 import MatchMakingProtocol from '@/nex/protocols/match-making';
 import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
+import MatchmakeExtensionProtocol from '@/nex/protocols/matchmake-extension';
 import type RMCMessage from '@/nex/rmc-message';
 import type ServiceProtocol from '@/types/nex/service-protocol';
 
@@ -23,6 +24,8 @@ export default function getProtocol(message: RMCMessage): ServiceProtocol | null
 			return MatchMakingProtocol;
 		case MatchMakingExtProtocol.ID:
 			return MatchMakingExtProtocol;
+		case MatchmakeExtensionProtocol.ID:
+			return MatchmakeExtensionProtocol;
 	}
 
 	return null;
