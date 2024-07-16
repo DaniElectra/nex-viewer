@@ -1,23 +1,26 @@
 # NEX Viewer
 ### Utility for viewing PRUDP connections and NEX/Rendez-Vous sessions.
 
-## NEX keys
+## Settings / Accounts
 > [!WARNING]
 > Older versions of NEX Viewer precomputed the Kerberos keys for each password. These precomputed keys are NOT usable in newer versions of NEX Viewer. Password files must now always contain the raw game server password for each PID
 
-In order to decrypt PRUDP packet payloads for the games secure server(s) your game server account credentials must be known by NEX Viewer. populate your credentials file in one of the following locations
+In order to decrypt PRUDP packet payloads for the games secure server(s) your game server account credentials must be known by NEX Viewer. To add an account to the settings open one of the following JSON files:
 
-- `%AppData%/NEXViewer/game-server-passwords.txt` (Windows)
-- `~/.config/nex-viewer/game-server-passwords.txt` (Linux/MacOS)
+- `%AppData%/NEXViewer/settings.json` (Windows)
+- `~/.config/nex-viewer/settings.json` (Linux/MacOS)
 
-`game-server-passwords.txt` must be in the following format:
+From here add an account entry to the `accounts` array. An account entry takes the following form:
 
-```
-PID:PASSWORD
-PID:PASSWORD
-PID:PASSWORD
-PID:PASSWORD
-etc...
+```ts
+{
+	platform: string; // The platform the account is for (W ii U, 3DS, PC, etc.). Unused currently
+	username: string; // Account username. For NEX accounts this is your account PID as a string
+	pid: number; // Account unique PID
+	password: string; // Account password. Must not be hashed. Used to generate the below hashes, and those for non-NEX game servers
+	password_hash_old: string; // Pre-computed Kerberos key using the old key derivation method
+	password_hash_new: string; // Pre-computed Kerberos key using the new key derivation method
+}
 ```
 
 > [!CAUTION]
