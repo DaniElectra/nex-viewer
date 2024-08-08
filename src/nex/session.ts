@@ -102,10 +102,6 @@ export default class Session extends EventEmitter {
 				// TODO - Can this contain PIA/Net-Z data as well?
 				packets.push(new RawRMCPacket(new ByteStream(frame.data)));
 			} else {
-				if (frame.data.subarray(0, 4).equals(PIA_MAGIC)) {
-					return packets;
-				}
-
 				const udpPacket = this.parseUDPPacket(frame.data);
 
 				if (!udpPacket) {
@@ -118,7 +114,14 @@ export default class Session extends EventEmitter {
 				while (stream.hasDataLeft()) {
 					let packet: Packet;
 
-					const magic = stream.readBytes(0x2);
+					let magic = stream.readBytes(0x4);
+					stream.skip(-0x4); // * Skip back to realign the stream position
+
+					if (magic.equals(PIA_MAGIC)) {
+						return packets;
+					}
+
+					magic = stream.readBytes(0x2);
 					stream.skip(-0x2); // * Skip back to realign the stream position
 
 					if (magic.equals(PRUDPPacketV1.Magic)) {
@@ -142,7 +145,7 @@ export default class Session extends EventEmitter {
 						packet.destinationStreamType === 0x1 || // * Destination stream type is "DO"
 						packet.destinationStreamType === 0x5    // * Destination stream type is "NAT"
 					) {
-						continue;
+						return packets;
 					}
 
 					packet.sourceAddress = udpPacket.source;
