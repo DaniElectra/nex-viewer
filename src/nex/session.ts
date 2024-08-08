@@ -12,6 +12,8 @@ import type Frame from '@/types/frame';
 import type Packet from '@/types/nex/packet';
 import type UDPPacket from '@/types/nex/udp-packet';
 
+const PIA_MAGIC = Buffer.from([ 0x32, 0xAB, 0x98, 0x64 ]);
+
 function int2ip(int: number): string {
 	return `${int >>> 24}.${int >> 16 & 255}.${int >> 8 & 255}.${int & 255}`;
 }
@@ -97,8 +99,13 @@ export default class Session extends EventEmitter {
 		try {
 			if (this.rawRMCMode) {
 				// * Raw RMC packets only include one packet per frame
+				// TODO - Can this contain PIA/Net-Z data as well?
 				packets.push(new RawRMCPacket(new ByteStream(frame.data)));
 			} else {
+				if (frame.data.subarray(0, 4).equals(PIA_MAGIC)) {
+					return packets;
+				}
+
 				const udpPacket = this.parseUDPPacket(frame.data);
 
 				if (!udpPacket) {
@@ -124,6 +131,18 @@ export default class Session extends EventEmitter {
 						// * OUR BEST OPTION IS TO JUST GUESS
 
 						packet = new PRUDPPacketV0(stream);
+					}
+
+					// * Try to filter out p2p traffic from both Net-Z and PIA sessions
+					// TODO - If we ever want to support viewing p2p traffic, remove these checks
+					if (
+						packet.sourceStreamID === packet.destinationStreamID || // * Net-Z packets have the same IDs. NOTE: This MIGHT be possible in regular packets too?
+						packet.sourceStreamType === 0x1 || // * Source stream type is "DO"
+						packet.sourceStreamType === 0x5 || // * Source stream type is "NAT"
+						packet.destinationStreamType === 0x1 || // * Destination stream type is "DO"
+						packet.destinationStreamType === 0x5    // * Destination stream type is "NAT"
+					) {
+						continue;
 					}
 
 					packet.sourceAddress = udpPacket.source;
