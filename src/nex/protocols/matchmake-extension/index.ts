@@ -66,6 +66,7 @@ export default class MatchmakeExtensionProtocol {
 	private static handlers: Record<number, (message: RMCMessage) => any> = {
 		0x1: MatchmakeExtensionProtocol.CloseParticipation,
 		0x10: MatchmakeExtensionProtocol.GetPlayingSession,
+		0x15: MatchmakeExtensionProtocol.FindOfficialCommunity,
 		0x1F: MatchmakeExtensionProtocol.GetSimplePlayingSession,
 		0x22: MatchmakeExtensionProtocol.UpdateProgressScore,
 		0x28: MatchmakeExtensionProtocol.AutoMatchmakeWithParam_Postpone
@@ -104,6 +105,14 @@ export default class MatchmakeExtensionProtocol {
 			return Methods.GetPlayingSession.Request;
 		} else {
 			return Methods.GetPlayingSession.Response;
+		}
+	}
+
+	private static FindOfficialCommunity(message: RMCMessage): typeof Methods.FindOfficialCommunity.Request | typeof Methods.FindOfficialCommunity.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.FindOfficialCommunity.Request;
+		} else {
+			return Methods.FindOfficialCommunity.Response;
 		}
 	}
 
