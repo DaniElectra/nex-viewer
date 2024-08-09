@@ -30,8 +30,6 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 		this.destinationStreamType = destination >> 4;
 		this.destinationStreamID = destination & 0xF;
 
-		this.validateVirtualPorts();
-
 		// TODO - Quazal encoding? How do we tell the decoder the size BEFORE decoding?
 		const typeAndFlags = this.stream.readUInt16LE();
 

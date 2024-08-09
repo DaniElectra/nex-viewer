@@ -57,46 +57,6 @@ export default class PRUDPPacket {
 		this.stream = stream;
 	}
 
-	protected validateVirtualPorts(): void {
-		if (this.sourceStreamType === 0 || this.sourceStreamType > 11) {
-			throw new Error('Invalid source stream type');
-		}
-
-		if (this.sourceStreamID === 0) {
-			throw new Error('Invalid source stream ID');
-		}
-
-		if (this.destinationStreamType === 0 || this.destinationStreamType > 11) {
-			throw new Error('Invalid destination stream type');
-		}
-
-		if (this.destinationStreamID === 0) {
-			throw new Error('Invalid source stream ID');
-		}
-
-		if (this.sourceStreamID === this.destinationStreamID) {
-			// * Likely a Quazal Net-Z packet
-			// ! NOTE - This WILL catch valid connections if the client uses 14 connections (making the server and client both use port 1)
-			throw new Error('Source and destination virtual ports are the same');
-		}
-
-		if (this.sourceStreamType === 1) {
-			throw new Error('Source stream type is DO');
-		}
-
-		if (this.sourceStreamType === 5) {
-			throw new Error('Source stream type is NAT');
-		}
-
-		if (this.destinationStreamType === 1) {
-			throw new Error('Destination stream type is DO');
-		}
-
-		if (this.destinationStreamType === 5) {
-			throw new Error('Destination stream type is NAT');
-		}
-	}
-
 	private isType(type: number): boolean {
 		return this.type === type;
 	}
@@ -230,7 +190,7 @@ export default class PRUDPPacket {
 				return 'Relay';
 		}
 
-		throw new Error(`Unsupported stream type ${streamType}`);
+		return `UnknownStreamType_${streamType}`;
 	}
 
 	private serializeType(): string {
@@ -254,7 +214,7 @@ export default class PRUDPPacket {
 				return 'USER';
 		}
 
-		throw new Error(`Unsupported packet type ${this.type}`);
+		return `UnknownPacketType_${this.type}`;
 	}
 
 	private serializeFlags(): string[] {

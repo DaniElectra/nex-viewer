@@ -112,15 +112,16 @@ export default class Session extends EventEmitter {
 
 				// * Some PRUDP packets are bundled together. Need to split them apart
 				while (stream.hasDataLeft()) {
+					// TODO - The "return" statements here will exit this loop, potentially losing valid bundled packets later in the stream. Fix this?
 					let packet: Packet;
 
 					let magic = stream.readBytes(0x4);
-					stream.skip(-0x4); // * Skip back to realign the stream position
 
 					if (magic.equals(PIA_MAGIC)) {
 						return packets;
 					}
 
+					stream.skip(-0x4); // * Skip back to realign the stream position
 					magic = stream.readBytes(0x2);
 					stream.skip(-0x2); // * Skip back to realign the stream position
 
@@ -136,15 +137,7 @@ export default class Session extends EventEmitter {
 						packet = new PRUDPPacketV0(stream);
 					}
 
-					// * Try to filter out p2p traffic from both Net-Z and PIA sessions
-					// TODO - If we ever want to support viewing p2p traffic, remove these checks
-					if (
-						packet.sourceStreamID === packet.destinationStreamID || // * Net-Z packets have the same IDs. NOTE: This MIGHT be possible in regular packets too?
-						packet.sourceStreamType === 0x1 || // * Source stream type is "DO"
-						packet.sourceStreamType === 0x5 || // * Source stream type is "NAT"
-						packet.destinationStreamType === 0x1 || // * Destination stream type is "DO"
-						packet.destinationStreamType === 0x5    // * Destination stream type is "NAT"
-					) {
+					if (!this.validatePRUDPPacket(packet)) {
 						return packets;
 					}
 
@@ -161,6 +154,57 @@ export default class Session extends EventEmitter {
 		}
 
 		return packets;
+	}
+
+	private validatePRUDPPacket(packet: Packet): boolean {
+		// * Try to filter out p2p traffic from both Net-Z and PIA sessions
+		// TODO - If we ever want to support viewing p2p traffic, remove these checks
+		if (packet.sourceStreamID === packet.destinationStreamID) {
+			// * Likely a Quazal Net-Z packet
+			// ! NOTE - This WILL catch valid connections if the client uses 14 connections (making the server and client both use port 1)
+			return false;
+		}
+
+		if (packet.sourceStreamType === 1 || packet.destinationStreamType === 1) {
+			// * Packet uses the "DO" stream type
+			return false;
+		}
+
+		if (packet.sourceStreamType === 5 || packet.destinationStreamType === 5) {
+			// * Packet uses the "NAT" stream type
+			return false;
+		}
+
+		if (packet.sourceStreamType === 0 || packet.destinationStreamType === 0) {
+			// * Likely a Quazal Net-Z packet
+			return false;
+		}
+
+		if (packet.sourceStreamID === 0 || packet.destinationStreamID === 0) {
+			// * Likely a Quazal Net-Z packet
+			return false;
+		}
+
+		// * General sanity checks
+		if (packet.sourceStreamType > 11 || packet.destinationStreamType > 11) {
+			// * Stream type out of range
+			return false;
+		}
+
+		if (packet.sourceStreamType > 11 || packet.destinationStreamType > 11) {
+			// * Stream type out of range
+			return false;
+		}
+
+		if (packet.sourceStreamID !== 1 && packet.destinationStreamID !== 1) {
+			// * In NEX on the Wii U and 3DS the server stream ID is ALWAYS 1. IF NEITHER are 1, assume invalid
+			// TODO - THIS IS UNTESTED ON QRV, AND PRUDPLITE USES MORE SERVER STREAM IDS THAN JUST 1. TESTED AND UPDATE FOR PRUDPLITE
+			return false;
+		}
+
+		// TODO - PRUDPLite packets can only have stream IDs ≤ 0x1F. Add check for this once PRUDPLite is implemented
+
+		return true;
 	}
 
 	private parseUDPPacket(data: Buffer): UDPPacket | undefined {
