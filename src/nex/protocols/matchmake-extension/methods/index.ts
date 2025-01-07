@@ -4,3 +4,4 @@ export * as FindOfficialCommunity from '@/nex/protocols/matchmake-extension/meth
 export * as GetSimplePlayingSession from '@/nex/protocols/matchmake-extension/methods/get-simple-playing-session';
 export * as UpdateProgressScore from '@/nex/protocols/matchmake-extension/methods/update-progress-score';
 export * as AutoMatchmakeWithParam_Postpone from '@/nex/protocols/matchmake-extension/methods/auto-matchmake-with-param-postpone';
+export * as AutoMatchmakeWithSearchCriteria_Postpone from '@/nex/protocols/matchmake-extension/methods/auto-matchmake-with-search-criteria-postpone';

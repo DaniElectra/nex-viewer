@@ -65,11 +65,12 @@ export default class MatchmakeExtensionProtocol {
 
 	private static handlers: Record<number, (message: RMCMessage) => any> = {
 		0x1: MatchmakeExtensionProtocol.CloseParticipation,
+		0x0F: MatchmakeExtensionProtocol.AutoMatchmakeWithSearchCriteria_Postpone,
 		0x10: MatchmakeExtensionProtocol.GetPlayingSession,
 		0x15: MatchmakeExtensionProtocol.FindOfficialCommunity,
 		0x1F: MatchmakeExtensionProtocol.GetSimplePlayingSession,
 		0x22: MatchmakeExtensionProtocol.UpdateProgressScore,
-		0x28: MatchmakeExtensionProtocol.AutoMatchmakeWithParam_Postpone
+		0x28: MatchmakeExtensionProtocol.AutoMatchmakeWithParam_Postpone,
 	};
 
 	static handlePacket(packet: Packet): void {
@@ -137,6 +138,14 @@ export default class MatchmakeExtensionProtocol {
 			return Methods.AutoMatchmakeWithParam_Postpone.Request;
 		} else {
 			return Methods.AutoMatchmakeWithParam_Postpone.Response;
+		}
+	}
+
+	private static AutoMatchmakeWithSearchCriteria_Postpone(message: RMCMessage): typeof Methods.AutoMatchmakeWithSearchCriteria_Postpone.Request | typeof Methods.AutoMatchmakeWithSearchCriteria_Postpone.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.AutoMatchmakeWithSearchCriteria_Postpone.Request;
+		} else {
+			return Methods.AutoMatchmakeWithSearchCriteria_Postpone.Response;
 		}
 	}
 }
