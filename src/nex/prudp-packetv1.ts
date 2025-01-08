@@ -14,7 +14,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 	private initialUnreliableSequenceID?: number;
 	private maximumSubstreamID?: number;
 
-	static Magic = Buffer.from([0xEA, 0xD0]);
+	static Magic = Buffer.from([ 0xEA, 0xD0 ]);
 
 	constructor(stream: ByteStream) {
 		super(stream);
@@ -82,17 +82,17 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 				throw new Error('Invalid PRUDPv1 option ID');
 			}
 
-			if (optionID == 0 || optionID == 1 || optionID == 4) {
+			if (optionID === 0 || optionID === 1 || optionID === 4) {
 				if (!this.isTypeSyn() && !this.isTypeConnect()) {
 					throw new Error('Invalid PRUDPv1 option ID');
 				}
 			}
 
-			if (optionID == 2 && !this.isTypeData()) {
+			if (optionID === 2 && !this.isTypeData()) {
 				throw new Error('Invalid PRUDPv1 option ID');
 			}
 
-			if (optionID == 3 && !this.isTypeConnect()) {
+			if (optionID === 3 && !this.isTypeConnect()) {
 				throw new Error('Invalid PRUDPv1 option ID');
 			}
 
