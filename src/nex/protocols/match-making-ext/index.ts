@@ -16,7 +16,12 @@ export default class MatchMakingExtProtocol {
 	};
 
 	private static handlers: Record<number, (message: RMCMessage) => any> = {
-		0x1: MatchMakingExtProtocol.EndParticipation
+		0x1: MatchMakingExtProtocol.EndParticipation,
+		0x2: MatchMakingExtProtocol.GetParticipants,
+		0x3: MatchMakingExtProtocol.GetDetailedParticipants,
+		0x4: MatchMakingExtProtocol.GetParticipantsURLs,
+		0x5: MatchMakingExtProtocol.GetGatheringRelations,
+		0x6: MatchMakingExtProtocol.DeleteFromDeletions,
 	};
 
 	static handlePacket(packet: Packet): void {
@@ -44,6 +49,46 @@ export default class MatchMakingExtProtocol {
 			return Methods.EndParticipation.Request;
 		} else {
 			return Methods.EndParticipation.Response;
+		}
+	}
+
+	private static GetParticipants(message: RMCMessage): typeof Methods.GetParticipants.Request | typeof Methods.GetParticipants.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.GetParticipants.Request;
+		} else {
+			return Methods.GetParticipants.Response;
+		}
+	}
+
+	private static GetDetailedParticipants(message: RMCMessage): typeof Methods.GetDetailedParticipants.Request | typeof Methods.GetDetailedParticipants.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.GetDetailedParticipants.Request;
+		} else {
+			return Methods.GetDetailedParticipants.Response;
+		}
+	}
+
+	private static GetParticipantsURLs(message: RMCMessage): typeof Methods.GetParticipantsURLs.Request | typeof Methods.GetParticipantsURLs.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.GetParticipantsURLs.Request;
+		} else {
+			return Methods.GetParticipantsURLs.Response;
+		}
+	}
+
+	private static GetGatheringRelations(message: RMCMessage): typeof Methods.GetGatheringRelations.Request | typeof Methods.GetGatheringRelations.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.GetGatheringRelations.Request;
+		} else {
+			return Methods.GetGatheringRelations.Response;
+		}
+	}
+
+	private static DeleteFromDeletions(message: RMCMessage): typeof Methods.DeleteFromDeletions.Request | typeof Methods.DeleteFromDeletions.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.DeleteFromDeletions.Request;
+		} else {
+			return Methods.DeleteFromDeletions.Response;
 		}
 	}
 }
