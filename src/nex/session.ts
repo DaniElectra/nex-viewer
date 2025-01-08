@@ -4,9 +4,11 @@ import fs from 'fs-extra';
 import ByteStream from '@/byte-stream';
 import PCAPParser from '@/pcap-parser';
 import PCAPNGParser from '@/pcapng-parser';
+import CharlesParser from '@/charles-parser';
 import Connection from '@/nex/connection';
-import PRUDPPacketV1 from '@/nex/prudp-packetv1';
 import PRUDPPacketV0 from '@/nex/prudp-packetv0';
+import PRUDPPacketV1 from '@/nex/prudp-packetv1';
+import PRUDPPacketLite from '@/nex/prudp-packetLite';
 import RawRMCPacket from '@/nex/raw-rmc-packet';
 import type Frame from '@/types/frame';
 import type Packet from '@/types/nex/packet';
@@ -32,10 +34,16 @@ export default class Session extends EventEmitter {
 	public parse(capturePath: string): void {
 		const extension = path.extname(capturePath);
 
-		if (extension !== '.pcapng' && extension !== '.pcap') {
-			throw new Error(`Invalid file type. Got ${extension}, expected .pcapng or .pcap`);
+		if (extension === '.pcapng' || extension === '.pcap') {
+			this.parsePCAP(capturePath);
+		} else if (extension === '.chls') {
+			this.parseCharles(capturePath);
+		} else {
+			throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
 		}
+	}
 
+	private parsePCAP(capturePath: string): void {
 		const captureData = fs.readFileSync(capturePath);
 		let parser;
 
@@ -61,6 +69,35 @@ export default class Session extends EventEmitter {
 			}
 
 			this.handlePacket(packet, time);
+		}
+
+		this.emit('finished', this.connections);
+	}
+
+	private parseCharles(capturePath: string): void {
+		const captureData = fs.readFileSync(capturePath);
+		const parser = new CharlesParser(captureData);
+
+		for (const transaction of parser.transactions()) {
+			for (const message of transaction.websocketMessages) {
+				const stream = new ByteStream(message.data);
+				const packet = new PRUDPPacketLite(stream);
+
+				if (message.source === 'SERVER') {
+					packet.sourceAddress = transaction.url.host;
+					packet.sourcePort = transaction.serverLocalPort;
+					packet.destinationAddress = 'CLIENT';
+					packet.destinationPort = transaction.clientLocalPort;
+				} else {
+					packet.sourceAddress = 'CLIENT';
+					packet.sourcePort = transaction.clientLocalPort;
+					packet.destinationAddress = transaction.url.host;
+					packet.destinationPort = transaction.serverLocalPort;
+				}
+
+				this.processPacket(packet);
+				this.emit('packet', packet);
+			}
 		}
 
 		this.emit('finished', this.connections);

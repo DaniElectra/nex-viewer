@@ -38,6 +38,13 @@ export type SerializedPRUDPV1Packet = SerializedPRUDPPacket & {
 	maximum_substream_id?: number;
 };
 
-type SerializedPacket = SerializedPRUDPPacket | SerializedPRUDPV0Packet | SerializedPRUDPV1Packet;
+export type SerializedPRUDPLitePacket = SerializedPRUDPPacket & {
+	version: 2;
+	substream_id: number;
+	supported_functions?: number[];
+	lite_signature?: number[];
+};
+
+type SerializedPacket = SerializedPRUDPPacket | SerializedPRUDPV0Packet | SerializedPRUDPV1Packet | SerializedPRUDPLitePacket;
 
 export default SerializedPacket;

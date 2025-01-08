@@ -30,6 +30,12 @@ export default class TicketGrantingProtocol {
 		0x3: TicketGrantingProtocol.RequestTicket
 	};
 
+	private static handlersSwitch: Record<number, (message: RMCMessage) => any> = {
+		0x1: TicketGrantingProtocol.ValidateAndRequestTicket,
+		0x2: TicketGrantingProtocol.ValidateAndRequestTicketWithCustomData,
+		0x3: TicketGrantingProtocol.RequestTicket
+	};
+
 	static handlePacket(packet: Packet): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
@@ -37,9 +43,13 @@ export default class TicketGrantingProtocol {
 		}
 
 		const methodID = packet.message.methodID;
+		let handler;
 
-		// TODO - Use Switch names when parsing Switch packets
-		const handler = TicketGrantingProtocol.handlers[methodID];
+		if (packet.version === 2) {
+			handler = TicketGrantingProtocol.handlersSwitch[methodID];
+		} else {
+			handler = TicketGrantingProtocol.handlers[methodID];
+		}
 
 		if (!handler) {
 			packet.message.methodName = `UnknownMethod_0x${methodID.toString(16).toUpperCase().padStart(2, '0')}`;
@@ -73,6 +83,22 @@ export default class TicketGrantingProtocol {
 			return Methods.RequestTicket.Request;
 		} else {
 			return Methods.RequestTicket.Response;
+		}
+	}
+
+	private static ValidateAndRequestTicket(message: RMCMessage): typeof Methods.ValidateAndRequestTicket.Request | typeof Methods.ValidateAndRequestTicket.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.ValidateAndRequestTicket.Request;
+		} else {
+			return Methods.ValidateAndRequestTicket.Response;
+		}
+	}
+
+	private static ValidateAndRequestTicketWithCustomData(message: RMCMessage): typeof Methods.ValidateAndRequestTicketWithCustomData.Request | typeof Methods.ValidateAndRequestTicketWithCustomData.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.ValidateAndRequestTicketWithCustomData.Request;
+		} else {
+			return Methods.ValidateAndRequestTicketWithCustomData.Response;
 		}
 	}
 }

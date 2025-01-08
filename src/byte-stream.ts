@@ -27,6 +27,10 @@ export default class ByteStream {
 		this.offset = offset;
 	}
 
+	public peek(): number {
+		return this.buffer[this.pos()];
+	}
+
 	public read(len: number): Buffer {
 		const read = this.buffer.subarray(this.pos(), this.pos() + len);
 		this.offset += len;

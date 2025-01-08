@@ -119,13 +119,21 @@ export default class Connection {
 							this.title = title;
 							break;
 						}
-					} else {
+					} else if (packet.version === 1) {
 						// TODO - Legacy connection signature
 						const connectionSignature = packet.fromClientToServer ? this.clientConnectionSignature : this.serverConnectionSignature;
 						const expectedSignature = packet.signature;
 						const calculatedSignature = packet.calculateSignature(title.access_key, this.sessionKey, connectionSignature);
 
 						if (expectedSignature.equals(calculatedSignature)) {
+							this.title = title;
+							break;
+						}
+					} else if (packet.version === 2) {
+						const serverAddress = packet.sourceAddress === 'CLIENT' ? packet.destinationAddress : packet.sourceAddress;
+						const gameServerID = serverAddress.split('-')[0].slice(1);
+
+						if (title.game_server_id === gameServerID) {
 							this.title = title;
 							break;
 						}
@@ -217,7 +225,9 @@ export default class Connection {
 			packet.message.methodName = `UnknownMethod_0x${packet.message.methodID.toString(16).toUpperCase().padStart(2, '0')}`;
 		}
 
+		// TODO - Skip this for PRUDPLite? This is only really done because payloads are encrypted and we need the key from the ticket, but Switch payloads aren't encrypted
 		if (packet.message.protocolID === TicketGrantingProtocol.ID && !packet.message.error) {
+			// TODO - Add LoginWithContext/ValidateAndRequestTicketWithParam support here?
 			const methodID = packet.message.methodID;
 
 			if (
