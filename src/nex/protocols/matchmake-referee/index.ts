@@ -7,35 +7,35 @@ export default class MatchmakeRefereeProtocol {
 	static Name = 'MatchmakeReferee';
 
 	static Methods = {
-		StartRound: 0x01,
-		GetStartRoundParam: 0x02,
-		EndRound: 0x03,
-		EndRoundWithoutReport: 0x04,
-		GetRoundParticipants: 0x05,
-		GetNotSummarizedRound: 0x06,
-		GetRound: 0x07,
-		GetStatsPrimary: 0x08,
-		GetStatsPrimaries: 0x09,
-		GetStatsAll: 0x0A,
-		CreateStats: 0x0B,
-		GetOrCreateStats: 0x0C,
-		ResetStats: 0x0D
+		StartRound: 0x1,
+		GetStartRoundParam: 0x2,
+		EndRound: 0x3,
+		EndRoundWithoutReport: 0x4,
+		GetRoundParticipants: 0x5,
+		GetNotSummarizedRound: 0x6,
+		GetRound: 0x7,
+		GetStatsPrimary: 0x8,
+		GetStatsPrimaries: 0x9,
+		GetStatsAll: 0xA,
+		CreateStats: 0xB,
+		GetOrCreateStats: 0xC,
+		ResetStats: 0xD
 	};
 
 	private static handlers: Record<number, (message: RMCMessage) => any> = {
-		0x01: MatchmakeRefereeProtocol.StartRound,
-		0x02: MatchmakeRefereeProtocol.GetStartRoundParam,
-		0x03: MatchmakeRefereeProtocol.EndRound,
-		0x04: MatchmakeRefereeProtocol.EndRoundWithoutReport,
-		0x05: MatchmakeRefereeProtocol.GetRoundParticipants,
-		0x06: MatchmakeRefereeProtocol.GetNotSummarizedRound,
-		0x07: MatchmakeRefereeProtocol.GetRound,
-		0x08: MatchmakeRefereeProtocol.GetStatsPrimary,
-		0x09: MatchmakeRefereeProtocol.GetStatsPrimaries,
-		0x0A: MatchmakeRefereeProtocol.GetStatsAll,
-		0x0B: MatchmakeRefereeProtocol.CreateStats,
-		0x0C: MatchmakeRefereeProtocol.GetOrCreateStats,
-		0x0D: MatchmakeRefereeProtocol.ResetStats
+		0x1: MatchmakeRefereeProtocol.StartRound,
+		0x2: MatchmakeRefereeProtocol.GetStartRoundParam,
+		0x3: MatchmakeRefereeProtocol.EndRound,
+		0x4: MatchmakeRefereeProtocol.EndRoundWithoutReport,
+		0x5: MatchmakeRefereeProtocol.GetRoundParticipants,
+		0x6: MatchmakeRefereeProtocol.GetNotSummarizedRound,
+		0x7: MatchmakeRefereeProtocol.GetRound,
+		0x8: MatchmakeRefereeProtocol.GetStatsPrimary,
+		0x9: MatchmakeRefereeProtocol.GetStatsPrimaries,
+		0xA: MatchmakeRefereeProtocol.GetStatsAll,
+		0xB: MatchmakeRefereeProtocol.CreateStats,
+		0xC: MatchmakeRefereeProtocol.GetOrCreateStats,
+		0xD: MatchmakeRefereeProtocol.ResetStats
 	};
 
 	static handlePacket(packet: Packet): void {
