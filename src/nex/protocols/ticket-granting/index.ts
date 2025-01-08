@@ -27,13 +27,19 @@ export default class TicketGrantingProtocol {
 	private static handlers: Record<number, (message: RMCMessage) => any> = {
 		0x1: TicketGrantingProtocol.Login,
 		0x2: TicketGrantingProtocol.LoginEx,
-		0x3: TicketGrantingProtocol.RequestTicket
+		0x3: TicketGrantingProtocol.RequestTicket,
+		0x4: TicketGrantingProtocol.GetPID,
+		0x5: TicketGrantingProtocol.GetName,
+		0x6: TicketGrantingProtocol.LoginWithContext
 	};
 
 	private static handlersSwitch: Record<number, (message: RMCMessage) => any> = {
 		0x1: TicketGrantingProtocol.ValidateAndRequestTicket,
 		0x2: TicketGrantingProtocol.ValidateAndRequestTicketWithCustomData,
-		0x3: TicketGrantingProtocol.RequestTicket
+		0x3: TicketGrantingProtocol.RequestTicket,
+		0x4: TicketGrantingProtocol.GetPID,
+		0x5: TicketGrantingProtocol.GetName,
+		0x6: TicketGrantingProtocol.ValidateAndRequestTicketWithParam
 	};
 
 	static handlePacket(packet: Packet): void {
@@ -86,6 +92,22 @@ export default class TicketGrantingProtocol {
 		}
 	}
 
+	private static GetPID(message: RMCMessage): typeof Methods.GetPID.Request | typeof Methods.GetPID.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.GetPID.Request;
+		} else {
+			return Methods.GetPID.Response;
+		}
+	}
+
+	private static GetName(message: RMCMessage): typeof Methods.GetName.Request | typeof Methods.GetName.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.GetName.Request;
+		} else {
+			return Methods.GetName.Response;
+		}
+	}
+
 	private static ValidateAndRequestTicket(message: RMCMessage): typeof Methods.ValidateAndRequestTicket.Request | typeof Methods.ValidateAndRequestTicket.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.ValidateAndRequestTicket.Request;
@@ -99,6 +121,22 @@ export default class TicketGrantingProtocol {
 			return Methods.ValidateAndRequestTicketWithCustomData.Request;
 		} else {
 			return Methods.ValidateAndRequestTicketWithCustomData.Response;
+		}
+	}
+
+	private static LoginWithContext(message: RMCMessage): typeof Methods.LoginWithContext.Request | typeof Methods.LoginWithContext.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.LoginWithContext.Request;
+		} else {
+			return Methods.LoginWithContext.Response;
+		}
+	}
+
+	private static ValidateAndRequestTicketWithParam(message: RMCMessage): typeof Methods.ValidateAndRequestTicketWithParam.Request | typeof Methods.ValidateAndRequestTicketWithParam.Response {
+		if (message.type === RMCMessage.REQUEST) {
+			return Methods.ValidateAndRequestTicketWithParam.Request;
+		} else {
+			return Methods.ValidateAndRequestTicketWithParam.Response;
 		}
 	}
 }
