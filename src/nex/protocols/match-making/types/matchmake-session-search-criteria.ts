@@ -10,9 +10,7 @@ import MatchmakeParam from '@/nex/protocols/match-making/types/matchmake-param';
 import type NEXByteStream from '@/nex/byte-stream';
 
 export default class MatchmakeSessionSearchCriteria extends Structure {
-	public get typeName(): string {
-		return 'MatchmakeSessionSearchCriteria';
-	}
+	public readonly typeName = 'MatchmakeSessionSearchCriteria';
 
 	private m_Attribs = new List(new RVString());
 	private m_GameMode = new RVString();

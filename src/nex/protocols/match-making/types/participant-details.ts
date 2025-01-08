@@ -5,9 +5,7 @@ import UInt16 from '@/nex/types/uint16';
 import type NEXByteStream from '@/nex/byte-stream';
 
 export default class ParticipantDetails extends Structure {
-	public get typeName(): string {
-		return 'ParticipantDetails';
-	}
+	public readonly typeName = 'ParticipantDetails';
 
 	private m_idParticipant = new PID();
 	private m_strName = new RVString();

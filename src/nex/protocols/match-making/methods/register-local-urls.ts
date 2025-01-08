@@ -7,37 +7,33 @@ import type RMCMessage from '@/nex/rmc-message';
 // TODO - Add strict types for toJSON methods
 
 export class Request {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'RegisterLocalURLs';
 
 	private gid = new UInt32();
+	private lstUrls = new List(new StationURL());
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
 		this.gid.extractFrom(stream);
+		this.lstUrls.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			gid: this.gid
+			gid: this.gid,
+			lstUrls: this.lstUrls
 		};
 	}
 }
 
+// * No response data
 export class Response {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'RegisterLocalURLs';
 
-	private lstURLs = new List(new StationURL());
-
-	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
-
-		this.lstURLs.extractFrom(stream);
-	}
+	constructor() {}
 
 	public toJSON(): any {
-		return {
-			lstURLs: this.lstURLs
-		};
+		return {};
 	}
 }

@@ -1,13 +1,12 @@
 import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
-import List from '@/nex/types/list';
-import StationURL from '@/nex/types/station-url';
+import Bool from '@/nex/types/bool';
 import type RMCMessage from '@/nex/rmc-message';
 
 // TODO - Add strict types for toJSON methods
 
 export class Request {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'DeleteGathering';
 
 	private gid = new UInt32();
 
@@ -25,19 +24,19 @@ export class Request {
 }
 
 export class Response {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'DeleteGathering';
 
-	private lstURLs = new List(new StationURL());
+	private retval = new Bool();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.lstURLs.extractFrom(stream);
+		this.retval.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			lstURLs: this.lstURLs
+			retval: this.retval
 		};
 	}
 }

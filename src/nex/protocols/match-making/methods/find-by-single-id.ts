@@ -1,43 +1,46 @@
 import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
-import List from '@/nex/types/list';
-import StationURL from '@/nex/types/station-url';
+import Bool from '@/nex/types/bool';
+import AnyDataHolder from '@/nex/types/any-data-holder';
 import type RMCMessage from '@/nex/rmc-message';
 
 // TODO - Add strict types for toJSON methods
 
 export class Request {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'FindBySingleID';
 
-	private gid = new UInt32();
+	private id = new UInt32();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.gid.extractFrom(stream);
+		this.id.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			gid: this.gid
+			id: this.id
 		};
 	}
 }
 
 export class Response {
-	public static Name = 'GetSessionURLs';
+	public static Name = 'FindBySingleID';
 
-	private lstURLs = new List(new StationURL());
+	private bResult = new Bool();
+	private pGathering = new AnyDataHolder();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.lstURLs.extractFrom(stream);
+		this.bResult.extractFrom(stream);
+		this.pGathering.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			lstURLs: this.lstURLs
+			bResult: this.bResult,
+			pGathering: this.pGathering
 		};
 	}
 }

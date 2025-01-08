@@ -1,20 +1,21 @@
 import Structure from '@/nex/types/structure';
 import UInt32 from '@/nex/types/uint32';
-import List from '@/nex/types/list';
-import StationURL from '@/nex/types/station-url';
+import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
-export default class GatheringURLs extends Structure {
-	public readonly typeName = 'GatheringURLs';
+export default class GatheringStats extends Structure {
+	public readonly typeName = 'GatheringStats';
 
-	private m_gid = new UInt32();
-	private m_lstStationURLs = new List(new StationURL);
+	private m_idGathering = new UInt32();
+	private m_idGuest = new UInt32();
+	private m_strMessage = new RVString();
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.extractHeaderFrom(stream);
 
-		this.m_gid.extractFrom(stream);
-		this.m_lstStationURLs.extractFrom(stream);
+		this.m_idGathering.extractFrom(stream);
+		this.m_idGuest.extractFrom(stream);
+		this.m_strMessage.extractFrom(stream);
 	}
 
 	public new(): this {
@@ -27,8 +28,9 @@ export default class GatheringURLs extends Structure {
 			__displayTypeName: this.typeName,
 			__typeName: this.typeName,
 			__fields: {
-				m_gid: this.m_gid,
-				m_lstStationURLs: this.m_lstStationURLs
+				m_idGathering: this.m_idGathering,
+				m_idGuest: this.m_idGuest,
+				m_strMessage: this.m_strMessage
 			}
 		};
 	}
