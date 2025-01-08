@@ -21,7 +21,7 @@ export default class MatchMakingExtProtocol {
 		0x3: MatchMakingExtProtocol.GetDetailedParticipants,
 		0x4: MatchMakingExtProtocol.GetParticipantsURLs,
 		0x5: MatchMakingExtProtocol.GetGatheringRelations,
-		0x6: MatchMakingExtProtocol.DeleteFromDeletions,
+		0x6: MatchMakingExtProtocol.DeleteFromDeletions
 	};
 
 	static handlePacket(packet: Packet): void {
