@@ -1,7 +1,8 @@
 import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
 import type RMCMessage from '@/nex/rmc-message';
-import type * as RMCs from '@/types/nex/rmcs/matchmake-extension/close-participation';
+
+// TODO - Add strict types for toJSON methods
 
 export class Request {
 	public static Name = 'CloseParticipation';
@@ -14,7 +15,7 @@ export class Request {
 		this.gid.extractFrom(stream);
 	}
 
-	public toJSON(): RMCs.Request {
+	public toJSON(): any {
 		return {
 			gid: this.gid
 		};
@@ -27,7 +28,7 @@ export class Response {
 
 	constructor() {}
 
-	public toJSON(): RMCs.Response {
+	public toJSON(): any {
 		return {};
 	}
 }

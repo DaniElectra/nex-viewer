@@ -1,30 +1,30 @@
 import NEXByteStream from '@/nex/byte-stream';
-import AutoMatchmakeParam from '@/nex/protocols/match-making/types/auto-matchmake-param';
+import JoinMatchmakeSessionParam from '@/nex/protocols/match-making/types/join-matchmake-session-param';
 import MatchmakeSession from '@/nex/protocols/match-making/types/matchmake-session';
 import type RMCMessage from '@/nex/rmc-message';
 
 // TODO - Add strict types for toJSON methods
 
 export class Request {
-	public static Name = 'AutoMatchmakeWithParam_Postpone';
+	public static Name = 'JoinMatchmakeSessionWithParam';
 
-	private autoMatchmakeParam = new AutoMatchmakeParam();
+	private joinMatchmakeSessionParam = new JoinMatchmakeSessionParam();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.autoMatchmakeParam.extractFrom(stream);
+		this.joinMatchmakeSessionParam.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			autoMatchmakeParam: this.autoMatchmakeParam
+			joinMatchmakeSessionParam: this.joinMatchmakeSessionParam
 		};
 	}
 }
 
 export class Response {
-	public static Name = 'AutoMatchmakeWithParam_Postpone';
+	public static Name = 'JoinMatchmakeSessionWithParam';
 
 	private joinedMatchmakeSession = new MatchmakeSession();
 

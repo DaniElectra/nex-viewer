@@ -1,38 +1,42 @@
 import NEXByteStream from '@/nex/byte-stream';
 import UInt32 from '@/nex/types/uint32';
-import UInt8 from '@/nex/types/uint8';
+import RVString from '@/nex/types/string';
 import type RMCMessage from '@/nex/rmc-message';
 
 // TODO - Add strict types for toJSON methods
 
 export class Request {
-	public static Name = 'UpdateProgressScore';
+	public static Name = 'GenerateMatchmakeSessionSystemPassword';
 
 	private gid = new UInt32();
-	private progressScore = new UInt8();
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
 		this.gid.extractFrom(stream);
-		this.progressScore.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			gid: this.gid,
-			progressScore: this.progressScore
+			gid: this.gid
 		};
 	}
 }
 
-// * No response data
 export class Response {
-	public static Name = 'UpdateProgressScore';
+	public static Name = 'GenerateMatchmakeSessionSystemPassword';
 
-	constructor() {}
+	private password = new RVString();
+
+	constructor(message: RMCMessage) {
+		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+
+		this.password.extractFrom(stream);
+	}
 
 	public toJSON(): any {
-		return {};
+		return {
+			password: this.password
+		};
 	}
 }

@@ -1,43 +1,43 @@
 import NEXByteStream from '@/nex/byte-stream';
 import List from '@/nex/types/list';
-import PID from '@/nex/types/pid';
-import PlayingSession from '@/nex/protocols/match-making/types/playing-session';
+import UInt32 from '@/nex/types/uint32';
+import NotificationEvent from '@/nex/protocols/notification-events/types/notification-event';
 import type RMCMessage from '@/nex/rmc-message';
 
 // TODO - Add strict types for toJSON methods
 
 export class Request {
-	public static Name = 'GetPlayingSession';
+	public static Name = 'GetlstFriendNotificationData';
 
-	private lstPid = new List(new PID());
+	private lstTypes = new List(new UInt32());
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.lstPid.extractFrom(stream);
+		this.lstTypes.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			lstPid: this.lstPid
+			lstTypes: this.lstTypes
 		};
 	}
 }
 
 export class Response {
-	public static Name = 'GetPlayingSession';
+	public static Name = 'GetlstFriendNotificationData';
 
-	private lstPlayingSession = new List(new PlayingSession());
+	private dataList = new List(new NotificationEvent());
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.lstPlayingSession.extractFrom(stream);
+		this.dataList.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			lstPlayingSession: this.lstPlayingSession
+			dataList: this.dataList
 		};
 	}
 }

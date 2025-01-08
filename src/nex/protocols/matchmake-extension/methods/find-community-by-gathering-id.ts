@@ -1,35 +1,31 @@
 import NEXByteStream from '@/nex/byte-stream';
-import Bool from '@/nex/types/bool';
-import ResultRange from '@/nex/types/result-range';
 import List from '@/nex/types/list';
+import UInt32 from '@/nex/types/uint32';
 import PersistentGathering from '@/nex/protocols/match-making/types/persistent-gathering';
 import type RMCMessage from '@/nex/rmc-message';
 
 // TODO - Add strict types for toJSON methods
 
 export class Request {
-	public static Name = 'FindOfficialCommunity';
+	public static Name = 'FindCommunityByGatheringId';
 
-	private isAvailableOnly = new Bool();
-	private resultRange = new ResultRange();
+	private lstGid = new List(new UInt32());
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		this.isAvailableOnly.extractFrom(stream);
-		this.resultRange.extractFrom(stream);
+		this.lstGid.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			isAvailableOnly: this.isAvailableOnly,
-			resultRange: this.resultRange
+			lstGid: this.lstGid
 		};
 	}
 }
 
 export class Response {
-	public static Name = 'FindOfficialCommunity';
+	public static Name = 'FindCommunityByGatheringId';
 
 	private lstCommunity = new List(new PersistentGathering());
 

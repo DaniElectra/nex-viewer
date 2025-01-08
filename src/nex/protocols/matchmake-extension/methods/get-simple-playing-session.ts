@@ -4,7 +4,8 @@ import PID from '@/nex/types/pid';
 import Bool from '@/nex/types/bool';
 import SimplePlayingSession from '@/nex/protocols/match-making/types/simple-playing-session';
 import type RMCMessage from '@/nex/rmc-message';
-import type * as RMCs from '@/types/nex/rmcs/matchmake-extension/get-simple-playing-session';
+
+// TODO - Add strict types for toJSON methods
 
 export class Request {
 	public static Name = 'GetSimplePlayingSession';
@@ -19,7 +20,7 @@ export class Request {
 		this.includeLoginUser.extractFrom(stream);
 	}
 
-	public toJSON(): RMCs.Request {
+	public toJSON(): any {
 		return {
 			lstPrincipalId: this.lstPrincipalId,
 			includeLoginUser: this.includeLoginUser
@@ -38,7 +39,7 @@ export class Response {
 		this.lstSimplePlayingSession.extractFrom(stream);
 	}
 
-	public toJSON(): RMCs.Response {
+	public toJSON(): any {
 		return {
 			lstSimplePlayingSession: this.lstSimplePlayingSession
 		};
