@@ -1,3 +1,4 @@
+import semver from 'compare-versions';
 import Structure from '@/nex/types/structure';
 import UInt32 from '@/nex/types/uint32';
 import List from '@/nex/types/list';
@@ -20,8 +21,8 @@ export default class JoinMatchmakeSessionParam extends Structure {
 	private strSystemPassword = new RVString();
 	private joinMessage = new RVString();
 	private participationCount = new UInt16();
-	private extraParticipants = new UInt16();
-	private blockListParam = new MatchmakeBlockListParam();
+	private extraParticipants: UInt16; // * SV 1 / NEX 4.0
+	private blockListParam: MatchmakeBlockListParam; // * NEX 4.0
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.extractHeaderFrom(stream);
@@ -35,8 +36,16 @@ export default class JoinMatchmakeSessionParam extends Structure {
 		this.strSystemPassword.extractFrom(stream);
 		this.joinMessage.extractFrom(stream);
 		this.participationCount.extractFrom(stream);
-		this.extraParticipants.extractFrom(stream);
-		this.blockListParam.extractFrom(stream);
+
+		if (this.structureVersion >= 1 || semver.satisfies(stream.title.library_versions.match_making, '>=4.0.0')) {
+			this.extraParticipants = new UInt16();
+			this.extraParticipants.extractFrom(stream);
+		}
+
+		if (semver.satisfies(stream.title.library_versions.match_making, '>=4.0.0')) {
+			this.blockListParam = new MatchmakeBlockListParam();
+			this.blockListParam.extractFrom(stream);
+		}
 	}
 
 	public new(): this {
