@@ -1,15 +1,12 @@
 import settings from '@/settings';
+import titles from '@/nex/titles';
 import Substream from '@/nex/substream';
 import RMCMessage from '@/nex/rmc-message';
 import { keyDerivationOld, keyDerivationNew, Ticket } from '@/nex/kerberos';
-import getProtocol from '@/nex/protocols/manager';
 import TicketGrantingProtocol from '@/nex/protocols/ticket-granting';
 import type Packet from '@/types/nex/packet';
 import type StationURL from '@/nex/types/station-url';
 import type { SerializedConnection, Title } from '@/types/nex/serialized-connection';
-
-// TODO - Maybe this should be broken out into .ts files for each game? That way a game can define it's own signature calculation functions and such?
-import titles from '@/nex/titles.json';
 
 // * Represents an individual connection to a specific game server
 export default class Connection {
@@ -107,13 +104,13 @@ export default class Connection {
 			if (!this.title) {
 				for (const title of titles) {
 					if (packet.version === -1) {
-						if (title.title_ids.includes(packet.titleID)) {
+						if (title.titleIDs.includes(packet.titleID)) {
 							this.title = title;
 							break;
 						}
 					} else if (packet.version === 0) {
 						const expectedChecksum = packet.checksum;
-						const calculatedChecksum = packet.calculateChecksum(title.access_key);
+						const calculatedChecksum = packet.calculateChecksum(title.accessKey);
 
 						if (expectedChecksum === calculatedChecksum) {
 							this.title = title;
@@ -123,7 +120,7 @@ export default class Connection {
 						// TODO - Legacy connection signature
 						const connectionSignature = packet.fromClientToServer ? this.clientConnectionSignature : this.serverConnectionSignature;
 						const expectedSignature = packet.signature;
-						const calculatedSignature = packet.calculateSignature(title.access_key, this.sessionKey, connectionSignature);
+						const calculatedSignature = packet.calculateSignature(title.accessKey, this.sessionKey, connectionSignature);
 
 						if (expectedSignature.equals(calculatedSignature)) {
 							this.title = title;
@@ -133,7 +130,7 @@ export default class Connection {
 						const serverAddress = packet.sourceAddress === 'CLIENT' ? packet.destinationAddress : packet.sourceAddress;
 						const gameServerID = serverAddress.split('-')[0].slice(1);
 
-						if (title.game_server_id === gameServerID) {
+						if (title.gameServerID === gameServerID) {
 							this.title = title;
 							break;
 						}
@@ -210,7 +207,7 @@ export default class Connection {
 			}
 		}
 
-		const protocol = getProtocol(packet.message);
+		const protocol = this.title.getProtocolHandler(packet.message);
 
 		if (protocol) {
 			packet.message.protocolName = protocol.Name;

@@ -24,7 +24,7 @@ export class Request {
 		this.strMessage.extractFrom(stream);
 		this.dontCareMyBlackList.extractFrom(stream);
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.4.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.4.0')) {
 			this.participationCount = new UInt16();
 			this.participationCount.extractFrom(stream);
 		}

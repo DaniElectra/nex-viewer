@@ -19,7 +19,7 @@ export class Request {
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=4.0.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=4.0.0')) {
 			this.uiParam1 = new UInt64();
 			this.uiParam2 = new UInt64();
 		} else {

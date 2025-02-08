@@ -37,12 +37,12 @@ export default class JoinMatchmakeSessionParam extends Structure {
 		this.joinMessage.extractFrom(stream);
 		this.participationCount.extractFrom(stream);
 
-		if (this.structureVersion >= 1 || semver.satisfies(stream.title.library_versions.match_making, '>=4.0.0')) {
+		if (this.structureVersion >= 1 || semver.satisfies(stream.title.libraryVersions.match_making, '>=4.0.0')) {
 			this.extraParticipants = new UInt16();
 			this.extraParticipants.extractFrom(stream);
 		}
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=4.0.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=4.0.0')) {
 			this.blockListParam = new MatchmakeBlockListParam();
 			this.blockListParam.extractFrom(stream);
 		}

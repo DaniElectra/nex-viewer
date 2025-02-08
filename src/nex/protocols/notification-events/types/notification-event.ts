@@ -26,7 +26,7 @@ export default class NotificationEvent extends Structure {
 		this.m_uiParam2.extractFrom(stream);
 		this.m_strParam.extractFrom(stream);
 
-		if (semver.satisfies(stream.title.library_versions.main, '>=3.4.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.main, '>=3.4.0')) {
 			this.m_uiParam3 = new UInt32();
 			this.m_uiParam3.extractFrom(stream);
 		}

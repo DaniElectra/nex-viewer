@@ -22,7 +22,7 @@ export class Request {
 		this.anyGathering.extractFrom(stream);
 		this.strMessage.extractFrom(stream);
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.4.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.4.0')) {
 			this.participationCount = new UInt16();
 			this.participationCount.extractFrom(stream);
 		}
@@ -53,7 +53,7 @@ export class Response {
 
 		this.gid.extractFrom(stream);
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.0.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.0.0')) {
 			this.sessionKey = new RVBuffer();
 			this.sessionKey.extractFrom(stream);
 		}

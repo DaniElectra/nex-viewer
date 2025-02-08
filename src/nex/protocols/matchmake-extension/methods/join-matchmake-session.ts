@@ -36,7 +36,7 @@ export class Response {
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.0.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.0.0')) {
 			this.sessionKey = new RVBuffer();
 			this.sessionKey.extractFrom(stream);
 		}

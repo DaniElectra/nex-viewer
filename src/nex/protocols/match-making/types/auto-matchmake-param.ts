@@ -35,7 +35,7 @@ export default class AutoMatchmakeParam extends Structure {
 		this.lstSearchCriteria.extractFrom(stream);
 		this.targetGids.extractFrom(stream);
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=4.0.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=4.0.0')) {
 			this.blockListParam = new MatchmakeBlockListParam();
 			this.blockListParam.extractFrom(stream);
 		}

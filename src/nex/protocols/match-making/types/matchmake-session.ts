@@ -45,22 +45,22 @@ export default class MatchmakeSession extends Gathering {
 		this.m_ApplicationBuffer.extractFrom(stream);
 		this.m_ParticipationCount.extractFrom(stream);
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.4.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.4.0')) {
 			this.m_ProgressScore = new UInt8();
 			this.m_ProgressScore.extractFrom(stream);
 		}
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.0.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.0.0')) {
 			this.m_SessionKey = new RVBuffer();
 			this.m_SessionKey.extractFrom(stream);
 		}
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.5.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.5.0')) {
 			this.m_Option0 = new UInt32();
 			this.m_Option0.extractFrom(stream);
 		}
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.6.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.6.0')) {
 			this.m_MatchmakeParam = new MatchmakeParam();
 			this.m_StartedTime = new DateTime();
 
@@ -68,12 +68,12 @@ export default class MatchmakeSession extends Gathering {
 			this.m_StartedTime.extractFrom(stream);
 		}
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.7.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.7.0')) {
 			this.m_UserPassword = new RVString();
 			this.m_UserPassword.extractFrom(stream);
 		}
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=3.8.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=3.8.0')) {
 			this.m_ReferGid = new UInt32();
 			this.m_UserPasswordEnabled = new Bool();
 			this.m_SystemPasswordEnabled = new Bool();
@@ -83,7 +83,7 @@ export default class MatchmakeSession extends Gathering {
 			this.m_SystemPasswordEnabled.extractFrom(stream);
 		}
 
-		if (semver.satisfies(stream.title.library_versions.match_making, '>=4.0.0')) {
+		if (semver.satisfies(stream.title.libraryVersions.match_making, '>=4.0.0')) {
 			this.m_Codeword = new RVString();
 			this.m_Codeword.extractFrom(stream);
 		}
