@@ -55,7 +55,7 @@ export default class Connection {
 		return this.substream(substreamID, false);
 	}
 
-	private substream(substreamID: number, isClient: boolean): Substream  {
+	private substream(substreamID: number, isClient: boolean): Substream {
 		const substreams = isClient ? this.clientSubstreams : this.serverSubstreams;
 		let substream = substreams[substreamID];
 
@@ -84,7 +84,7 @@ export default class Connection {
 				this.clientConnectionSignature = packet.connectionSignature;
 			}
 
-			if (packet.version !== -1 && packet.hasFlagAck() || packet.hasFlagMultiAck()) {
+			if ((packet.version !== -1 && packet.hasFlagAck()) || packet.hasFlagMultiAck()) {
 				// TODO - Actually handle these?
 				return;
 			}
@@ -185,7 +185,7 @@ export default class Connection {
 
 		if (packet.message.error) {
 			const substreamID = packet.substreamID || 0;
-			const requestPacket = this.packets.find(p => {
+			const requestPacket = this.packets.find((p) => {
 				if (
 					p.substreamID === substreamID &&
 					p.message?.type === RMCMessage.REQUEST &&

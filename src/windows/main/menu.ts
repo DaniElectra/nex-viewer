@@ -1,6 +1,6 @@
-import { Menu, dialog, BrowserWindow } from 'electron';
+import { Menu, dialog } from 'electron';
 import Session from '@/nex/session';
-import type { MenuItemConstructorOptions } from 'electron';
+import type { MenuItemConstructorOptions, BrowserWindow } from 'electron';
 import type State from '@/types/state';
 
 function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
@@ -9,11 +9,11 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 
 	const session = new Session();
 
-	session.on('packet', packet => {
+	session.on('packet', (packet) => {
 		browserWindow.webContents.send('packet', JSON.stringify(packet));
 	});
 
-	session.on('finished', connections => {
+	session.on('finished', (connections) => {
 		browserWindow.webContents.send('connections', JSON.stringify(connections));
 	});
 
