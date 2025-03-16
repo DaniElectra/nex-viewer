@@ -10,7 +10,7 @@
     "copy-static": "npm run copy-html && npm run copy-css",
     "copy-html": "copyfiles -u 1 ./src/renderers/main/index.html ./dist/",
     "copy-css": "copyfiles -u 1 ./src/renderers/main/assets/css/* ./dist/",
-    "build": "npm run lint && npm run clean && npm run compile && npm run browserify",
+    "build": "npm run clean && npm run compile && npm run browserify",
     "compile": "npx tsc && npx tsc-alias && npm run copy-static",
     "browserify": "glob-exec \"./dist/renderers/main/assets/js/*.js\" -- \"browserify {{files.join(' ')}} -o ./dist/renderers/main/assets/js/bundle.js\"",
     "start": "electron ."
