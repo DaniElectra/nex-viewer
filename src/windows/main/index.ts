@@ -2,7 +2,7 @@
 
 import path from 'node:path';
 import sourceMapSupport from 'source-map-support';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import createMenu from '@/windows/main/menu';
 import settings from '@/settings';
 import type State from '@/types/state';
@@ -38,7 +38,11 @@ function createWindow(): void {
 	window.webContents.openDevTools();
 
 	ipcMain.on('renderer-ready', () => {
-		window.setMenu(createMenu(state));
+		if (process.platform === 'darwin') {
+			Menu.setApplicationMenu(createMenu(state));
+		} else {
+			window.setMenu(createMenu(state));
+		}
 	});
 
 	window.maximize();

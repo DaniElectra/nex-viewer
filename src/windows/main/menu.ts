@@ -57,6 +57,20 @@ export default function createMenu(state: State): Menu {
 
 	return Menu.buildFromTemplate([
 		{
+			label: 'NEX Viewer', // TODO - This doesn't seem to work? Always says "Electron". Also swap to getting the name from the app itself (app.name)?
+			submenu: [
+				{ role: 'about' },
+				{ type: 'separator' },
+				{ role: 'services' },
+				{ type: 'separator' },
+				{ role: 'hide' },
+				{ role: 'hideOthers' },
+				{ role: 'unhide' },
+				{ type: 'separator' },
+				{ role: 'quit' }
+			]
+		},
+		{
 			label: 'File',
 			id: 'file',
 			submenu: [
