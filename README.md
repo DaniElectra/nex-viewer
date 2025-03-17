@@ -8,7 +8,8 @@
 In order to decrypt PRUDP packet payloads for the games secure server(s) your game server account credentials must be known by NEX Viewer. To add an account to the settings open one of the following JSON files:
 
 - `%AppData%/NEXViewer/settings.json` (Windows)
-- `~/.config/nex-viewer/settings.json` (Linux/MacOS)
+- `~/.config/nex-viewer/settings.json` (Linux)
+- `code /Users/<UserName>/Library/Application\ Support/nex-viewer/settings.json` (MacOS)
 
 From here add an account entry to the `accounts` array. An account entry takes the following form:
 
