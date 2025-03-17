@@ -1,0 +1,51 @@
+import Data from '@/nex/types/data';
+import NNAInfo from '@/nex/protocols/friends-wiiu/types/nna-info';
+import NintendoPresenceV2 from '@/nex/protocols/friends-wiiu/types/nintendo-presence-v2';
+import Comment from '@/nex/protocols/friends-wiiu/types/comment';
+import DateTime from '@/nex/types/datetime';
+import UInt64 from '@/nex/types/uint64';
+import type NEXByteStream from '@/nex/byte-stream';
+
+export default class FriendInfo extends Data {
+	public get typeName(): string {
+		return 'FriendInfo';
+	}
+
+	private NNAInfo = new NNAInfo();
+	private nintendoPresence = new NintendoPresenceV2();
+	private comment = new Comment();
+	private BecameFriend = new DateTime();
+	private lastOnline = new DateTime();
+	private unknown = new UInt64();
+
+	public extractFrom(stream: NEXByteStream): void {
+		this.extractHeaderFrom(stream);
+
+		this.NNAInfo.extractFrom(stream);
+		this.nintendoPresence.extractFrom(stream);
+		this.comment.extractFrom(stream);
+		this.BecameFriend.extractFrom(stream);
+		this.lastOnline.extractFrom(stream);
+		this.unknown.extractFrom(stream);
+	}
+
+	public new(): this {
+		return new (this.constructor as new () => this)();
+	}
+
+	public toJSON(): any {
+		return {
+			__version: this.structureVersion,
+			__displayTypeName: this.typeName,
+			__typeName: this.typeName,
+			__fields: {
+				NNAInfo: this.NNAInfo,
+				nintendoPresence: this.nintendoPresence,
+				comment: this.comment,
+				BecameFriend: this.BecameFriend,
+				lastOnline: this.lastOnline,
+				unknown: this.unknown
+			}
+		};
+	}
+}

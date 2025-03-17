@@ -1,0 +1,40 @@
+import Data from '@/nex/types/data';
+import PrincipalBasicInfo from '@/nex/protocols/friends-wiiu/types/principal-basic-info';
+import GameKey from '@/nex/protocols/friends-wiiu/types/game-key';
+import DateTime from '@/nex/types/datetime';
+import type NEXByteStream from '@/nex/byte-stream';
+
+export default class BlacklistedPrincipal extends Data {
+	public get typeName(): string {
+		return 'BlacklistedPrincipal';
+	}
+
+	private principalBasicInfo = new PrincipalBasicInfo();
+	private gameKey = new GameKey();
+	private blacklistedSince = new DateTime();
+
+	public extractFrom(stream: NEXByteStream): void {
+		this.extractHeaderFrom(stream);
+
+		this.principalBasicInfo.extractFrom(stream);
+		this.gameKey.extractFrom(stream);
+		this.blacklistedSince.extractFrom(stream);
+	}
+
+	public new(): this {
+		return new (this.constructor as new () => this)();
+	}
+
+	public toJSON(): any {
+		return {
+			__version: this.structureVersion,
+			__displayTypeName: this.typeName,
+			__typeName: this.typeName,
+			__fields: {
+				principalBasicInfo: this.principalBasicInfo,
+				gameKey: this.gameKey,
+				blacklistedSince: this.blacklistedSince
+			}
+		};
+	}
+}
