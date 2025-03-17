@@ -1,4 +1,7 @@
 import Title from '@/nex/titles/title';
+import AccountManagementProtocol from '@/nex/protocols/account-management';
+import Friends3DSProtocol from '@/nex/protocols/friends-3ds';
+import FriendsWiiUProtocol from '@/nex/protocols/friends-wiiu';
 
 export default class FriendsNintendoNetwork extends Title {
 	public static name = 'Friends (Nintendo Network)';
@@ -31,5 +34,9 @@ export default class FriendsNintendoNetwork extends Title {
 		'000500301001520A'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		AccountManagementProtocol,
+		Friends3DSProtocol,
+		FriendsWiiUProtocol
+	];
 }
