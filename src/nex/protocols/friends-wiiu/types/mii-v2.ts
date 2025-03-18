@@ -21,9 +21,9 @@ export default class MiiV2 extends Data {
 
 		this.name.extractFrom(stream);
 		this.unknown1.extractFrom(stream);
-		this.unknown1.extractFrom(stream);
+		this.unknown2.extractFrom(stream);
 		this.data.extractFrom(stream);
-		this.unknown1.extractFrom(stream);
+		this.unknown3.extractFrom(stream);
 	}
 
 	public new(): this {
