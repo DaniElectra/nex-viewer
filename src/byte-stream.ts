@@ -121,4 +121,8 @@ export default class ByteStream {
 	public readBoolean(): boolean {
 		return Boolean(this.readUInt8());
 	}
+
+	public readString(len: number): string {
+		return this.read(len).toString();
+	}
 }
