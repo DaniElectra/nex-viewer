@@ -1,4 +1,11 @@
 import Title from '@/nex/titles/title';
+import NotificationEventsProtocol from '@/nex/protocols/notification-events';
+import MatchMakingExtProtocol from '@/nex/protocols/friends-3ds';
+import MatchmakeExtensionProtocol from '@/nex/protocols/matchmake-extension';
+import MatchMakingProtocol from '@/nex/protocols/match-making';
+import RankingProtocol from '@/nex/protocols/ranking';
+import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
+import UtilityProtocol from '@/nex/protocols/utility';
 
 export default class MarioKart8Deluxe extends Title {
 	public static name = 'Mario Kart 8 Deluxe';
@@ -28,5 +35,14 @@ export default class MarioKart8Deluxe extends Title {
 		'0100152000022000'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		NotificationEventsProtocol,
+		MatchMakingExtProtocol,
+		MatchmakeExtensionProtocol,
+		MatchMakingProtocol,
+		RankingProtocol,
+		NATTraversalProtocol,
+		UtilityProtocol
+		// DataStoreProtocol,
+	];
 }
