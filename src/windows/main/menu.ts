@@ -85,7 +85,7 @@ export default function createMenu(state: State): Menu {
 									extensions: [
 										'pcapng', 'pcap',
 										'chls',
-										'flows'
+										'flows', 'flow'
 									]
 								}
 							]

@@ -44,6 +44,7 @@ export default class Session extends EventEmitter {
 				this.parseCharles(capturePath);
 				break;
 			case '.flows':
+			case '.flow':
 				this.parseMitmproxyFlows(capturePath);
 				break;
 			default:
