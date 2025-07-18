@@ -1,5 +1,6 @@
 {
   "name": "nex-viewer",
+  "productName": "NEX Viewer",
   "version": "1.0.0",
   "description": "Utility for parsing and viewing NEX connections from packet captures",
   "main": "dist/windows/main",
@@ -13,12 +14,22 @@
     "build": "npm run clean && npm run compile && npm run browserify",
     "compile": "npx tsc && npx tsc-alias && npm run copy-static",
     "browserify": "glob-exec \"./dist/renderers/main/assets/js/*.js\" -- \"browserify {{files.join(' ')}} -o ./dist/renderers/main/assets/js/bundle.js\"",
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "keywords": [],
   "author": "Pretendo Network",
   "license": "AGPL-3.0",
   "devDependencies": {
+    "@electron-forge/cli": "^7.8.1",
+    "@electron-forge/maker-deb": "^7.8.1",
+    "@electron-forge/maker-rpm": "^7.8.1",
+    "@electron-forge/maker-squirrel": "^7.8.1",
+    "@electron-forge/maker-zip": "^7.8.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
+    "@electron-forge/plugin-fuses": "^7.8.1",
+    "@electron/fuses": "^1.8.0",
     "@pretendonetwork/eslint-config": "^0.0.8",
     "@types/fs-extra": "^11.0.4",
     "@types/react": "^18.3.3",
@@ -38,6 +49,7 @@
     "@pretendonetwork/java.io": "^1.0.0",
     "@pretendonetwork/yeah": "^1.0.0",
     "compare-versions": "^6.1.1",
+    "electron-squirrel-startup": "^1.0.1",
     "fs-extra": "^11.2.0",
     "semver": "^7.6.0",
     "source-map-support": "^0.5.21"

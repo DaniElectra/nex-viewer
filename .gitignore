@@ -61,3 +61,6 @@ typings/
 dist
 *.pcap
 *.pcapng
+
+# electron-forge
+out
