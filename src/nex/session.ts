@@ -139,8 +139,6 @@ export default class Session extends EventEmitter {
 			}
 		}
 
-		console.log(this.connections);
-
 		this.emit('finished', this.connections);
 	}
 
