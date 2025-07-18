@@ -1,6 +1,91 @@
 # NEX Viewer
 ### Utility for viewing PRUDP connections and NEX/Rendez-Vous sessions.
 
+## Support
+### Packets
+- [x] Quazal Rendez-Vous
+- [x] PRUDPv0
+- [x] PRUDPv1
+- [x] PRUDPLite
+- [ ] HPP
+- [ ] HTTP
+- [ ] gRPC/NPLN
+
+### Dump Formats
+- [x] [PCAP (`.pacp`)](https://www.ietf.org/archive/id/draft-gharris-opsawg-pcap-01.html)
+- [x] [PCAPNG (`.pacpng`)](https://www.ietf.org/archive/id/draft-tuexen-opsawg-pcapng-03.html)
+- [ ] [HAR (`.har`)](https://en.wikipedia.org/wiki/HAR_(file_format))
+- [x] [Charles (`.chls`)](https://www.charlesproxy.com)
+- [x] [Mitmproxy Flows (`.flow`, `.flows`)](https://mitmproxy.org)
+- [ ] [Fiddler (`.saz`)](https://docs.telerik.com/fiddler-everywhere/knowledge-base/fiddler-archives)
+
+### NEX Protocols
+- [ ] [RemoteLogDevice](https://nintendo-wiki.pretendo.network/docs/nex/protocols/remote-log-device)
+- [x] [NATTraversal](https://nintendo-wiki.pretendo.network/docs/nex/protocols/nat-traversal)
+- [x] [TicketGranting](https://nintendo-wiki.pretendo.network/docs/nex/protocols/authentication)
+- [x] [SecureConnection](https://nintendo-wiki.pretendo.network/docs/nex/protocols/secure-connection)
+- [ ] BackEndManagement
+- [x] [NotificationEvents](https://nintendo-wiki.pretendo.network/docs/nex/protocols/notifications)
+- [ ] [SimpleAuthentication](https://nintendo-wiki.pretendo.network/docs/nex/protocols/simple-authentication)
+- [ ] Siege
+- [ ] [Health](https://nintendo-wiki.pretendo.network/docs/nex/protocols/health)
+- [ ] [Monitoring](https://nintendo-wiki.pretendo.network/docs/nex/protocols/monitoring)
+- [ ] [Friends](https://nintendo-wiki.pretendo.network/docs/nex/protocols/friends)
+- [x] [MatchMaking](https://nintendo-wiki.pretendo.network/docs/nex/protocols/match-making)
+- [ ] [Messaging](https://nintendo-wiki.pretendo.network/docs/nex/protocols/messaging)
+- [ ] [PersistentStore](https://nintendo-wiki.pretendo.network/docs/nex/protocols/persistent-store)
+- [x] [AccountManagement](https://nintendo-wiki.pretendo.network/docs/nex/protocols/account-management)
+- [ ] Competition
+- [ ] [MessageDelivery](https://nintendo-wiki.pretendo.network/docs/nex/protocols/match-making-ext)
+- [ ] ClientSettings
+- [ ] [UbiAccountManagement](https://nintendo-wiki.pretendo.network/docs/nex/protocols/ubi-account-management)
+- [ ] GeoLocalization
+- [ ] [News](https://nintendo-wiki.pretendo.network/docs/nex/protocols/news)
+- [ ] [Privileges](https://nintendo-wiki.pretendo.network/docs/nex/protocols/privileges)
+- [ ] [Tracking3](https://nintendo-wiki.pretendo.network/docs/nex/protocols/tracking-3)
+- [ ] [Localization](https://nintendo-wiki.pretendo.network/docs/nex/protocols/localization)
+- [ ] [GameSession](https://nintendo-wiki.pretendo.network/docs/nex/protocols/game-session)
+- [ ] SubAccountManagement
+- [ ] IPToLocation
+- [ ] IPToLocationAdmin
+- [ ] UbiFriends
+- [ ] SkillRating
+- [ ] [UplayWin](https://nintendo-wiki.pretendo.network/docs/nex/protocols/uplay-win)
+- [x] [MatchMakingExtension](https://nintendo-wiki.pretendo.network/docs/nex/protocols/match-making-ext)
+- [ ] [TitleStorage](https://nintendo-wiki.pretendo.network/docs/nex/protocols/title-storage)
+- [ ] [UserStorage](https://nintendo-wiki.pretendo.network/docs/nex/protocols/user-storage)
+- [ ] [PlayerStats](https://nintendo-wiki.pretendo.network/docs/nex/protocols/player-stats)
+- [ ] Spark
+- [ ] [OfflineGameNotifications](https://nintendo-wiki.pretendo.network/docs/nex/protocols/offline-game-notifications)
+- [ ] [UserAccountManagement](https://nintendo-wiki.pretendo.network/docs/nex/protocols/user-account-management)
+- [ ] SiegeAdmin
+- [ ] [NintendoNotificationEvents](https://nintendo-wiki.pretendo.network/docs/nex/protocols/nintendo-notifications)
+- [x] [Friends3DS](https://nintendo-wiki.pretendo.network/docs/nex/protocols/friends-3ds)
+- [x] [FriendsWiiU](https://nintendo-wiki.pretendo.network/docs/nex/protocols/friends-wiiu)
+- [x] [MatchmakeExtension](https://nintendo-wiki.pretendo.network/docs/nex/protocols/matchmake-extension)
+- [x] [Utility](https://nintendo-wiki.pretendo.network/docs/nex/protocols/utility)
+- [ ] [StorageManager](https://nintendo-wiki.pretendo.network/docs/nex/protocols/storage-manager)
+- [x] [Ranking](https://nintendo-wiki.pretendo.network/docs/nex/protocols/ranking)
+- [ ] [DataStore](https://nintendo-wiki.pretendo.network/docs/nex/protocols/datastore)
+- [ ] [Debug](https://nintendo-wiki.pretendo.network/docs/nex/protocols/debug)
+- [ ] [Subscription](https://nintendo-wiki.pretendo.network/docs/nex/protocols/subscription)
+- [ ] [Rating](https://nintendo-wiki.pretendo.network/docs/nex/protocols/rating)
+- [ ] [ServiceItem](https://nintendo-wiki.pretendo.network/docs/nex/protocols/service-item)
+- [x] [MatchmakeReferee](https://nintendo-wiki.pretendo.network/docs/nex/protocols/matchmake-referee)
+- [ ] [Subscriber](https://nintendo-wiki.pretendo.network/docs/nex/protocols/subscriber)
+- [ ] [Ranking2](https://nintendo-wiki.pretendo.network/docs/nex/protocols/ranking-2)
+- [ ] [AAUser](https://nintendo-wiki.pretendo.network/docs/nex/protocols/aa-user)
+- [ ] [Screening](https://nintendo-wiki.pretendo.network/docs/nex/protocols/screening)
+- [ ] [WebNotificationsStorage](https://nintendo-wiki.pretendo.network/docs/nex/protocols/web-notifications-storage)
+- [ ] [TitleStorageAdmin](https://nintendo-wiki.pretendo.network/docs/nex/protocols/title-storage-admin)
+- [ ] [UserStorageAdmin](https://nintendo-wiki.pretendo.network/docs/nex/protocols/user-storage-admin)
+- [ ] [Dummy](https://nintendo-wiki.pretendo.network/docs/nex/protocols/dummy)
+- [ ] [SecureConnectionInternal](https://nintendo-wiki.pretendo.network/docs/nex/protocols/secure-connection-internal)
+- [ ] [NATTraversalReportInternal](https://nintendo-wiki.pretendo.network/docs/nex/protocols/nat-traversal-report-internal)
+- [ ] [Shop (Pokemon Bank)](https://nintendo-wiki.pretendo.network/docs/nex/protocols/shop)
+- [ ] [OLSStorage (Rayman Legends)](https://nintendo-wiki.pretendo.network/docs/nex/protocols/ols-storage)
+- [ ] [Tournament (Super Smash Bros. Ultimate)](https://nintendo-wiki.pretendo.network/docs/nex/protocols/tournament)
+
 ## Settings / Accounts
 > [!WARNING]
 > Older versions of NEX Viewer precomputed the Kerberos keys for each password. These precomputed keys are NOT usable in newer versions of NEX Viewer. Password files must now always contain the raw game server password for each PID.
