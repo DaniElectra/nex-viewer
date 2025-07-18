@@ -9,7 +9,7 @@ export default class PRUDPPacketLite extends PRUDPPacket {
 	private optionsLength: number;
 	private payloadLength: number;
 	private supportedFunctions?: Buffer;
-	private liteSignature?: Buffer;
+	public liteSignature?: Buffer;
 
 	static Magic = Buffer.from([0x80]);
 

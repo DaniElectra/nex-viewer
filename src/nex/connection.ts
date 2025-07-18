@@ -127,10 +127,10 @@ export default class Connection {
 							break;
 						}
 					} else if (packet.version === 2) {
-						const serverAddress = packet.sourceAddress === 'CLIENT' ? packet.destinationAddress : packet.sourceAddress;
-						const gameServerID = serverAddress.split('-')[0].slice(1);
+						const expectedSignature = packet.liteSignature;
+						const calculatedSignature = packet.calculateSignature(title.accessKey, this.serverConnectionSignature);
 
-						if (title.gameServerID === gameServerID) {
+						if (expectedSignature && expectedSignature.equals(calculatedSignature)) {
 							this.title = title;
 							break;
 						}

@@ -5,6 +5,7 @@ import ByteStream from '@/byte-stream';
 import PCAPParser from '@/pcap-parser';
 import PCAPNGParser from '@/pcapng-parser';
 import CharlesParser from '@/charles-parser';
+import FlowsParser from '@/flows-parser';
 import Connection from '@/nex/connection';
 import PRUDPPacketV0 from '@/nex/prudp-packetv0';
 import PRUDPPacketV1 from '@/nex/prudp-packetv1';
@@ -34,12 +35,19 @@ export default class Session extends EventEmitter {
 	public parse(capturePath: string): void {
 		const extension = path.extname(capturePath);
 
-		if (extension === '.pcapng' || extension === '.pcap') {
-			this.parsePCAP(capturePath);
-		} else if (extension === '.chls') {
-			this.parseCharles(capturePath);
-		} else {
-			throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
+		switch (extension) {
+			case '.pcapng':
+			case '.pcap':
+				this.parsePCAP(capturePath);
+				break;
+			case '.chls':
+				this.parseCharles(capturePath);
+				break;
+			case '.flows':
+				this.parseMitmproxyFlows(capturePath);
+				break;
+			default:
+				throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
 		}
 	}
 
@@ -99,6 +107,39 @@ export default class Session extends EventEmitter {
 				this.emit('packet', packet);
 			}
 		}
+
+		this.emit('finished', this.connections);
+	}
+
+	private parseMitmproxyFlows(capturePath: string): void {
+		const captureData = fs.readFileSync(capturePath);
+		const parser = new FlowsParser(captureData);
+
+		for (const flow of parser.flows()) {
+			if (flow.type === 'http' && flow.websocket && flow.server_conn.address && flow.server_conn.sni) {
+				for (const message of flow.websocket.messages) {
+					const stream = new ByteStream(message.content);
+					const packet = new PRUDPPacketLite(stream);
+
+					if (message.from_client) {
+						packet.sourceAddress = flow.client_conn.sockname.ip;
+						packet.sourcePort = flow.client_conn.sockname.port;
+						packet.destinationAddress = flow.server_conn.sni;
+						packet.destinationPort = flow.server_conn.address.port;
+					} else {
+						packet.sourceAddress = flow.server_conn.sni;
+						packet.sourcePort = flow.server_conn.address.port;
+						packet.destinationAddress = flow.client_conn.sockname.ip;
+						packet.destinationPort = flow.client_conn.sockname.port;
+					}
+
+					this.processPacket(packet);
+					this.emit('packet', packet);
+				}
+			}
+		}
+
+		console.log(this.connections);
 
 		this.emit('finished', this.connections);
 	}

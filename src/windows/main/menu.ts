@@ -80,7 +80,14 @@ export default function createMenu(state: State): Menu {
 						const result = await dialog.showOpenDialog({
 							properties: ['openFile'],
 							filters: [
-								{ name: 'Packet Capture', extensions: ['pcapng', 'pcap', 'chls'] }
+								{
+									name: 'Packet Capture',
+									extensions: [
+										'pcapng', 'pcap',
+										'chls',
+										'flows'
+									]
+								}
 							]
 						});
 
