@@ -128,11 +128,11 @@ To use a proxy server to obtain your NEX account details on Wii U, you must firs
 
 ## Obtaining NEX account details (3DS)
 
-Unlike the Wii U the 3DS does not request your NEX account details from any server. Instead it is stored on your console after the first time you connect to the friends server. The only wait to obtain your 3DS NEX account details is to dump them with homebrew. Downloads this [homebrew application](https://9net.org/~stary/get_3ds_pid_password.3dsx) and run it on your 3DS. It will create a `nex-keys.txt` file on the root of the SD card in the correct format already. The source code for the homebrew is [available here](https://github.com/Stary2001/nex-dissector/tree/master/get_3ds_pid_password).
+Unlike the Wii U the 3DS does not request your NEX account details from any server. Instead it is stored on your console after the first time you connect to the friends server. The only way to obtain your 3DS NEX account details is to dump them with homebrew. Downloads this [homebrew application](https://9net.org/~stary/get_3ds_pid_password.3dsx) and run it on your 3DS. It will create a `nex-keys.txt` file on the root of the SD card in the correct format already. The source code for the homebrew is [available here](https://github.com/Stary2001/nex-dissector/tree/master/get_3ds_pid_password).
 
 ## Obtaining NEX account details (Switch)
 
-NEX account details are not required for traffic on the Nintendo Switch as there is no packet-level encryption. NEX account details are required in other versions in order to decrypt the session ticket to obtain the session key used to encrypt packet payloads, but NEX uses a [WebSocket Secure](https://en.wikipedia.org/wiki/WebSocket) connection rather than UDP, which relies on the encryption at the TLS layer rather than the application layer.
+NEX account details are not required for traffic on the Nintendo Switch as there is no packet-level encryption. NEX account details are required in other versions in order to decrypt the session ticket to obtain the session key used to encrypt packet payloads, but NEX on the Nintendo Switch uses a [WebSocket Secure](https://en.wikipedia.org/wiki/WebSocket) connection rather than UDP, which relies on the encryption at the TLS layer rather than the application layer.
 
 ## Obtaining account details (other)
 
