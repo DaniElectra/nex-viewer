@@ -1,4 +1,5 @@
-import TNetStringParser, { TNetStringNode, TNetStringDictionaryNode } from '@/tnetstring-parser';
+import TNetStringParser from '@/tnetstring-parser';
+import type { TNetStringNode, TNetStringDictionaryNode } from '@/tnetstring-parser';
 
 // TODO - Move these types to the `@/types` folder like the rest of the types once well-defined
 // * This is not actually accurate, mitmproxy defines this

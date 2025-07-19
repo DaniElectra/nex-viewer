@@ -91,6 +91,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdateProfile.Response;
 		}
 	}
+
 	private static UpdateMii(message: RMCMessage): typeof Methods.UpdateMii.Request | typeof Methods.UpdateMii.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdateMii.Request;
@@ -98,6 +99,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdateMii.Response;
 		}
 	}
+
 	private static UpdateMiiList(message: RMCMessage): typeof Methods.UpdateMiiList.Request | typeof Methods.UpdateMiiList.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdateMiiList.Request;
@@ -105,6 +107,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdateMiiList.Response;
 		}
 	}
+
 	private static UpdatePlayedGames(message: RMCMessage): typeof Methods.UpdatePlayedGames.Request | typeof Methods.UpdatePlayedGames.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdatePlayedGames.Request;
@@ -112,6 +115,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdatePlayedGames.Response;
 		}
 	}
+
 	private static UpdatePreference(message: RMCMessage): typeof Methods.UpdatePreference.Request | typeof Methods.UpdatePreference.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdatePreference.Request;
@@ -119,6 +123,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdatePreference.Response;
 		}
 	}
+
 	private static GetFriendMii(message: RMCMessage): typeof Methods.GetFriendMii.Request | typeof Methods.GetFriendMii.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetFriendMii.Request;
@@ -126,6 +131,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetFriendMii.Response;
 		}
 	}
+
 	private static GetFriendMiiList(message: RMCMessage): typeof Methods.GetFriendMiiList.Request | typeof Methods.GetFriendMiiList.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetFriendMiiList.Request;
@@ -133,6 +139,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetFriendMiiList.Response;
 		}
 	}
+
 	private static IsActiveGame(message: RMCMessage): typeof Methods.IsActiveGame.Request | typeof Methods.IsActiveGame.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.IsActiveGame.Request;
@@ -140,6 +147,7 @@ export default class Friends3DSProtocol {
 			return Methods.IsActiveGame.Response;
 		}
 	}
+
 	private static GetPrincipalIDByLocalFriendCode(message: RMCMessage): typeof Methods.GetPrincipalIDByLocalFriendCode.Request | typeof Methods.GetPrincipalIDByLocalFriendCode.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetPrincipalIDByLocalFriendCode.Request;
@@ -147,6 +155,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetPrincipalIDByLocalFriendCode.Response;
 		}
 	}
+
 	private static GetFriendRelationships(message: RMCMessage): typeof Methods.GetFriendRelationships.Request | typeof Methods.GetFriendRelationships.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetFriendRelationships.Request;
@@ -154,6 +163,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetFriendRelationships.Response;
 		}
 	}
+
 	private static AddFriendByPrincipalID(message: RMCMessage): typeof Methods.AddFriendByPrincipalID.Request | typeof Methods.AddFriendByPrincipalID.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.AddFriendByPrincipalID.Request;
@@ -161,6 +171,7 @@ export default class Friends3DSProtocol {
 			return Methods.AddFriendByPrincipalID.Response;
 		}
 	}
+
 	private static AddFriendBylstPrincipalID(message: RMCMessage): typeof Methods.AddFriendBylstPrincipalID.Request | typeof Methods.AddFriendBylstPrincipalID.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.AddFriendBylstPrincipalID.Request;
@@ -168,6 +179,7 @@ export default class Friends3DSProtocol {
 			return Methods.AddFriendBylstPrincipalID.Response;
 		}
 	}
+
 	private static RemoveFriendByLocalFriendCode(message: RMCMessage): typeof Methods.RemoveFriendByLocalFriendCode.Request | typeof Methods.RemoveFriendByLocalFriendCode.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.RemoveFriendByLocalFriendCode.Request;
@@ -175,6 +187,7 @@ export default class Friends3DSProtocol {
 			return Methods.RemoveFriendByLocalFriendCode.Response;
 		}
 	}
+
 	private static RemoveFriendByPrincipalID(message: RMCMessage): typeof Methods.RemoveFriendByPrincipalID.Request | typeof Methods.RemoveFriendByPrincipalID.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.RemoveFriendByPrincipalID.Request;
@@ -182,6 +195,7 @@ export default class Friends3DSProtocol {
 			return Methods.RemoveFriendByPrincipalID.Response;
 		}
 	}
+
 	private static GetAllFriends(message: RMCMessage): typeof Methods.GetAllFriends.Request | typeof Methods.GetAllFriends.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetAllFriends.Request;
@@ -189,6 +203,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetAllFriends.Response;
 		}
 	}
+
 	private static UpdateBlackList(message: RMCMessage): typeof Methods.UpdateBlackList.Request | typeof Methods.UpdateBlackList.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdateBlackList.Request;
@@ -196,6 +211,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdateBlackList.Response;
 		}
 	}
+
 	private static SyncFriend(message: RMCMessage): typeof Methods.SyncFriend.Request | typeof Methods.SyncFriend.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.SyncFriend.Request;
@@ -203,6 +219,7 @@ export default class Friends3DSProtocol {
 			return Methods.SyncFriend.Response;
 		}
 	}
+
 	private static UpdatePresence(message: RMCMessage): typeof Methods.UpdatePresence.Request | typeof Methods.UpdatePresence.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdatePresence.Request;
@@ -210,6 +227,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdatePresence.Response;
 		}
 	}
+
 	private static UpdateFavoriteGameKey(message: RMCMessage): typeof Methods.UpdateFavoriteGameKey.Request | typeof Methods.UpdateFavoriteGameKey.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdateFavoriteGameKey.Request;
@@ -217,6 +235,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdateFavoriteGameKey.Response;
 		}
 	}
+
 	private static UpdateComment(message: RMCMessage): typeof Methods.UpdateComment.Request | typeof Methods.UpdateComment.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdateComment.Request;
@@ -224,6 +243,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdateComment.Response;
 		}
 	}
+
 	private static UpdatePicture(message: RMCMessage): typeof Methods.UpdatePicture.Request | typeof Methods.UpdatePicture.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.UpdatePicture.Request;
@@ -231,6 +251,7 @@ export default class Friends3DSProtocol {
 			return Methods.UpdatePicture.Response;
 		}
 	}
+
 	private static GetFriendPresence(message: RMCMessage): typeof Methods.GetFriendPresence.Request | typeof Methods.GetFriendPresence.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetFriendPresence.Request;
@@ -238,6 +259,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetFriendPresence.Response;
 		}
 	}
+
 	private static GetFriendComment(message: RMCMessage): typeof Methods.GetFriendComment.Request | typeof Methods.GetFriendComment.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetFriendComment.Request;
@@ -245,6 +267,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetFriendComment.Response;
 		}
 	}
+
 	private static GetFriendPicture(message: RMCMessage): typeof Methods.GetFriendPicture.Request | typeof Methods.GetFriendPicture.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetFriendPicture.Request;
@@ -252,6 +275,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetFriendPicture.Response;
 		}
 	}
+
 	private static GetFriendPersistentInfo(message: RMCMessage): typeof Methods.GetFriendPersistentInfo.Request | typeof Methods.GetFriendPersistentInfo.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.GetFriendPersistentInfo.Request;
@@ -259,6 +283,7 @@ export default class Friends3DSProtocol {
 			return Methods.GetFriendPersistentInfo.Response;
 		}
 	}
+
 	private static SendInvitation(message: RMCMessage): typeof Methods.SendInvitation.Request | typeof Methods.SendInvitation.Response {
 		if (message.type === RMCMessage.REQUEST) {
 			return Methods.SendInvitation.Request;

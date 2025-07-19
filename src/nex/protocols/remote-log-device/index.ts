@@ -36,9 +36,9 @@ export default class RemoteLogDeviceProtocol {
 
 	private static Log(message: RMCMessage): typeof Methods.Log.Request | typeof Methods.Log.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.Log.Request;
+			return Methods.Log.Request;
 		} else {
-				return Methods.Log.Response;
+			return Methods.Log.Response;
 		}
 	}
 }

@@ -94,242 +94,241 @@ export default class AccountManagementProtocol {
 
 	private static CreateAccount(message: RMCMessage): typeof Methods.CreateAccount.Request | typeof Methods.CreateAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.CreateAccount.Request;
+			return Methods.CreateAccount.Request;
 		} else {
-				return Methods.CreateAccount.Response;
+			return Methods.CreateAccount.Response;
 		}
 	}
 
 	private static DeleteAccount(message: RMCMessage): typeof Methods.DeleteAccount.Request | typeof Methods.DeleteAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.DeleteAccount.Request;
+			return Methods.DeleteAccount.Request;
 		} else {
-				return Methods.DeleteAccount.Response;
+			return Methods.DeleteAccount.Response;
 		}
 	}
 
 	private static DisableAccount(message: RMCMessage): typeof Methods.DisableAccount.Request | typeof Methods.DisableAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.DisableAccount.Request;
+			return Methods.DisableAccount.Request;
 		} else {
-				return Methods.DisableAccount.Response;
+			return Methods.DisableAccount.Response;
 		}
 	}
 
 	private static ChangePassword(message: RMCMessage): typeof Methods.ChangePassword.Request | typeof Methods.ChangePassword.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.ChangePassword.Request;
+			return Methods.ChangePassword.Request;
 		} else {
-				return Methods.ChangePassword.Response;
+			return Methods.ChangePassword.Response;
 		}
 	}
 
 	private static TestCapability(message: RMCMessage): typeof Methods.TestCapability.Request | typeof Methods.TestCapability.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.TestCapability.Request;
+			return Methods.TestCapability.Request;
 		} else {
-				return Methods.TestCapability.Response;
+			return Methods.TestCapability.Response;
 		}
 	}
 
 	private static GetName(message: RMCMessage): typeof Methods.GetName.Request | typeof Methods.GetName.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.GetName.Request;
+			return Methods.GetName.Request;
 		} else {
-				return Methods.GetName.Response;
+			return Methods.GetName.Response;
 		}
 	}
 
 	private static GetAccountData(message: RMCMessage): typeof Methods.GetAccountData.Request | typeof Methods.GetAccountData.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.GetAccountData.Request;
+			return Methods.GetAccountData.Request;
 		} else {
-				return Methods.GetAccountData.Response;
+			return Methods.GetAccountData.Response;
 		}
 	}
 
 	private static GetPrivateData(message: RMCMessage): typeof Methods.GetPrivateData.Request | typeof Methods.GetPrivateData.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.GetPrivateData.Request;
+			return Methods.GetPrivateData.Request;
 		} else {
-				return Methods.GetPrivateData.Response;
+			return Methods.GetPrivateData.Response;
 		}
 	}
 
 	private static GetPublicData(message: RMCMessage): typeof Methods.GetPublicData.Request | typeof Methods.GetPublicData.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.GetPublicData.Request;
+			return Methods.GetPublicData.Request;
 		} else {
-				return Methods.GetPublicData.Response;
+			return Methods.GetPublicData.Response;
 		}
 	}
 
 	private static GetMultiplePublicData(message: RMCMessage): typeof Methods.GetMultiplePublicData.Request | typeof Methods.GetMultiplePublicData.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.GetMultiplePublicData.Request;
+			return Methods.GetMultiplePublicData.Request;
 		} else {
-				return Methods.GetMultiplePublicData.Response;
+			return Methods.GetMultiplePublicData.Response;
 		}
 	}
 
 	private static UpdateAccountName(message: RMCMessage): typeof Methods.UpdateAccountName.Request | typeof Methods.UpdateAccountName.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.UpdateAccountName.Request;
+			return Methods.UpdateAccountName.Request;
 		} else {
-				return Methods.UpdateAccountName.Response;
+			return Methods.UpdateAccountName.Response;
 		}
 	}
 
 	private static UpdateAccountEmail(message: RMCMessage): typeof Methods.UpdateAccountEmail.Request | typeof Methods.UpdateAccountEmail.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.UpdateAccountEmail.Request;
+			return Methods.UpdateAccountEmail.Request;
 		} else {
-				return Methods.UpdateAccountEmail.Response;
+			return Methods.UpdateAccountEmail.Response;
 		}
 	}
 
 	private static UpdateCustomData(message: RMCMessage): typeof Methods.UpdateCustomData.Request | typeof Methods.UpdateCustomData.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.UpdateCustomData.Request;
+			return Methods.UpdateCustomData.Request;
 		} else {
-				return Methods.UpdateCustomData.Response;
+			return Methods.UpdateCustomData.Response;
 		}
 	}
 
 	private static FindByNameRegex(message: RMCMessage): typeof Methods.FindByNameRegex.Request | typeof Methods.FindByNameRegex.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.FindByNameRegex.Request;
+			return Methods.FindByNameRegex.Request;
 		} else {
-				return Methods.FindByNameRegex.Response;
+			return Methods.FindByNameRegex.Response;
 		}
 	}
 
 	private static UpdateAccountExpiryDate(message: RMCMessage): typeof Methods.UpdateAccountExpiryDate.Request | typeof Methods.UpdateAccountExpiryDate.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.UpdateAccountExpiryDate.Request;
+			return Methods.UpdateAccountExpiryDate.Request;
 		} else {
-				return Methods.UpdateAccountExpiryDate.Response;
+			return Methods.UpdateAccountExpiryDate.Response;
 		}
 	}
 
 	private static UpdateAccountEffectiveDate(message: RMCMessage): typeof Methods.UpdateAccountEffectiveDate.Request | typeof Methods.UpdateAccountEffectiveDate.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.UpdateAccountEffectiveDate.Request;
+			return Methods.UpdateAccountEffectiveDate.Request;
 		} else {
-				return Methods.UpdateAccountEffectiveDate.Response;
+			return Methods.UpdateAccountEffectiveDate.Response;
 		}
 	}
 
 	private static UpdateStatus(message: RMCMessage): typeof Methods.UpdateStatus.Request | typeof Methods.UpdateStatus.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.UpdateStatus.Request;
+			return Methods.UpdateStatus.Request;
 		} else {
-				return Methods.UpdateStatus.Response;
+			return Methods.UpdateStatus.Response;
 		}
 	}
 
 	private static GetStatus(message: RMCMessage): typeof Methods.GetStatus.Request | typeof Methods.GetStatus.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.GetStatus.Request;
+			return Methods.GetStatus.Request;
 		} else {
-				return Methods.GetStatus.Response;
+			return Methods.GetStatus.Response;
 		}
 	}
 
 	private static GetLastConnectionStats(message: RMCMessage): typeof Methods.GetLastConnectionStats.Request | typeof Methods.GetLastConnectionStats.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.GetLastConnectionStats.Request;
+			return Methods.GetLastConnectionStats.Request;
 		} else {
-				return Methods.GetLastConnectionStats.Response;
+			return Methods.GetLastConnectionStats.Response;
 		}
 	}
 
 	private static ResetPassword(message: RMCMessage): typeof Methods.ResetPassword.Request | typeof Methods.ResetPassword.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.ResetPassword.Request;
+			return Methods.ResetPassword.Request;
 		} else {
-				return Methods.ResetPassword.Response;
+			return Methods.ResetPassword.Response;
 		}
 	}
 
 	private static CreateAccountWithCustomData(message: RMCMessage): typeof Methods.CreateAccountWithCustomData.Request | typeof Methods.CreateAccountWithCustomData.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.CreateAccountWithCustomData.Request;
+			return Methods.CreateAccountWithCustomData.Request;
 		} else {
-				return Methods.CreateAccountWithCustomData.Response;
+			return Methods.CreateAccountWithCustomData.Response;
 		}
 	}
 
 	private static RetrieveAccount(message: RMCMessage): typeof Methods.RetrieveAccount.Request | typeof Methods.RetrieveAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.RetrieveAccount.Request;
+			return Methods.RetrieveAccount.Request;
 		} else {
-				return Methods.RetrieveAccount.Response;
+			return Methods.RetrieveAccount.Response;
 		}
 	}
 
-
 	private static UpdateAccount(message: RMCMessage): typeof Methods.UpdateAccount.Request | typeof Methods.UpdateAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.UpdateAccount.Request;
+			return Methods.UpdateAccount.Request;
 		} else {
-				return Methods.UpdateAccount.Response;
+			return Methods.UpdateAccount.Response;
 		}
 	}
 
 	private static ChangePasswordByGuest(message: RMCMessage): typeof Methods.ChangePasswordByGuest.Request | typeof Methods.ChangePasswordByGuest.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.ChangePasswordByGuest.Request;
+			return Methods.ChangePasswordByGuest.Request;
 		} else {
-				return Methods.ChangePasswordByGuest.Response;
+			return Methods.ChangePasswordByGuest.Response;
 		}
 	}
 
 	private static FindByNameLike(message: RMCMessage): typeof Methods.FindByNameLike.Request | typeof Methods.FindByNameLike.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.FindByNameLike.Request;
+			return Methods.FindByNameLike.Request;
 		} else {
-				return Methods.FindByNameLike.Response;
+			return Methods.FindByNameLike.Response;
 		}
 	}
 
 	private static CustomCreateAccount(message: RMCMessage): typeof Methods.CustomCreateAccount.Request | typeof Methods.CustomCreateAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.CustomCreateAccount.Request;
+			return Methods.CustomCreateAccount.Request;
 		} else {
-				return Methods.CustomCreateAccount.Response;
+			return Methods.CustomCreateAccount.Response;
 		}
 	}
 
 	private static NintendoCreateAccount(message: RMCMessage): typeof Methods.NintendoCreateAccount.Request | typeof Methods.NintendoCreateAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.NintendoCreateAccount.Request;
+			return Methods.NintendoCreateAccount.Request;
 		} else {
-				return Methods.NintendoCreateAccount.Response;
+			return Methods.NintendoCreateAccount.Response;
 		}
 	}
 
 	private static LookupOrCreateAccount(message: RMCMessage): typeof Methods.LookupOrCreateAccount.Request | typeof Methods.LookupOrCreateAccount.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.LookupOrCreateAccount.Request;
+			return Methods.LookupOrCreateAccount.Request;
 		} else {
-				return Methods.LookupOrCreateAccount.Response;
+			return Methods.LookupOrCreateAccount.Response;
 		}
 	}
 
 	private static DisconnectPrincipal(message: RMCMessage): typeof Methods.DisconnectPrincipal.Request | typeof Methods.DisconnectPrincipal.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.DisconnectPrincipal.Request;
+			return Methods.DisconnectPrincipal.Request;
 		} else {
-				return Methods.DisconnectPrincipal.Response;
+			return Methods.DisconnectPrincipal.Response;
 		}
 	}
 
 	private static DisconnectAllPrincipals(message: RMCMessage): typeof Methods.DisconnectAllPrincipals.Request | typeof Methods.DisconnectAllPrincipals.Response {
 		if (message.type === RMCMessage.REQUEST) {
-				return Methods.DisconnectAllPrincipals.Request;
+			return Methods.DisconnectAllPrincipals.Request;
 		} else {
-				return Methods.DisconnectAllPrincipals.Response;
+			return Methods.DisconnectAllPrincipals.Response;
 		}
 	}
 }
