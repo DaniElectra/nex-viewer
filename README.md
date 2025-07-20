@@ -20,7 +20,7 @@
 - [ ] [Fiddler (`.saz`)](https://docs.telerik.com/fiddler-everywhere/knowledge-base/fiddler-archives)
 
 ### NEX Protocols
-- [ ] [RemoteLogDevice](https://nintendo-wiki.pretendo.network/docs/nex/protocols/remote-log-device)
+- [x] [RemoteLogDevice](https://nintendo-wiki.pretendo.network/docs/nex/protocols/remote-log-device)
 - [x] [NATTraversal](https://nintendo-wiki.pretendo.network/docs/nex/protocols/nat-traversal)
 - [x] [TicketGranting](https://nintendo-wiki.pretendo.network/docs/nex/protocols/authentication)
 - [x] [SecureConnection](https://nintendo-wiki.pretendo.network/docs/nex/protocols/secure-connection)
@@ -32,11 +32,11 @@
 - [ ] [Monitoring](https://nintendo-wiki.pretendo.network/docs/nex/protocols/monitoring)
 - [ ] [Friends](https://nintendo-wiki.pretendo.network/docs/nex/protocols/friends)
 - [x] [MatchMaking](https://nintendo-wiki.pretendo.network/docs/nex/protocols/match-making)
-- [ ] [Messaging](https://nintendo-wiki.pretendo.network/docs/nex/protocols/messaging)
+- [x] [Messaging](https://nintendo-wiki.pretendo.network/docs/nex/protocols/messaging)
 - [ ] [PersistentStore](https://nintendo-wiki.pretendo.network/docs/nex/protocols/persistent-store)
 - [x] [AccountManagement](https://nintendo-wiki.pretendo.network/docs/nex/protocols/account-management)
 - [ ] Competition
-- [ ] [MessageDelivery](https://nintendo-wiki.pretendo.network/docs/nex/protocols/match-making-ext)
+- [x] [MessageDelivery](https://nintendo-wiki.pretendo.network/docs/nex/protocols/match-making-ext)
 - [ ] ClientSettings
 - [ ] [UbiAccountManagement](https://nintendo-wiki.pretendo.network/docs/nex/protocols/ubi-account-management)
 - [ ] GeoLocalization
