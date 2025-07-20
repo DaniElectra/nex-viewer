@@ -3,7 +3,7 @@ import * as Methods from '@/nex/protocols/messaging/methods';
 import type Packet from '@/types/nex/packet';
 
 export default class MessagingProtocol {
-	static ID = 0x1B;
+	static ID = 0x17;
 	static Name = 'Messaging';
 
 	static Methods = {
