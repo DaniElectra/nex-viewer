@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class AnimalCrossingPlaza extends Title {
-	public static name = 'Animal Crossing Plaza';
+	public static displayName = 'Animal Crossing Plaza';
 	public static gameServerID = '';
 	public static accessKey = '7b9b09cb';
 	public static libraryVersions = {

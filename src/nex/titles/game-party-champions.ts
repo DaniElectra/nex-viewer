@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class GamePartyChampions extends Title {
-	public static name = 'Game Party Champions';
+	public static displayName = 'Game Party Champions';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

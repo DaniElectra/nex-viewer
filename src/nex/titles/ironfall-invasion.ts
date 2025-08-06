@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class IRONFALLInvasion extends Title {
-	public static name = 'IRONFALL Invasion';
+	public static displayName = 'IRONFALL Invasion';
 	public static gameServerID = '';
 	public static accessKey = 'feb81c7c';
 	public static libraryVersions = {

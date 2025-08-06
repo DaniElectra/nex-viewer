@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class FistoftheNorthStarKensRage2 extends Title {
-	public static name = 'Fist of the North Star: Ken\'s Rage 2';
+	public static displayName = 'Fist of the North Star: Ken\'s Rage 2';
 	public static gameServerID = '';
 	public static accessKey = '9994e29c';
 	public static libraryVersions = {

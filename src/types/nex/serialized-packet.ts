@@ -1,6 +1,7 @@
 import type SerializedRMCMessage from '@/types/nex/serialized-rmc-message';
 
 export type SerializedPRUDPPacket = {
+	id: number;
 	time?: number;
 	version: number;
 	source_address: string;

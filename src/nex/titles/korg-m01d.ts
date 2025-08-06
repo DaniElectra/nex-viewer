@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class KORGM01D extends Title {
-	public static name = 'KORG M01D';
+	public static displayName = 'KORG M01D';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

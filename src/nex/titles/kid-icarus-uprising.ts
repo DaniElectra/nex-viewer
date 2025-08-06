@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class KidIcarusUprising extends Title {
-	public static name = 'Kid Icarus: Uprising';
+	public static displayName = 'Kid Icarus: Uprising';
 	public static gameServerID = '';
 	public static accessKey = '58a7e494';
 	public static libraryVersions = {

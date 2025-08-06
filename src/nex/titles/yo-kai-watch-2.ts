@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class YokaiWatch2 extends Title {
-	public static name = 'Yo-kai Watch 2';
+	public static displayName = 'Yo-kai Watch 2';
 	public static gameServerID = '';
 	public static accessKey = '7ab183bb';
 	public static libraryVersions = {

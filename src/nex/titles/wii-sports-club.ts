@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class WiiSportsClub extends Title {
-	public static name = 'Wii Sports Club';
+	public static displayName = 'Wii Sports Club';
 	public static gameServerID = '';
 	public static accessKey = '4d324052';
 	public static libraryVersions = {

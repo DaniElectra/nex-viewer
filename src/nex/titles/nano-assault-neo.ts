@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class NanoAssaultNeo extends Title {
-	public static name = 'Nano Assault Neo';
+	public static displayName = 'Nano Assault Neo';
 	public static gameServerID = '';
 	public static accessKey = '7e484a8e';
 	public static libraryVersions = {

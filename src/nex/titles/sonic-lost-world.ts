@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class SONICLOSTWORLD extends Title {
-	public static name = 'SONIC LOST WORLD';
+	public static displayName = 'SONIC LOST WORLD';
 	public static gameServerID = '';
 	public static accessKey = '69a9fc95';
 	public static libraryVersions = {

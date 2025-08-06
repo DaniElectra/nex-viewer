@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class LuigisMansionDarkMoon extends Title {
-	public static name = 'Luigi\'s Mansion: Dark Moon';
+	public static displayName = 'Luigi\'s Mansion: Dark Moon';
 	public static gameServerID = '';
 	public static accessKey = '3861a9f8';
 	public static libraryVersions = {

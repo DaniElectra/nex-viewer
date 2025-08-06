@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class TheLegendofZeldaTriForceHeroes extends Title {
-	public static name = 'The Legend of Zelda: Tri Force Heroes';
+	public static displayName = 'The Legend of Zelda: Tri Force Heroes';
 	public static gameServerID = '';
 	public static accessKey = 'c1621b84';
 	public static libraryVersions = {

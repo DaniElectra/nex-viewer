@@ -10,23 +10,23 @@ import type { SerializedConnection, Title } from '@/types/nex/serialized-connect
 
 // * Represents an individual connection to a specific game server
 export default class Connection {
-	public clientAddress: string;
-	public clientPort: number;
-	public serverAddress: string;
-	public serverPort: number;
+	public clientAddress?: string;
+	public clientPort?: number;
+	public serverAddress?: string;
+	public serverPort?: number;
 
-	public clientStreamType: number;
-	public clientStreamID: number;
-	public serverStreamType: number;
-	public serverStreamID: number;
+	public clientStreamType?: number;
+	public clientStreamID?: number;
+	public serverStreamType?: number;
+	public serverStreamID?: number;
 	public packets: Packet[] = []; // * Stores all packets in the connection regardless of substream, reliability, etc. Used to display all packets in order as they are sent
 
-	public title: Title;
+	public title?: Title;
 
-	public mainSecureStationTicket: Ticket;
-	public specialSecureStationTicket: Ticket; // TODO - Currently unused. Also is this even accurate?
-	public mainSecureStation: StationURL;
-	public specialSecureStation: StationURL; // TODO - Currently unused
+	public mainSecureStationTicket?: Ticket;
+	public specialSecureStationTicket?: Ticket; // TODO - Currently unused. Also is this even accurate?
+	public mainSecureStation?: StationURL;
+	public specialSecureStation?: StationURL; // TODO - Currently unused
 	public cipherKey: Buffer | string = 'CD&ML';
 	public sessionKey = Buffer.alloc(0);
 
@@ -272,7 +272,7 @@ export default class Connection {
 				throw new Error(`No account found for PID ${sourcePID}`);
 			}
 
-			if (this.title.settings.kerberos_key_version === 0) {
+			if (this.title?.settings.kerberos_key_version === 0) {
 				if (account.password_hash_old) {
 					key = Buffer.from(account.password_hash_old, 'hex');
 				} else if (account.password) {
@@ -288,7 +288,7 @@ export default class Connection {
 					key = keyDerivationNew(sourcePID, account.password);
 					account.password_hash_new = key.toString('hex').toUpperCase();
 				} else {
-					throw new Error(`Title ${this.title.name} uses new Kerberos key derivation and no password is set for PID ${sourcePID}`);
+					throw new Error(`Title ${this.title?.name} uses new Kerberos key derivation and no password is set for PID ${sourcePID}`);
 				}
 			}
 
@@ -312,7 +312,7 @@ export default class Connection {
 
 	toJSON(): SerializedConnection {
 		return {
-			title: this.title
+			title: this.title!
 		};
 	}
 }

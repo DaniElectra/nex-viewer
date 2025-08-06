@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class InjusticeGodsAmongUs extends Title {
-	public static name = 'Injustice: Gods Among Us';
+	public static displayName = 'Injustice: Gods Among Us';
 	public static gameServerID = '';
 	public static accessKey = '65e9f4d6';
 	public static libraryVersions = {

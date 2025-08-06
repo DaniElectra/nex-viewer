@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class POKKENTOURNAMENT extends Title {
-	public static name = 'POKKÉN TOURNAMENT';
+	public static displayName = 'POKKÉN TOURNAMENT';
 	public static gameServerID = '';
 	public static accessKey = '6ef3adf1';
 	public static libraryVersions = {

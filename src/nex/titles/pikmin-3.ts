@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class PIKMIN3 extends Title {
-	public static name = 'PIKMIN 3';
+	public static displayName = 'PIKMIN 3';
 	public static gameServerID = '';
 	public static accessKey = 'f6accfc1';
 	public static libraryVersions = {

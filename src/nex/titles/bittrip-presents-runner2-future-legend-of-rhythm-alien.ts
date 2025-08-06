@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class BITTRIPPresentsRunner2FutureLegendofRhythmAlien extends Title {
-	public static name = 'BIT.TRIP Presents... Runner2: Future Legend of Rhythm Alien';
+	public static displayName = 'BIT.TRIP Presents... Runner2: Future Legend of Rhythm Alien';
 	public static gameServerID = '';
 	public static accessKey = '1084452a';
 	public static libraryVersions = {

@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class SteelDiverSubWars extends Title {
-	public static name = 'Steel Diver: Sub Wars';
+	public static displayName = 'Steel Diver: Sub Wars';
 	public static gameServerID = '';
 	public static accessKey = 'fb9537fe';
 	public static libraryVersions = {

@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MarioSonicatRioOlympics3DS extends Title {
-	public static name = 'Mario & Sonic at Rio Olympics (3DS)';
+	public static displayName = 'Mario & Sonic at Rio Olympics (3DS)';
 	public static gameServerID = '';
 	public static accessKey = 'a2dbfa39';
 	public static libraryVersions = {

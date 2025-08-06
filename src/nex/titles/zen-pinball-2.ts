@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class ZenPinball2 extends Title {
-	public static name = 'Zen Pinball 2';
+	public static displayName = 'Zen Pinball 2';
 	public static gameServerID = '';
 	public static accessKey = '2ff15f7e';
 	public static libraryVersions = {

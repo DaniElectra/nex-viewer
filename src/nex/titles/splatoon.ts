@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class Splatoon extends Title {
-	public static name = 'Splatoon';
+	public static displayName = 'Splatoon';
 	public static gameServerID = '';
 	public static accessKey = '6f599f81';
 	public static libraryVersions = {

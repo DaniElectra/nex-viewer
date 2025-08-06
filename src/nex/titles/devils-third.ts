@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class DevilsThird extends Title {
-	public static name = 'Devil\'s Third';
+	public static displayName = 'Devil\'s Third';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

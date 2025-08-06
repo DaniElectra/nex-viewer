@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class WARRIORSOROCHI3Hyper extends Title {
-	public static name = 'WARRIORS OROCHI 3 Hyper';
+	public static displayName = 'WARRIORS OROCHI 3 Hyper';
 	public static gameServerID = '';
 	public static accessKey = 'd74bb27d';
 	public static libraryVersions = {

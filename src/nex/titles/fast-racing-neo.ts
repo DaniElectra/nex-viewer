@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class FASTRacingNEO extends Title {
-	public static name = 'FAST Racing NEO';
+	public static displayName = 'FAST Racing NEO';
 	public static gameServerID = '';
 	public static accessKey = '811aa39f';
 	public static libraryVersions = {

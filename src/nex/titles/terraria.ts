@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class Terraria extends Title {
-	public static name = 'Terraria';
+	public static displayName = 'Terraria';
 	public static gameServerID = '';
 	public static accessKey = '3d37fbdb';
 	public static libraryVersions = {

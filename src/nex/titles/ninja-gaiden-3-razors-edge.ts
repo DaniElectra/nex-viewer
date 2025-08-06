@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class NINJAGAIDEN3RazorsEdge extends Title {
-	public static name = 'NINJA GAIDEN 3: Razor\'s Edge';
+	public static displayName = 'NINJA GAIDEN 3: Razor\'s Edge';
 	public static gameServerID = '';
 	public static accessKey = 'f857b4bd';
 	public static libraryVersions = {

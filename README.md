@@ -139,3 +139,58 @@ NEX account details are not required for traffic on the Nintendo Switch as there
 NEX Viewer supports standard [Quazal Rendez-Vous](http://web.archive.org/web/20090224012115/http://www.quazal.com/modules.php?op=modload&name=Sections&file=index&req=viewarticle&artid=116&page=1) connections as well. This means traffic from games such as Rayman Legends, Rock Band 1, 2 and 3, WATCH_DOGS, etc. are supported (though may require modifications to the viewer for any game-specific features). This is because Nintendo licensed Rendez-Vous from Quazal and only modified it slightly to create NEX, much of the underlying systems are identical (or at least broadly compatible). Ubisoft purchased Quazal in 2010, so many fo their games use the Rendez-Vous library.
 
 This application is designed with this traffic in mind and tries it's best to support all possible games. Due to Quazal licensing it's Rendez-Vous software to many developers over time, the specifics on how you obtain the account details will vary. Due to Rendez-Vous' ability to be modified and extended (such as with the creation of NEX), some developers may have also made large changes to the protocols which are incompatible with other implementations. One such example is WATCH_DOGS, which changed the structure of RMC payloads. This application does a best attempt at supporting these changes, but it is possible that some changes are impossible to support cleanly along side other implementations. In those cases, a fork of NEX Viewer should be made.
+
+## Contributing
+
+### Recommended IDE Setup
+The recommended IDE for NEX Viewer is [VSCode](https://code.visualstudio.com/), using the following plugins:
+
+- [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- [Better Comments Next](https://marketplace.visualstudio.com/items?itemName=EdwinHuiSH.better-comments-next)
+
+### Install
+
+```bash
+$ git clone https://github.com/PretendoNetwork/nex-viewer
+$ cd nex-viewer
+$ npm install
+```
+
+### Running (`electron-vite`) (Recommended)
+Run the app in development mode using `electron-vite`
+
+```bash
+$ npm run dev
+```
+
+### Running (`electron-forge`)
+Run the app in development mode using `electron-forge`
+
+```bash
+$ npm start
+```
+
+### Build (`electron-vite`)
+Build the app for distribution using `electron-vite`
+
+```bash
+$ npm run build
+```
+
+### Build (`electron-builder`)
+Build the app for distribution using `electron-builder`
+
+```bash
+$ npm run build:win
+$ npm run build:mac
+$ npm run build:linux
+```
+
+### Build (`electron-forge`)
+Build the app for distribution using `electron-forge`
+
+```bash
+$ npm run make
+```

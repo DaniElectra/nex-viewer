@@ -1,9 +1,9 @@
-import type SerializedPacket from '@/types/nex/serialized-packet';
-import type Connection from '@/nex/connection';
+import type { ElectronAPI } from '@electron-toolkit/preload';
 
 declare global {
 	interface Window {
-		electron: {
+		electron: ElectronAPI;
+		api: {
 			ready: () => void;
 			onClearSections: (callback: () => void) => void;
 			onPacket: (callback: (packet: SerializedPacket) => void) => void;

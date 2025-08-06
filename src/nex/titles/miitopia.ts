@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class Miitopia extends Title {
-	public static name = 'Miitopia';
+	public static displayName = 'Miitopia';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

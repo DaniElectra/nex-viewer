@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class RomanceoftheThreeKingdoms12 extends Title {
-	public static name = 'Romance of the Three Kingdoms 12';
+	public static displayName = 'Romance of the Three Kingdoms 12';
 	public static gameServerID = '';
 	public static accessKey = 'bfede098';
 	public static libraryVersions = {

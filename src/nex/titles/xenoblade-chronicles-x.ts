@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class XenobladeChroniclesX extends Title {
-	public static name = 'Xenoblade Chronicles X';
+	public static displayName = 'Xenoblade Chronicles X';
 	public static gameServerID = '';
 	public static accessKey = '59d7be84';
 	public static libraryVersions = {

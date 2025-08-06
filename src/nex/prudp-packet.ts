@@ -111,6 +111,7 @@ export default class PRUDPPacket {
 
 	public serialize(): SerializedPRUDPPacket {
 		const serialized: SerializedPRUDPPacket = {
+			id: -1,
 			time: this.time,
 			version: this.version,
 			source_address: this.sourceAddress,

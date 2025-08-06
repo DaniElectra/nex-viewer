@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MARIOKART8 extends Title {
-	public static name = 'MARIO KART 8';
+	public static displayName = 'MARIO KART 8';
 	public static gameServerID = '';
 	public static accessKey = '25dbf96a';
 	public static libraryVersions = {

@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class WiiPartyU extends Title {
-	public static name = 'Wii Party U';
+	public static displayName = 'Wii Party U';
 	public static gameServerID = '';
 	public static accessKey = 'a5b77314';
 	public static libraryVersions = {

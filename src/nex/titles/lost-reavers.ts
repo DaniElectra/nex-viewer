@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class LOSTREAVERS extends Title {
-	public static name = 'LOST REAVERS';
+	public static displayName = 'LOST REAVERS';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

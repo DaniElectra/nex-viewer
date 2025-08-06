@@ -8,7 +8,7 @@ import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import UtilityProtocol from '@/nex/protocols/utility';
 
 export default class MarioKart8Deluxe extends Title {
-	public static name = 'Mario Kart 8 Deluxe';
+	public static displayName = 'Mario Kart 8 Deluxe';
 	public static gameServerID = '2b309e01';
 	public static accessKey = '09c1c475';
 	public static libraryVersions = {

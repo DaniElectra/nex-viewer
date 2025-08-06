@@ -25,7 +25,7 @@ export class Request {
 }
 
 export class Response {
-	public static name = 'AddFriendByName';
+	public static Name = 'AddFriendByName';
 
 	private friendRequest = new FriendRequest();
 	private friendInfo = new FriendInfo();

@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class DisneyINFINITY extends Title {
-	public static name = 'Disney INFINITY';
+	public static displayName = 'Disney INFINITY';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

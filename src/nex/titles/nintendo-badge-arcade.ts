@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class NintendoBadgeArcade extends Title {
-	public static name = 'Nintendo Badge Arcade';
+	public static displayName = 'Nintendo Badge Arcade';
 	public static gameServerID = '';
 	public static accessKey = '82d5962d';
 	public static libraryVersions = {

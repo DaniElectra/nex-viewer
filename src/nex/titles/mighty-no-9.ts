@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MightyNo9 extends Title {
-	public static name = 'Mighty No. 9';
+	public static displayName = 'Mighty No. 9';
 	public static gameServerID = '';
 	public static accessKey = 'bb980c2e';
 	public static libraryVersions = {

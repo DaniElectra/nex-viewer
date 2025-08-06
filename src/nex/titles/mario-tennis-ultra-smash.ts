@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MarioTennisUltraSmash extends Title {
-	public static name = 'Mario Tennis: Ultra Smash';
+	public static displayName = 'Mario Tennis: Ultra Smash';
 	public static gameServerID = '';
 	public static accessKey = 'c69b92a0';
 	public static libraryVersions = {

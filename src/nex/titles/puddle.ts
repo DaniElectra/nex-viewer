@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class Puddle extends Title {
-	public static name = 'Puddle';
+	public static displayName = 'Puddle';
 	public static gameServerID = '';
 	public static accessKey = 'afcffb5c';
 	public static libraryVersions = {

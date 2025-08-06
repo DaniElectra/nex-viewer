@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MariovsDonkeyKongTippingStars extends Title {
-	public static name = 'Mario vs. Donkey Kong Tipping Stars';
+	public static displayName = 'Mario vs. Donkey Kong Tipping Stars';
 	public static gameServerID = '';
 	public static accessKey = 'd8927c3f';
 	public static libraryVersions = {

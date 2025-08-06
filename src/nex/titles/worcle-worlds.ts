@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class WorcleWorlds extends Title {
-	public static name = 'Worcle Worlds';
+	public static displayName = 'Worcle Worlds';
 	public static gameServerID = '';
 	public static accessKey = 'd373e4dc';
 	public static libraryVersions = {

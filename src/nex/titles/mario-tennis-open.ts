@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MarioTennisOpen extends Title {
-	public static name = 'Mario Tennis Open';
+	public static displayName = 'Mario Tennis Open';
 	public static gameServerID = '';
 	public static accessKey = '0fabeff2';
 	public static libraryVersions = {

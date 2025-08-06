@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class StarWarsPinball extends Title {
-	public static name = 'Star Wars Pinball';
+	public static displayName = 'Star Wars Pinball';
 	public static gameServerID = '';
 	public static accessKey = 'ecd0e530';
 	public static libraryVersions = {

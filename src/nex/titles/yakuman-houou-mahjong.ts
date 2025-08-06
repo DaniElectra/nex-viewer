@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class YakumanHououMahjon extends Title {
-	public static name = '役満 鳳凰';
+	public static displayName = '役満 鳳凰';
 	public static gameServerID = '';
 	public static accessKey = '23aab2d3';
 	public static libraryVersions = {

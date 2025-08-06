@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class BIOHAZARDREVELATIONSUnveiledEdition extends Title {
-	public static name = 'BIOHAZARD REVELATIONS Unveiled Edition';
+	public static displayName = 'BIOHAZARD REVELATIONS Unveiled Edition';
 	public static gameServerID = '';
 	public static accessKey = '59d539a9';
 	public static libraryVersions = {

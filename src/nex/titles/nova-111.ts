@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class Nova111 extends Title {
-	public static name = 'Nova-111';
+	public static displayName = 'Nova-111';
 	public static gameServerID = '';
 	public static accessKey = 'bafe9856';
 	public static libraryVersions = {

@@ -11,7 +11,7 @@ export default class Title {
 	];
 
 	// * Stubs just to get getProtocolHandler working. This is actually set on the parent class
-	public static name: string;
+	public static displayName: string;
 	public static gameServerID: string;
 	public static accessKey: string;
 	public static libraryVersions: {
@@ -54,7 +54,7 @@ export default class Title {
 	// * For serializing when sending to the frontend
 	public static toJSON(): Record<string, any> {
 		return {
-			name: this.name,
+			name: this.displayName,
 			game_server_id: this.gameServerID,
 			access_key: this.accessKey,
 			library_versions: this.libraryVersions,

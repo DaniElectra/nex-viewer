@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class Trine2DirectorsCut extends Title {
-	public static name = 'Trine 2 Director\'s Cut';
+	public static displayName = 'Trine 2 Director\'s Cut';
 	public static gameServerID = '';
 	public static accessKey = 'f9c35adc';
 	public static libraryVersions = {

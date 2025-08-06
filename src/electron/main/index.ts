@@ -1,9 +1,8 @@
-// TODO - Should we just merge the "renderers" and "windows" folders?
-
 import path from 'node:path';
 import sourceMapSupport from 'source-map-support';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
-import createMenu from '@/windows/main/menu';
+import { electronApp, optimizer, is } from '@electron-toolkit/utils';
+import createMenu from '@/electron/main/menu';
 import settings from '@/settings';
 import type State from '@/types/state';
 
@@ -30,8 +29,10 @@ const state: State = {
 
 function createWindow(): void {
 	const window = new BrowserWindow({
+		autoHideMenuBar: true,
 		webPreferences: {
-			preload: path.join(__dirname, 'preload.js') // * Target the transpiled JS
+			preload: path.join(__dirname, '../preload/index.js'),
+			sandbox: false
 		}
 	});
 
@@ -45,11 +46,26 @@ function createWindow(): void {
 		}
 	});
 
+	window.on('ready-to-show', () => {
+		window.show();
+	});
+
 	window.maximize();
-	window.loadFile(path.join(__dirname, '../../renderers/main/index.html'));
+
+	if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+		window.loadURL(process.env['ELECTRON_RENDERER_URL']);
+	} else {
+		window.loadFile(path.join(__dirname, '../renderer/index.html'));
+	}
 }
 
 app.whenReady().then(() => {
+	electronApp.setAppUserModelId('com.electron');
+
+	app.on('browser-window-created', (_, window) => {
+		optimizer.watchWindowShortcuts(window);
+	});
+
 	createWindow();
 
 	app.on('activate', () => {

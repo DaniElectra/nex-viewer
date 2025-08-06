@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class HyruleWarriors extends Title {
-	public static name = 'Hyrule Warriors';
+	public static displayName = 'Hyrule Warriors';
 	public static gameServerID = '';
 	public static accessKey = '7fcc1f7c';
 	public static libraryVersions = {

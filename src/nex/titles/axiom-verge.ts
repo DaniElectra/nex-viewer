@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class AxiomVerge extends Title {
-	public static name = 'Axiom Verge';
+	public static displayName = 'Axiom Verge';
 	public static gameServerID = '';
 	public static accessKey = '24e0a63b';
 	public static libraryVersions = {

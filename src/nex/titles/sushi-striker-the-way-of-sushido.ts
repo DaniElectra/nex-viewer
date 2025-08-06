@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class SushiStrikerTheWayofSushido extends Title {
-	public static name = 'Sushi Striker The Way of Sushido';
+	public static displayName = 'Sushi Striker The Way of Sushido';
 	public static gameServerID = '';
 	public static accessKey = '06fb3395';
 	public static libraryVersions = {

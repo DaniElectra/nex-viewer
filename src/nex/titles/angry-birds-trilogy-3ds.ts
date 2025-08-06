@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class AngryBirdsTrilogy3DS extends Title {
-	public static name = 'Angry Birds Trilogy 3DS';
+	public static displayName = 'Angry Birds Trilogy 3DS';
 	public static gameServerID = '';
 	public static accessKey = 'ac4fbf0d';
 	public static libraryVersions = {

@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MonsterHunter3G extends Title {
-	public static name = 'Monster Hunter 3G';
+	public static displayName = 'Monster Hunter 3G';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

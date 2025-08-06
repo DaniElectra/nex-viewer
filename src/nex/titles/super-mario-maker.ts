@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class SuperMarioMaker extends Title {
-	public static name = 'Super Mario Maker';
+	public static displayName = 'Super Mario Maker';
 	public static gameServerID = '';
 	public static accessKey = '9f2b4678';
 	public static libraryVersions = {

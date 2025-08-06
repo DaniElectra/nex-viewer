@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class PokemonXY extends Title {
-	public static name = 'Pokémon X/Y';
+	public static displayName = 'Pokémon X/Y';
 	public static gameServerID = '';
 	public static accessKey = '876138df';
 	public static libraryVersions = {

@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class OlliOlli extends Title {
-	public static name = 'OlliOlli';
+	public static displayName = 'OlliOlli';
 	public static gameServerID = '';
 	public static accessKey = '60e5df12';
 	public static libraryVersions = {

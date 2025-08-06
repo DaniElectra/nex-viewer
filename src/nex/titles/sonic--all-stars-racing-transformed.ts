@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class SonicAllStarsRacingTransformed extends Title {
-	public static name = 'Sonic & All-Stars Racing Transformed';
+	public static displayName = 'Sonic & All-Stars Racing Transformed';
 	public static gameServerID = '';
 	public static accessKey = 'b26a3421';
 	public static libraryVersions = {

@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class WiiKaraokeU extends Title {
-	public static name = 'Wii Karaoke U';
+	public static displayName = 'Wii Karaoke U';
 	public static gameServerID = '';
 	public static accessKey = 'dfc5a4ac';
 	public static libraryVersions = {

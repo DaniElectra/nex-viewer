@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MarioSonicattheSochi2014OlympicWinterGames extends Title {
-	public static name = 'Mario & Sonic at the Sochi 2014 Olympic Winter Games';
+	public static displayName = 'Mario & Sonic at the Sochi 2014 Olympic Winter Games';
 	public static gameServerID = '';
 	public static accessKey = '585214a5';
 	public static libraryVersions = {

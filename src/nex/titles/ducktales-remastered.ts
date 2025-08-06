@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class DuckTalesRemastered extends Title {
-	public static name = 'DuckTales: Remastered';
+	public static displayName = 'DuckTales: Remastered';
 	public static gameServerID = '';
 	public static accessKey = '1294a96c';
 	public static libraryVersions = {

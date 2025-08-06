@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class PokemonRumbleWorld extends Title {
-	public static name = 'Pokémon Rumble World';
+	public static displayName = 'Pokémon Rumble World';
 	public static gameServerID = '';
 	public static accessKey = '844f1d0c';
 	public static libraryVersions = {

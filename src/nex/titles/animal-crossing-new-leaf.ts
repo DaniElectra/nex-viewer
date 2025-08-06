@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class AnimalCrossingNewLeaf extends Title {
-	public static name = 'Animal Crossing: New Leaf';
+	public static displayName = 'Animal Crossing: New Leaf';
 	public static gameServerID = '';
 	public static accessKey = 'd6f08b40';
 	public static libraryVersions = {

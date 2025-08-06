@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class PuyoPuyoTetris extends Title {
-	public static name = 'Puyo Puyo Tetris';
+	public static displayName = 'Puyo Puyo Tetris';
 	public static gameServerID = '';
 	public static accessKey = '4eb0ca36';
 	public static libraryVersions = {

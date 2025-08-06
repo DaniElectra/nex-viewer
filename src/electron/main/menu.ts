@@ -8,8 +8,11 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 	browserWindow.setTitle(`NEX Viewer - ${path}`);
 
 	const session = new Session();
+	let packetID = 0;
 
 	session.on('packet', (packet) => {
+		packet = JSON.parse(JSON.stringify(packet)); // TODO - This is a dirty nasty hack, including the whole "id" system. Needed for Vue though
+		packet.id = packetID++;
 		browserWindow.webContents.send('packet', JSON.stringify(packet));
 	});
 
@@ -107,7 +110,7 @@ export default function createMenu(state: State): Menu {
 							return;
 						}
 
-						openSession(result.filePaths[0], browserWindow, state);
+						openSession(result.filePaths[0], browserWindow as BrowserWindow, state);
 					}
 				},
 				{

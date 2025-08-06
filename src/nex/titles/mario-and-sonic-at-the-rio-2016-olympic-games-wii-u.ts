@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MarioSonicattheRio2016OlympicGamesWiiU extends Title {
-	public static name = 'Mario & Sonic at the Rio 2016 Olympic Games (Wii U)';
+	public static displayName = 'Mario & Sonic at the Rio 2016 Olympic Games (Wii U)';
 	public static gameServerID = '';
 	public static accessKey = '63fecb0f';
 	public static libraryVersions = {

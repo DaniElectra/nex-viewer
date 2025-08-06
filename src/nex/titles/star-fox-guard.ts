@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class StarFoxGuard extends Title {
-	public static name = 'Star Fox Guard';
+	public static displayName = 'Star Fox Guard';
 	public static gameServerID = '';
 	public static accessKey = '';
 	public static libraryVersions = {

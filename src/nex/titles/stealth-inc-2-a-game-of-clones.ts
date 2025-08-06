@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class StealthInc2AGameofClones extends Title {
-	public static name = 'Stealth Inc 2 A Game of Clones';
+	public static displayName = 'Stealth Inc 2 A Game of Clones';
 	public static gameServerID = '';
 	public static accessKey = '44adeb87';
 	public static libraryVersions = {

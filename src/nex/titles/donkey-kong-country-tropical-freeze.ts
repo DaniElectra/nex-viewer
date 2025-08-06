@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class DonkeyKongCountryTropicalFreeze extends Title {
-	public static name = 'Donkey Kong Country Tropical Freeze';
+	public static displayName = 'Donkey Kong Country Tropical Freeze';
 	public static gameServerID = '';
 	public static accessKey = '7fcf384a';
 	public static libraryVersions = {

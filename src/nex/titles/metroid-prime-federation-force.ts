@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class MetroidPrimeFederationForce extends Title {
-	public static name = 'Metroid Prime: Federation Force';
+	public static displayName = 'Metroid Prime: Federation Force';
 	public static gameServerID = '';
 	public static accessKey = 'f79fb3c5';
 	public static libraryVersions = {

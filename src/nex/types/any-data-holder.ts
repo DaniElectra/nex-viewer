@@ -12,7 +12,7 @@ export default class AnyDataHolder extends Structure {
 	private name = new RVString();
 	private length1 = new UInt32();
 	private length2 = new UInt32();
-	private objectData: RVType;
+	private objectData?: RVType;
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.name.extractFrom(stream);

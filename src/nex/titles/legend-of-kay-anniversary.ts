@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class LegendofKayAnniversary extends Title {
-	public static name = 'Legend of Kay Anniversary';
+	public static displayName = 'Legend of Kay Anniversary';
 	public static gameServerID = '';
 	public static accessKey = '478232f3';
 	public static libraryVersions = {

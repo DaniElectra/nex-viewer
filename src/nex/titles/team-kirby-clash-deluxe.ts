@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class TeamKirbyClashDeluxe extends Title {
-	public static name = 'Team Kirby Clash Deluxe';
+	public static displayName = 'Team Kirby Clash Deluxe';
 	public static gameServerID = '';
 	public static accessKey = 'e0c85605';
 	public static libraryVersions = {

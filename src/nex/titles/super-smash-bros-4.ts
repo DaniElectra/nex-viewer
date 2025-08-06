@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 
 export default class SuperSmashBros4 extends Title {
-	public static name = 'Super Smash Bros. 4';
+	public static displayName = 'Super Smash Bros. 4';
 	public static gameServerID = '';
 	public static accessKey = '2869ba38';
 	public static libraryVersions = {

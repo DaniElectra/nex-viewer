@@ -4,7 +4,7 @@ import Friends3DSProtocol from '@/nex/protocols/friends-3ds';
 import FriendsWiiUProtocol from '@/nex/protocols/friends-wiiu';
 
 export default class FriendsNintendoNetwork extends Title {
-	public static name = 'Friends (Nintendo Network)';
+	public static displayName = 'Friends (Nintendo Network)';
 	public static gameServerID = '';
 	public static accessKey = 'ridfebb9';
 	public static libraryVersions = {
