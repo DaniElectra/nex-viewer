@@ -21,7 +21,7 @@ const LINKTYPE_ETHERNET = 0x0001;
 export default class PCAPNGParser {
 	private buffer: Buffer;
 	private stream: ByteStream;
-	private currentSection: SectionHeaderBlock;
+	private currentSection?: SectionHeaderBlock;
 
 	constructor(buffer: Buffer) {
 		this.buffer = buffer;
@@ -140,6 +140,10 @@ export default class PCAPNGParser {
 	}
 
 	private parseEnhancedPacketBlock(): EnhancedPacketBlock {
+		if (!this.currentSection) {
+			throw new Error('Failed to parse EnhancedPacketBlock. No SectionHeaderBlock seen yet');
+		}
+
 		const blockStart = this.stream.pos();
 		const magic = this.readUInt32();
 
@@ -216,6 +220,10 @@ export default class PCAPNGParser {
 	}
 
 	private parseSimplePacketBlock(): SimplePacketBlock {
+		if (!this.currentSection) {
+			throw new Error('Failed to parse SimplePacketBlock. No SectionHeaderBlock seen yet');
+		}
+
 		const magic = this.readUInt32();
 
 		if (magic !== BLOCK_TYPE_SIMPLE_PACKET) {
@@ -368,6 +376,10 @@ export default class PCAPNGParser {
 					break;
 
 				case BLOCK_TYPE_INTERFACE_DESCRIPTION:
+					if (!this.currentSection) {
+						throw new Error('Failed to parse InterfaceDescriptionBlock. No SectionHeaderBlock seen yet');
+					}
+
 					this.currentSection.interfaces.push(this.parseInterfaceDescriptionBlock());
 					break;
 
