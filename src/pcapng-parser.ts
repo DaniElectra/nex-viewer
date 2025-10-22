@@ -7,6 +7,9 @@ import type {
 	EthernetInterface
 } from '@/types/pcapng-parser';
 
+const BOM_BE = 0x4D3C2B1A;
+const BOM_LE = 0x1A2B3C4D;
+
 const BLOCK_TYPE_SECTION_HEADER = 0x0A0D0D0A;
 const BLOCK_TYPE_INTERFACE_DESCRIPTION = 0x00000001;
 const BLOCK_TYPE_ENHANCED_PACKET = 0x00000006;
@@ -74,13 +77,29 @@ export default class PCAPNGParser {
 			throw new Error(`Invalid PCAP magic. Expected 0x${expected}, got 0x${magicHex}`);
 		}
 
-		const blockLength = this.readUInt32();
+		this.stream.skip(4); // * Skip the block length at first to read the BOM first
+
 		const bom = this.readUInt32();
 
-		if (bom !== 0x1A2B3C4D && bom !== 0x4D3C2B1A) {
+		if (bom !== BOM_LE && bom !== BOM_BE) {
 			const bomHex = magic.toString(16).toLocaleUpperCase();
 			throw new Error(`Invalid SHB BOM. Expected either 0x1A2B3C4D or 0x4D3C2B1A, got 0x${bomHex}`);
 		}
+
+		// * Hack to get the BOM parsing working for this block
+		this.currentSection = {
+			be: bom === BOM_BE,
+			interfaces: [],
+			versionMajor: 0,
+			versionMinor: 0,
+			options: new Map()
+		};
+
+		this.stream.skip(-8); // * Skip back to read the actual block length
+
+		const blockLength = this.readUInt32();
+
+		this.stream.skip(4); // * Then skip the already read BOM
 
 		const versionMajor = this.readUInt16();
 		const versionMinor = this.readUInt16();
@@ -98,7 +117,7 @@ export default class PCAPNGParser {
 		}
 
 		return {
-			be: bom === 0x4D3C2B1A,
+			be: bom === BOM_BE,
 			interfaces: [],
 			versionMajor,
 			versionMinor,
