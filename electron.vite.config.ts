@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
+// @ts-expect-error - `@vitejs/plugin-vue` is installed but TypeScript says it can't find its types for some reason
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({

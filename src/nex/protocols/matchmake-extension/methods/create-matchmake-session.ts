@@ -14,10 +14,10 @@ export class Request {
 
 	private anyGathering = new AnyDataHolder();
 	private strMessage = new RVString();
-	private participationCount: UInt16;
+	private participationCount?: UInt16;
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.anyGathering.extractFrom(stream);
 		this.strMessage.extractFrom(stream);
@@ -46,10 +46,10 @@ export class Response {
 	public static Name = 'CreateMatchmakeSession';
 
 	private gid = new UInt32();
-	private sessionKey: RVBuffer;
+	private sessionKey?: RVBuffer;
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.gid.extractFrom(stream);
 

@@ -3,7 +3,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class Bool {
 	public readonly typeName = 'Bool';
 
-	public value: boolean;
+	public value?: boolean;
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.value = stream.readBoolean();

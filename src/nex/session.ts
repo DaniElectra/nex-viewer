@@ -441,7 +441,8 @@ export default class Session extends EventEmitter {
 			) {
 				packet.fromClientToServer = true;
 				packet.fromServerToClient = false;
-				return connection;
+
+				return true;
 			}
 
 			if (
@@ -456,8 +457,11 @@ export default class Session extends EventEmitter {
 			) {
 				packet.fromClientToServer = false;
 				packet.fromServerToClient = true;
-				return connection;
+
+				return true;
 			}
+
+			return false;
 		});
 	}
 }

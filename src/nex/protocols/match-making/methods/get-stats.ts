@@ -17,7 +17,7 @@ export class Request {
 	private lstColumns = new List(new UInt8());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.idGathering.extractFrom(stream);
 		this.lstParticipants.extractFrom(stream);
@@ -40,7 +40,7 @@ export class Response {
 	private plstStats = new List(new GatheringStats());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.retval.extractFrom(stream);
 		this.plstStats.extractFrom(stream);

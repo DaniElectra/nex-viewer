@@ -13,7 +13,7 @@ export class Request {
 	private stringSettingIndex = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.stringSettingIndex.extractFrom(stream);
 	}
@@ -31,7 +31,7 @@ export class Response {
 	private stringSettings = new RVMap(new UInt16(), new RVString());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.stringSettings.extractFrom(stream);
 	}

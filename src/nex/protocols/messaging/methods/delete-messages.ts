@@ -13,7 +13,7 @@ export class Request {
 	private lstMessagesToDelete = new List(new UInt32());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.recipient.extractFrom(stream);
 		this.lstMessagesToDelete.extractFrom(stream);

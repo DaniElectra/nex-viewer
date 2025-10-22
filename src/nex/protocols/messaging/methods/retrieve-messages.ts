@@ -16,7 +16,7 @@ export class Request {
 	private bLeaveOnServer = new Bool();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.recipient.extractFrom(stream);
 		this.lstMsgIDs.extractFrom(stream);
@@ -38,7 +38,7 @@ export class Response {
 	private lstMessages = new List(new AnyDataHolder());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstMessages.extractFrom(stream);
 	}

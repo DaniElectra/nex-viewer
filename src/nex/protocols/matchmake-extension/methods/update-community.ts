@@ -10,7 +10,7 @@ export class Request {
 	private community = new PersistentGathering();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.community.extractFrom(stream);
 	}

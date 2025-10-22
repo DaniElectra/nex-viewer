@@ -15,10 +15,10 @@ export class Request {
 	private gid = new UInt32();
 	private strMessage = new RVString();
 	private dontCareMyBlackList = new Bool();
-	private participationCount: UInt16;
+	private participationCount?: UInt16;
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.gid.extractFrom(stream);
 		this.strMessage.extractFrom(stream);
@@ -51,7 +51,7 @@ export class Response {
 	private sessionKey = new RVBuffer();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.sessionKey.extractFrom(stream);
 	}

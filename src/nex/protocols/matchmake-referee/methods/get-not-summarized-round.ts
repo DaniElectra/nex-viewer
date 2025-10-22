@@ -22,7 +22,7 @@ export class Response {
 	private rounds = new List(new MatchmakeRefereeRound());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.rounds.extractFrom(stream);
 	}

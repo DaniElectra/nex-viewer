@@ -12,7 +12,7 @@ export class Request {
 	private id = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.id.extractFrom(stream);
 	}
@@ -31,7 +31,7 @@ export class Response {
 	private pGathering = new AnyDataHolder();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.bResult.extractFrom(stream);
 		this.pGathering.extractFrom(stream);

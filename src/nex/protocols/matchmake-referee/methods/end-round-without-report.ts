@@ -10,7 +10,7 @@ export class Request {
 	private roundId = new UInt64();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.roundId.extractFrom(stream);
 	}

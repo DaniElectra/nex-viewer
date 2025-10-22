@@ -5,7 +5,7 @@ import type SerializedPacket from '@/types/nex/serialized-packet';
 export default class RawRMCPacket extends PRUDPPacket {
 	public readonly version = -1;
 
-	public titleID: string;
+	public titleID!: string;
 
 	constructor(stream: ByteStream) {
 		super(stream);

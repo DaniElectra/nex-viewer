@@ -14,7 +14,7 @@ export class Request {
 	private violationCode = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pid.extractFrom(stream);
 		this.userName.extractFrom(stream);

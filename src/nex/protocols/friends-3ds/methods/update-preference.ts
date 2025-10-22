@@ -12,7 +12,7 @@ export class Request {
 	private showPlayedTitles = new Bool();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.showOnlinePresence.extractFrom(stream);
 		this.showCurrentlyPlayingTitle.extractFrom(stream);

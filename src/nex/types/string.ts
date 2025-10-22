@@ -4,7 +4,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class RVString {
 	public readonly typeName = 'String';
 
-	public value: string;
+	public value?: string;
 
 	public extractFrom(stream: NEXByteStream): void {
 		let length = 0;

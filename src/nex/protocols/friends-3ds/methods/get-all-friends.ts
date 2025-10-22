@@ -22,7 +22,7 @@ export class Response {
 	private friendRelationships = new List(new FriendRelationship());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.friendRelationships.extractFrom(stream);
 	}

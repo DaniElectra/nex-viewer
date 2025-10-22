@@ -24,7 +24,7 @@ export class Ticket {
 }
 
 export function keyDerivationOld(pid: bigint, password: string): Buffer {
-	let key = Buffer.from(password);
+	let key: Buffer = Buffer.from(password);
 
 	for (let i = 0n; i < 65000n + pid % 1024n; i++) {
 		key = crypto.createHash('md5').update(key).digest();

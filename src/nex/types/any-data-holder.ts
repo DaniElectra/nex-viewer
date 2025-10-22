@@ -19,10 +19,10 @@ export default class AnyDataHolder extends Structure {
 		this.length1.extractFrom(stream);
 		this.length2.extractFrom(stream);
 
-		const objectStream = new NEXByteStream(stream.read(this.length2.value), stream.title);
+		const objectStream = new NEXByteStream(stream.read(this.length2.value!), stream.title);
 
-		if (AnyDataHolder.Classes[this.name.value]) {
-			this.objectData = new AnyDataHolder.Classes[this.name.value]();
+		if (AnyDataHolder.Classes[this.name.value!]) {
+			this.objectData = new AnyDataHolder.Classes[this.name.value!]();
 
 			this.objectData.extractFrom(objectStream);
 		}

@@ -12,7 +12,7 @@ export class Request {
 	private unknown = new List(new UInt32());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.unknown.extractFrom(stream);
 	}
@@ -30,7 +30,7 @@ export class Response {
 	private settings = new List(new PrincipalRequestBlockSetting());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.settings.extractFrom(stream);
 	}

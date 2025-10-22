@@ -14,7 +14,7 @@ export class Request {
 	private resultRange = new ResultRange();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.strDescription.extractFrom(stream);
 		this.resultRange.extractFrom(stream);
@@ -34,7 +34,7 @@ export class Response {
 	private lstGathering = new List(new AnyDataHolder());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstGathering.extractFrom(stream);
 	}

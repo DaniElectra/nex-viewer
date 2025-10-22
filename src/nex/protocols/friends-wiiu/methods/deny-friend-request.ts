@@ -11,7 +11,7 @@ export class Request {
 	private id = new UInt64();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.id.extractFrom(stream);
 	}
@@ -29,7 +29,7 @@ export class Response {
 	private blacklistedPrincipal = new BlacklistedPrincipal();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.blacklistedPrincipal.extractFrom(stream);
 	}

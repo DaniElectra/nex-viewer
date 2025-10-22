@@ -21,7 +21,7 @@ export class Response {
 	private cardID = new UInt64();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.cardID.extractFrom(stream);
 	}

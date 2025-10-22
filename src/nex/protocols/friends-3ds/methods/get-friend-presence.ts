@@ -12,7 +12,7 @@ export class Request {
 	private pids = new List(new PID());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pids.extractFrom(stream);
 	}
@@ -30,7 +30,7 @@ export class Response {
 	private friendPresences = new List(new FriendPresence());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.friendPresences.extractFrom(stream);
 	}

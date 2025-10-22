@@ -13,7 +13,7 @@ export class Request {
 	private oUserMessage = new AnyDataHolder();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.oUserMessage.extractFrom(stream);
 	}
@@ -33,7 +33,7 @@ export class Response {
 	private lstParticipants = new List(new PID());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.oModifiedMessage.extractFrom(stream);
 		this.lstSandboxNodeId.extractFrom(stream);

@@ -7,14 +7,14 @@ export default class Substream {
 	private pendingservertoClientPackets: Record<number, Packet> = {};
 	private clientToServerSequenceIDCounter = new Counter(1);
 	private servertoClientSequenceIDCounter = new Counter(1);
-	private clientToServerFragmentedPayload = Buffer.alloc(0);
-	private servertoClientFragmentedPayload = Buffer.alloc(0);
+	private clientToServerFragmentedPayload: Buffer = Buffer.alloc(0);
+	private servertoClientFragmentedPayload: Buffer = Buffer.alloc(0);
 
 	public clientToServerSeenPackets: Packet[] = [];
 	public servertoClientSeenPackets: Packet[] = [];
 
-	public clientToServerCipher: RC4Stream;
-	public servertoClientCipher: RC4Stream;
+	public clientToServerCipher?: RC4Stream;
+	public servertoClientCipher?: RC4Stream;
 
 	public setKey(key: Buffer | string): void {
 		// TODO - Support more than just RC4
@@ -55,6 +55,10 @@ export default class Substream {
 
 		const cipher = packet.fromClientToServer ? this.clientToServerCipher : this.servertoClientCipher;
 		let payload = packet.payload;
+
+		if (!cipher) {
+			throw new Error('No cipher set on substream. `setKey` not called');
+		}
 
 		// * Raw RMC packets and PRUDP Lite do not encrypt payloads
 		if ((packet.version === 0 || packet.version === 1) && payload) {

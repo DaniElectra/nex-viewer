@@ -11,7 +11,7 @@ export class Request {
 	private roundId = new UInt64();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.roundId.extractFrom(stream);
 	}
@@ -29,7 +29,7 @@ export class Response {
 	private round = new MatchmakeRefereeRound();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.round.extractFrom(stream);
 	}

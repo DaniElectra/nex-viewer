@@ -9,7 +9,7 @@ export class Request {
 	private oEvent = new NotificationEvent();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.oEvent.extractFrom(stream);
 	}

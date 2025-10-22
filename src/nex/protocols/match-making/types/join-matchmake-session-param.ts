@@ -21,8 +21,8 @@ export default class JoinMatchmakeSessionParam extends Structure {
 	private strSystemPassword = new RVString();
 	private joinMessage = new RVString();
 	private participationCount = new UInt16();
-	private extraParticipants: UInt16; // * SV 1 / NEX 4.0
-	private blockListParam: MatchmakeBlockListParam; // * NEX 4.0
+	private extraParticipants?: UInt16; // * SV 1 / NEX 4.0
+	private blockListParam?: MatchmakeBlockListParam; // * NEX 4.0
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.extractHeaderFrom(stream);

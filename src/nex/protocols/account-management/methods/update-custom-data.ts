@@ -12,7 +12,7 @@ export class Request {
 	private oPrivateData = new AnyDataHolder();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.oPublicData.extractFrom(stream);
 		this.oPrivateData.extractFrom(stream);
@@ -32,7 +32,7 @@ export class Response {
 	private retval = new QResult();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.retval.extractFrom(stream);
 	}

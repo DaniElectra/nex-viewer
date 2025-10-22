@@ -22,7 +22,7 @@ export class Request {
 	private birthday = new DateTime();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.NNAInfo.extractFrom(stream);
 		this.nintendoPresence.extractFrom(stream);
@@ -52,7 +52,7 @@ export class Response {
 	private unknown2 = new Bool();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.principalPreference.extractFrom(stream);
 		this.comment.extractFrom(stream);

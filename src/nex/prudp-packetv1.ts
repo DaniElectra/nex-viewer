@@ -6,10 +6,10 @@ import type { SerializedPRUDPV1Packet } from '@/types/nex/serialized-packet';
 export default class PRUDPPacketV1 extends PRUDPPacket {
 	public readonly version = 1;
 
-	private optionsLength: number;
-	private payloadLength: number;
-	private headerBytes: Buffer; // * Used for the signature calculation
-	private optionsBytes: Buffer; // * Used for the signature calculation
+	private optionsLength!: number;
+	private payloadLength!: number;
+	private headerBytes!: Buffer; // * Used for the signature calculation
+	private optionsBytes!: Buffer; // * Used for the signature calculation
 	private supportedFunctions?: Buffer;
 	private initialUnreliableSequenceID?: number;
 	private maximumSubstreamID?: number;

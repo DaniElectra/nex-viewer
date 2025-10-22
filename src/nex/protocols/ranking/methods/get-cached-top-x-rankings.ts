@@ -14,7 +14,7 @@ export class Request {
 	private orderParams = new List(new RankingOrderParam());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.categories.extractFrom(stream);
 		this.orderParams.extractFrom(stream);
@@ -34,7 +34,7 @@ export class Response {
 	private pResults = new List(new RankingCachedResult());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pResults.extractFrom(stream);
 	}

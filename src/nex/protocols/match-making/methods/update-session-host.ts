@@ -12,7 +12,7 @@ export class Request {
 	private isMigrateOwner = new Bool();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.gid.extractFrom(stream);
 		this.isMigrateOwner.extractFrom(stream);

@@ -11,7 +11,7 @@ export class Request {
 	private playedGames = new List(new PlayedGame());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.playedGames.extractFrom(stream);
 	}

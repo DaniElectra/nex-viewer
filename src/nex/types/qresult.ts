@@ -298,18 +298,18 @@ const names: Record<number, string> = {
 export default class QResult {
 	public readonly typeName = 'QResult';
 
-	public code: number;
+	public code?: number;
 
 	public extractFrom(stream: ByteStream): void {
 		this.code = stream.readUInt32LE();
 	}
 
 	public isSuccess(): boolean {
-		return (this.code & (1 << 31)) === 0;
+		return ((this.code || 0x00010001) & (1 << 31)) === 0;
 	}
 
 	public isError(): boolean {
-		return (this.code & (1 << 31)) !== 0;
+		return ((this.code || 0x00010001) & (1 << 31)) !== 0;
 	}
 
 	public name(): string {
@@ -317,7 +317,7 @@ export default class QResult {
 			return 'Success';
 		}
 
-		const code = this.code & ~ERROR_MASK;
+		const code = (this.code || 0x00010001) & ~ERROR_MASK;
 
 		if (!names[code]) {
 			return `Unknown Error (0x${code.toString(16)})`;

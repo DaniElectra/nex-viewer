@@ -11,7 +11,7 @@ export class Request {
 	private comment = new Comment();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.comment.extractFrom(stream);
 	}
@@ -29,7 +29,7 @@ export class Response {
 	private updated = new DateTime();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.updated.extractFrom(stream);
 	}

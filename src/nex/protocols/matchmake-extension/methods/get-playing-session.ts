@@ -12,7 +12,7 @@ export class Request {
 	private lstPid = new List(new PID());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstPid.extractFrom(stream);
 	}
@@ -30,7 +30,7 @@ export class Response {
 	private lstPlayingSession = new List(new PlayingSession());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstPlayingSession.extractFrom(stream);
 	}

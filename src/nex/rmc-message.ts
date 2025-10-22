@@ -7,18 +7,18 @@ export default class RMCMessage {
 	static readonly REQUEST = 0;
 	static readonly RESPONSE = 1;
 
-	private _type: 0 | 1;
-	private _protocolID: number;
+	private _type!: 0 | 1;
+	private _protocolID!: number;
 	private _extendedProtocolID?: number;
-	private _callID: number;
+	private _callID!: number;
 	private _error?: QResult;
 	private _parametersData?: Buffer;
 
 	public parameters?: any;
-	public methodName: string;
-	public methodID: number;
-	public protocolName: string;
-	public connection: Connection;
+	public methodName?: string;
+	public methodID!: number;
+	public protocolName?: string;
+	public connection?: Connection;
 
 	get type(): 0 | 1 {
 		return this._type;
@@ -103,9 +103,9 @@ export default class RMCMessage {
 		const serialized: SerializedRMCMessage = {
 			type: this._type,
 			protocol_id: this._protocolID,
-			protocol_name: this.protocolName,
+			protocol_name: this.protocolName || '',
 			method_id: this.methodID,
-			method_name: this.methodName,
+			method_name: this.methodName || '',
 			call_id: this._callID
 		};
 
@@ -115,7 +115,7 @@ export default class RMCMessage {
 
 		if (this._error) {
 			serialized.error = {
-				code: this._error.code,
+				code: this._error.code || 0,
 				name: this._error.name()
 			};
 		}

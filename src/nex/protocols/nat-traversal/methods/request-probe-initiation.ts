@@ -10,7 +10,7 @@ export class Request {
 	private urlTargetList = new List(new StationURL());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.urlTargetList.extractFrom(stream);
 	}

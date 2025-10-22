@@ -14,7 +14,7 @@ export class Request {
 	private includeLoginUser = new Bool();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstPrincipalId.extractFrom(stream);
 		this.includeLoginUser.extractFrom(stream);
@@ -34,7 +34,7 @@ export class Response {
 	private lstSimplePlayingSession = new List(new SimplePlayingSession());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstSimplePlayingSession.extractFrom(stream);
 	}

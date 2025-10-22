@@ -22,7 +22,7 @@ export class Response {
 	private pUniqueIdInfo = new List(new UniqueIdInfo());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pUniqueIdInfo.extractFrom(stream);
 	}

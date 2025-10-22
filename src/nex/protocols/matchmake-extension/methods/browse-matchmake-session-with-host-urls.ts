@@ -15,7 +15,7 @@ export class Request {
 	private resultRange = new ResultRange();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.searchCriteria.extractFrom(stream);
 		this.resultRange.extractFrom(stream);
@@ -36,7 +36,7 @@ export class Response {
 	private lstGatheringUrls = new List(new GatheringURLs());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstGathering.extractFrom(stream);
 		this.lstGatheringUrls.extractFrom(stream);

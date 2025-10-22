@@ -19,7 +19,7 @@ export class Request {
 	private uniqueId = new UInt64();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.nexUniqueIdList.extractFrom(stream);
 		this.rankingMode.extractFrom(stream);
@@ -45,7 +45,7 @@ export class Response {
 	private pResult = new RankingResult();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pResult.extractFrom(stream);
 	}

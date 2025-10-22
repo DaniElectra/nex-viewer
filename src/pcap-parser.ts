@@ -10,15 +10,15 @@ export default class PCAPParser {
 	private buffer: Buffer;
 	private stream: ByteStream;
 	private be = false;
-	private packetStartOffset: number;
-	private linkLayerSize: number;
+	private packetStartOffset!: number;
+	private linkLayerSize!: number;
 
-	public versionMajor: number;
-	public versionMinor: number;
-	public thisZone: number;
-	public sigfigs: number;
-	public maxPacketLength: number;
-	public linkLayerType: number;
+	public versionMajor!: number;
+	public versionMinor!: number;
+	public thisZone!: number;
+	public sigfigs!: number;
+	public maxPacketLength!: number;
+	public linkLayerType!: number;
 
 	constructor(buffer: Buffer) {
 		this.buffer = buffer;

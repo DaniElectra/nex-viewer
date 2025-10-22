@@ -11,7 +11,7 @@ export class Request {
 	private parameters: Buffer;
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.parameters = stream.readRest(); // * The structure for this request is unknown, just send show all of this in the UI
 	}
@@ -30,7 +30,7 @@ export class Response {
 	private unknown = new List(new UInt32());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.unknown.extractFrom(stream);
 	}

@@ -3,9 +3,9 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class PID {
 	public readonly typeName = 'PID';
 
-	public value: bigint;
+	public value?: bigint;
 
-	private size: number;
+	private size?: number;
 
 	public extractFrom(stream: NEXByteStream): void {
 		if (stream.title.settings.pid_size === 8) {

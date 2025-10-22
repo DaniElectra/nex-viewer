@@ -23,7 +23,7 @@ export class Response {
 	private oAccountData = new AccountData();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.retval.extractFrom(stream);
 		this.oAccountData.extractFrom(stream);

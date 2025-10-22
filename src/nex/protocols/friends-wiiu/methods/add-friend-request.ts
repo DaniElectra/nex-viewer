@@ -22,7 +22,7 @@ export class Request {
 	private unknown4 = new DateTime();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pid.extractFrom(stream);
 		this.unknown1.extractFrom(stream);
@@ -53,7 +53,7 @@ export class Response {
 	private friendInfo = new FriendInfo();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.friendRequest.extractFrom(stream);
 		this.friendInfo.extractFrom(stream);

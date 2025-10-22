@@ -12,7 +12,7 @@ export class Request {
 	private newValue = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.gid.extractFrom(stream);
 		this.attribIndex.extractFrom(stream);

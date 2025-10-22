@@ -14,20 +14,20 @@ export default class MatchmakeSessionSearchCriteria extends Structure {
 
 	private m_Attribs = new List(new RVString());
 	private m_GameMode = new RVString();
-	private m_MinParticipants: RVString; // * NEX 2.0
-	private m_MaxParticipants: RVString; // * NEX 2.0
+	private m_MinParticipants?: RVString; // * NEX 2.0
+	private m_MaxParticipants?: RVString; // * NEX 2.0
 	private m_MatchmakeSystemType = new RVString();
 	private m_VacantOnly = new Bool();
 	private m_ExcludeLocked = new Bool();
 	private m_ExcludeNonHostPid = new Bool();
-	private m_SelectionMethod: UInt32; // * NEX 3.0
-	private m_VacantParticipants: UInt16; // * NEX 3.4
-	private m_MatchmakeParam: MatchmakeParam; // * NEX 3.6 & revision 1
-	private m_ExcludeUserPasswordSet: Bool; // * NEX 3.7 & revision 2
-	private m_ExcludeSystemPasswordSet: Bool; // * NEX 3.7 & revision 2
-	private m_ReferGid: UInt32; // * NEX 3.8 & revision 3
-	private m_Codeword: RVString; // * NEX 4.0
-	private m_ResultRange: ResultRange; // * NEX 4.0
+	private m_SelectionMethod?: UInt32; // * NEX 3.0
+	private m_VacantParticipants?: UInt16; // * NEX 3.4
+	private m_MatchmakeParam?: MatchmakeParam; // * NEX 3.6 & revision 1
+	private m_ExcludeUserPasswordSet?: Bool; // * NEX 3.7 & revision 2
+	private m_ExcludeSystemPasswordSet?: Bool; // * NEX 3.7 & revision 2
+	private m_ReferGid?: UInt32; // * NEX 3.8 & revision 3
+	private m_Codeword?: RVString; // * NEX 4.0
+	private m_ResultRange?: ResultRange; // * NEX 4.0
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.extractHeaderFrom(stream);

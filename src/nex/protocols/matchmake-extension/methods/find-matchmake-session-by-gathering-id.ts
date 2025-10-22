@@ -12,7 +12,7 @@ export class Request {
 	private lstGid = new List(new UInt32());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstGid.extractFrom(stream);
 	}
@@ -30,7 +30,7 @@ export class Response {
 	private lstMatchmakeSession = new List(new MatchmakeSession());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstMatchmakeSession.extractFrom(stream);
 	}

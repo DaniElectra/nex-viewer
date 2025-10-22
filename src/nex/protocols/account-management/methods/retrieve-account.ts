@@ -24,7 +24,7 @@ export class Response {
 	private oPrivateData = new AnyDataHolder();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.oAccountData.extractFrom(stream);
 		this.oPublicData.extractFrom(stream);

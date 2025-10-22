@@ -12,7 +12,7 @@ export class Request {
 	private friendInfos = new List(new FriendInfo());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.friendInfos.extractFrom(stream);
 	}
@@ -30,7 +30,7 @@ export class Response {
 	private comments = new List(new FriendComment());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.comments.extractFrom(stream);
 	}

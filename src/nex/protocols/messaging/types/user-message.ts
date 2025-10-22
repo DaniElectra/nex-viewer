@@ -12,7 +12,7 @@ export default class UserMessage extends Data {
 		return 'UserMessage';
 	}
 
-	private libraryVersion: string;
+	private libraryVersion?: string;
 	private m_uiID = new UInt32();
 	private m_idRecipient = new UInt32();
 	private m_uiRecipientType = new UInt32();
@@ -63,7 +63,7 @@ export default class UserMessage extends Data {
 			}
 		};
 
-		if (semver.satisfies(this.libraryVersion, '<4.0.0')) {
+		if (this.libraryVersion && semver.satisfies(this.libraryVersion, '<4.0.0')) {
 			json.__fields['m_idRecipient'] = this.m_idRecipient;
 			json.__fields['m_uiRecipientType'] = this.m_uiRecipientType;
 		}
@@ -76,7 +76,7 @@ export default class UserMessage extends Data {
 		json.__fields['m_strSubject'] = this.m_strSubject;
 		json.__fields['m_strSender'] = this.m_strSender;
 
-		if (semver.satisfies(this.libraryVersion, '>=4.0.0')) {
+		if (this.libraryVersion && semver.satisfies(this.libraryVersion, '>=4.0.0')) {
 			json.__fields['m_messageRecipient'] = this.m_messageRecipient;
 		}
 

@@ -12,7 +12,7 @@ export class Request {
 	private name = new RVString();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.name.extractFrom(stream);
 	}
@@ -31,7 +31,7 @@ export class Response {
 	private friendInfo = new FriendInfo();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.friendRequest.extractFrom(stream);
 		this.friendInfo.extractFrom(stream);

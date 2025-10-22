@@ -6,8 +6,8 @@ import type { SerializedPRUDPLitePacket } from '@/types/nex/serialized-packet';
 export default class PRUDPPacketLite extends PRUDPPacket {
 	public readonly version = 2;
 
-	private optionsLength: number;
-	private payloadLength: number;
+	private optionsLength!: number;
+	private payloadLength!: number;
 	private supportedFunctions?: Buffer;
 	public liteSignature?: Buffer;
 

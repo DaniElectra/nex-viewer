@@ -3,7 +3,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class Double {
 	public readonly typeName = 'Double';
 
-	public value: number;
+	public value?: number;
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.value = stream.readDoubleLE();

@@ -10,7 +10,7 @@ export class Request {
 	private updateMatchmakeSessionParam = new UpdateMatchmakeSessionParam();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.updateMatchmakeSessionParam.extractFrom(stream);
 	}

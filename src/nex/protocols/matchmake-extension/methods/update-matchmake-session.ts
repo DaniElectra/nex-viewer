@@ -10,7 +10,7 @@ export class Request {
 	private anyGathering = new AnyDataHolder();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.anyGathering.extractFrom(stream);
 	}

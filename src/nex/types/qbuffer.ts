@@ -3,7 +3,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class QBuffer {
 	public readonly typeName = 'QBuffer';
 
-	private value: Buffer;
+	private value?: Buffer;
 
 	public extractFrom(stream: NEXByteStream): void {
 		const length = stream.readUInt16LE();
@@ -19,7 +19,7 @@ export default class QBuffer {
 		return {
 			__displayTypeName: this.typeName,
 			__typeName: this.typeName,
-			__value: [...this.value.values()]
+			__value: this.value ? [...this.value.values()] : []
 		};
 	}
 }

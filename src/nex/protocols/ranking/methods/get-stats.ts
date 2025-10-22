@@ -14,7 +14,7 @@ export class Request {
 	private flags = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.category.extractFrom(stream);
 		this.orderParam.extractFrom(stream);
@@ -36,7 +36,7 @@ export class Response {
 	private pStats = new RankingStats();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pStats.extractFrom(stream);
 	}

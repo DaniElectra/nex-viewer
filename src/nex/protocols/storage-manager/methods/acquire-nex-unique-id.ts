@@ -12,7 +12,7 @@ export class Request {
 	private slot = new UInt8();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.slot.extractFrom(stream);
 	}
@@ -31,7 +31,7 @@ export class Response {
 	private firstTime = new Bool();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.cardID.extractFrom(stream);
 		this.firstTime.extractFrom(stream);

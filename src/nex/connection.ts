@@ -28,12 +28,12 @@ export default class Connection {
 	public mainSecureStation?: StationURL;
 	public specialSecureStation?: StationURL; // TODO - Currently unused
 	public cipherKey: Buffer | string = 'CD&ML';
-	public sessionKey = Buffer.alloc(0);
+	public sessionKey: Buffer = Buffer.alloc(0);
 
 	private clientSubstreams: Record<number, Substream> = {};
 	private serverSubstreams: Record<number, Substream> = {};
-	private serverConnectionSignature = Buffer.alloc(0);
-	private clientConnectionSignature = Buffer.alloc(0);
+	private serverConnectionSignature: Buffer = Buffer.alloc(0);
+	private clientConnectionSignature: Buffer = Buffer.alloc(0);
 	private ticketRequestPIDs: Record<number, bigint> = {}; // * Track the PIDs of users tickets are requested for with TicketGranting::RequestTicket. Key is the RMC call ID, value is PID
 
 	private reset(): void {
@@ -138,6 +138,10 @@ export default class Connection {
 				}
 			}
 
+			if (!this.title) {
+				throw new Error('Failed to find title for network dump');
+			}
+
 			let packets: Packet[];
 			const substreamID = packet.substreamID || 0;
 
@@ -194,6 +198,8 @@ export default class Connection {
 				) {
 					return true;
 				}
+
+				return false;
 			});
 
 			if (requestPacket && requestPacket.message) {
@@ -207,7 +213,7 @@ export default class Connection {
 			}
 		}
 
-		const protocol = this.title.getProtocolHandler(packet.message);
+		const protocol = this.title!.getProtocolHandler(packet.message);
 
 		if (protocol) {
 			packet.message.protocolName = protocol.Name;
@@ -263,7 +269,7 @@ export default class Connection {
 	}
 
 	private processKerberosTicket(ticketData: Buffer, sourcePID: bigint, sourceKey: string): void {
-		let key = Buffer.from(sourceKey, 'hex');
+		let key: Buffer = Buffer.from(sourceKey, 'hex');
 
 		if (key.length === 0) {
 			const account = settings.accounts().find(({ pid }) => BigInt(pid) === sourcePID);
@@ -295,11 +301,11 @@ export default class Connection {
 			settings.save();
 		}
 
-		const ticket = new Ticket(ticketData, key, this.title);
+		const ticket = new Ticket(ticketData, key, this.title!);
 
 		// TODO - Is this accurate to how special stations are handled?
-		const mainTarget = BigInt(this.mainSecureStation.getParam('PID') || 0);
-		const specialTarget = BigInt(this.specialSecureStation.getParam('PID') || 0);
+		const mainTarget = BigInt(this.mainSecureStation?.getParam('PID') || 0);
+		const specialTarget = BigInt(this.specialSecureStation?.getParam('PID') || 0);
 
 		if (mainTarget === ticket.target.value) {
 			this.mainSecureStationTicket = ticket;

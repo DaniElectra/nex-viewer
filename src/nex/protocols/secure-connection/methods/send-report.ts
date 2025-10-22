@@ -11,7 +11,7 @@ export class Request {
 	private reportData = new QBuffer();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.reportId.extractFrom(stream);
 		this.reportData.extractFrom(stream);

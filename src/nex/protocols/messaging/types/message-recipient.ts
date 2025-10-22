@@ -7,7 +7,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class MessageRecipient extends Structure {
 	public readonly typeName = 'MessageRecipient';
 
-	private libraryVersion: string;
+	private libraryVersion?: string;
 	private m_idRecipient = new UInt32(); // * NEX <4.0
 	private m_uiRecipientType = new UInt32();
 	private m_principalId = new PID(); // * NEX 4.0
@@ -39,7 +39,7 @@ export default class MessageRecipient extends Structure {
 			__fields: {}
 		};
 
-		if (semver.satisfies(this.libraryVersion, '>=4.0.0')) {
+		if (this.libraryVersion && semver.satisfies(this.libraryVersion, '>=4.0.0')) {
 			json.__fields['m_uiRecipientType'] = this.m_uiRecipientType;
 			json.__fields['m_principalId'] = this.m_principalId;
 			json.__fields['m_gatheringId'] = this.m_gatheringId;

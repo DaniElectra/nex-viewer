@@ -10,7 +10,7 @@ export class Request {
 	private param = new ValidateAndRequestTicketParam();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.param.extractFrom(stream);
 	}
@@ -28,7 +28,7 @@ export class Response {
 	private result = new ValidateAndRequestTicketResult();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.result.extractFrom(stream);
 	}

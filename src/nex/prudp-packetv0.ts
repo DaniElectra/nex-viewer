@@ -5,8 +5,8 @@ import type { SerializedPRUDPV0Packet } from '@/types/nex/serialized-packet';
 export default class PRUDPPacketV0 extends PRUDPPacket {
 	public readonly version = 0;
 
-	private _checksum: number;
-	private packetData: Buffer; // * Used for the checksum calculation
+	private _checksum!: number;
+	private packetData!: Buffer; // * Used for the checksum calculation
 
 	public get checksum(): number {
 		return this._checksum;
@@ -77,7 +77,7 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 		const data = this.packetData;
 
 		const numWords = Math.floor(data.length / 4);
-		const words = [];
+		const words: number[] = [];
 
 		for (let i = 0; i < numWords; i++) {
 			words.push(data.readUInt32LE(i * 4));

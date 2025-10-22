@@ -11,7 +11,7 @@ export class Request {
 	private recipient = new MessageRecipient();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.recipient.extractFrom(stream);
 	}
@@ -29,7 +29,7 @@ export class Response {
 	private uiNbMessages = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.uiNbMessages.extractFrom(stream);
 	}

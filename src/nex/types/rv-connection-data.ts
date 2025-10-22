@@ -11,7 +11,7 @@ export default class RVConnectionData extends Structure {
 	private m_urlRegularProtocols = new StationURL();
 	private m_lstSpecialProtocols = new List(new UInt8());
 	private m_urlSpecialProtocols = new StationURL();
-	private m_currentUTCTime: DateTime;
+	private m_currentUTCTime?: DateTime;
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.extractHeaderFrom(stream);

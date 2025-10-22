@@ -92,7 +92,7 @@ export default function createMenu(state: State): Menu {
 			submenu: [
 				{
 					label: 'Open...',
-					async click(menuItem, browserWindow): Promise<void> {
+					async click(_menuItem, browserWindow): Promise<void> {
 						const result = await dialog.showOpenDialog({
 							properties: ['openFile'],
 							filters: [

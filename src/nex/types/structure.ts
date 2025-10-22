@@ -1,10 +1,10 @@
 import type NEXByteStream from '@/nex/byte-stream';
 
 export default class Structure {
-	private _structureVersion: number;
+	private _structureVersion?: number;
 
 	get structureVersion(): number {
-		return this._structureVersion;
+		return this._structureVersion || 0;
 	}
 
 	protected extractHeaderFrom(stream: NEXByteStream): void {

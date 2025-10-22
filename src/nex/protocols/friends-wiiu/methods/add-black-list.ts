@@ -10,7 +10,7 @@ export class Request {
 	private blacklistedPrincipal = new BlacklistedPrincipal();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.blacklistedPrincipal.extractFrom(stream);
 	}
@@ -28,7 +28,7 @@ export class Response {
 	private blacklistedPrincipal = new BlacklistedPrincipal();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.blacklistedPrincipal.extractFrom(stream);
 	}

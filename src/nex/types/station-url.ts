@@ -10,7 +10,7 @@ export default class StationURL {
 	public extractFrom(stream: NEXByteStream): void {
 		this.url.extractFrom(stream);
 
-		const data = this.url.value.split(':/');
+		const data = this.url.value!.split(':/');
 
 		if (data.length >= 2) {
 			// TODO - Support parameters with extra data

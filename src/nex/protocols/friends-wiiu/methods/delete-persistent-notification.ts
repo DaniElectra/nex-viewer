@@ -11,7 +11,7 @@ export class Request {
 	private notifications = new List(new PersistentNotification());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.notifications.extractFrom(stream);
 	}

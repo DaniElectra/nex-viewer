@@ -21,7 +21,7 @@ export default class AutoMatchmakeParam extends Structure {
 	private participationCount = new UInt16();
 	private lstSearchCriteria = new List(new MatchmakeSessionSearchCriteria());
 	private targetGids = new List(new UInt32());
-	private blockListParam: MatchmakeBlockListParam; // * NEX 4.0
+	private blockListParam?: MatchmakeBlockListParam; // * NEX 4.0
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.extractHeaderFrom(stream);

@@ -49,6 +49,8 @@ export default class Title {
 				return protocol;
 			}
 		}
+
+		return undefined;
 	}
 
 	// * For serializing when sending to the frontend

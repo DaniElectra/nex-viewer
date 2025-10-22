@@ -14,7 +14,7 @@ export default class NotificationEvent extends Structure {
 	private m_uiParam1 = new UInt32();
 	private m_uiParam2 = new UInt32();
 	private m_strParam = new RVString();
-	private m_uiParam3: UInt32; // * NEX 3.4
+	private m_uiParam3?: UInt32; // * NEX 3.4
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.extractHeaderFrom(stream);

@@ -3,7 +3,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class UInt64 {
 	public readonly typeName = 'UInt64';
 
-	public value: bigint;
+	public value?: bigint;
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.value = stream.readUInt64LE();

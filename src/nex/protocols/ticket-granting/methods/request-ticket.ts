@@ -13,7 +13,7 @@ export class Request {
 	private idTarget = new PID();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.idSource.extractFrom(stream);
 		this.idTarget.extractFrom(stream);
@@ -32,10 +32,10 @@ export class Response {
 
 	private retval = new QResult();
 	private bufResponse = new RVBuffer();
-	private pSourceKey: RVString;
+	private pSourceKey?: RVString;
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.retval.extractFrom(stream);
 

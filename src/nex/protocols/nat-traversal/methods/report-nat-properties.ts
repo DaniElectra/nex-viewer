@@ -11,7 +11,7 @@ export class Request {
 	private rtt = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.natmapping.extractFrom(stream);
 		this.natfiltering.extractFrom(stream);

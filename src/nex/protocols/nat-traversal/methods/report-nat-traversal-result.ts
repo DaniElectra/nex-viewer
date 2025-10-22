@@ -9,10 +9,10 @@ export class Request {
 
 	private cid = new UInt32();
 	private result = new Bool();
-	private rtt: UInt32; // * Not seen on the 3DS. NEX version difference?
+	private rtt?: UInt32; // * Not seen on the 3DS. NEX version difference?
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.cid.extractFrom(stream);
 		this.result.extractFrom(stream);

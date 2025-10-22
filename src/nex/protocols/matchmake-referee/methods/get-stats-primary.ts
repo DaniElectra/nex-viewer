@@ -11,7 +11,7 @@ export class Request {
 	private target = new MatchmakeRefereeStatsTarget();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.target.extractFrom(stream);
 	}
@@ -29,7 +29,7 @@ export class Response {
 	private stats = new MatchmakeRefereeStats();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.stats.extractFrom(stream);
 	}

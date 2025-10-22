@@ -15,7 +15,7 @@ export class Request {
 	private resultRange = new ResultRange();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.uiReason.extractFrom(stream);
 		this.resultRange.extractFrom(stream);
@@ -36,7 +36,7 @@ export class Response {
 	private lstDeletions = new List(new DeletionEntry());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.retval.extractFrom(stream);
 		this.lstDeletions.extractFrom(stream);

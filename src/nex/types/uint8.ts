@@ -3,7 +3,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 export default class UInt8 {
 	public readonly typeName = 'UInt8';
 
-	public value: number;
+	public value?: number;
 
 	public extractFrom(stream: NEXByteStream): void {
 		this.value = stream.readUInt8();

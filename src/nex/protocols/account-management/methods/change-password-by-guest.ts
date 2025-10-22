@@ -12,7 +12,7 @@ export class Request {
 	private strKey = new RVString();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.strPrincipalName.extractFrom(stream);
 		this.strEmail.extractFrom(stream);

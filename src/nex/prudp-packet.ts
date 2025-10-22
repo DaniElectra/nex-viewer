@@ -5,32 +5,32 @@ import type { SerializedPRUDPPacket } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacket {
 	public time?: number;
-	public readonly version: number;
+	public readonly version!: number;
 
-	public fromClientToServer: boolean;
-	public fromServerToClient: boolean;
+	public fromClientToServer!: boolean;
+	public fromServerToClient!: boolean;
 
-	public sourceAddress: string;
-	public sourcePort: number;
-	public destinationAddress: string;
-	public destinationPort: number;
+	public sourceAddress!: string;
+	public sourcePort!: number;
+	public destinationAddress!: string;
+	public destinationPort!: number;
 
-	public sourceStreamID: number;
-	public sourceStreamType: number;
-	public destinationStreamID: number;
-	public destinationStreamType: number;
-	public flags: number;
-	public type: number;
-	public sessionID: number;
-	public signature: Buffer;
-	public sequenceID: number;
+	public sourceStreamID!: number;
+	public sourceStreamType!: number;
+	public destinationStreamID!: number;
+	public destinationStreamType!: number;
+	public flags!: number;
+	public type!: number;
+	public sessionID!: number;
+	public signature!: Buffer;
+	public sequenceID!: number;
 	public connectionSignature?: Buffer;
 	public fragmentID?: number;
 	public substreamID?: number;
 	public payload?: Buffer;
 	public decryptedPayload?: Buffer;
 	public defragmentedPayload?: Buffer;
-	public connection: Connection;
+	public connection?: Connection;
 	public message?: RMCMessage;
 	public stackTrace?: string;
 

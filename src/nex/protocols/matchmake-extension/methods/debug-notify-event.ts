@@ -18,7 +18,7 @@ export class Request {
 	private stringParam = new RVString();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.pid.extractFrom(stream);
 		this.mainType.extractFrom(stream);

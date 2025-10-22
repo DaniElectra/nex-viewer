@@ -12,7 +12,10 @@
     "paths": {
       "@renderer/*": [
         "src/electron/renderer/src/*"
-      ]
+      ],
+			"@/*": [
+				"src/*"
+			]
     }
   }
 }

@@ -123,9 +123,9 @@ export default class CharlesParser {
 }
 
 export class CharlesWebSocketMessage {
-	private _source: 'CLIENT' | 'SERVER';
-	private _type: 'BINARY';
-	private _data: Buffer;
+	private _source!: 'CLIENT' | 'SERVER';
+	private _type!: 'BINARY';
+	private _data!: Buffer;
 
 	// * Public getters
 	public get source(): 'CLIENT' | 'SERVER' {
@@ -152,7 +152,7 @@ export class CharlesWebSocketMessage {
 }
 
 export class CharlesHTTPRequest {
-	private _method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE';
+	private _method!: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE';
 	private _headers: { key: string; value: string }[] = [];
 	private _body?: Buffer;
 
@@ -190,7 +190,7 @@ export class CharlesHTTPRequest {
 }
 
 export class CharlesHTTPResponse {
-	private _status: number;
+	private _status!: number;
 	private _headers: { key: string; value: string }[] = [];
 	private _body?: Buffer;
 
@@ -228,13 +228,13 @@ export class CharlesHTTPResponse {
 }
 
 export class CharlesHTTPTransaction {
-	private _url: URL;
-	private _clientLocalPort: number;
-	private _clientProxyPort: number;
-	private _serverLocalPort: number;
-	private _serverRemotePort: number;
-	private _request: CharlesHTTPRequest;
-	private _response: CharlesHTTPResponse;
+	private _url!: URL;
+	private _clientLocalPort!: number;
+	private _clientProxyPort!: number;
+	private _serverLocalPort!: number;
+	private _serverRemotePort!: number;
+	private _request!: CharlesHTTPRequest;
+	private _response!: CharlesHTTPResponse;
 	private _websocketMessages: CharlesWebSocketMessage[] = [];
 
 	// * Public getters

@@ -13,7 +13,7 @@ export class Request {
 	private searchCriteria = new MatchmakeSessionSearchCriteria();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.searchCriteria.extractFrom(stream);
 	}
@@ -32,7 +32,7 @@ export class Response {
 	private lstGatheringUrls = new List(new GatheringURLs());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstMatchmakeSession.extractFrom(stream);
 		this.lstGatheringUrls.extractFrom(stream);

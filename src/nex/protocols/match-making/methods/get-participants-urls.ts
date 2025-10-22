@@ -12,7 +12,7 @@ export class Request {
 	private idGathering = new UInt32();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.idGathering.extractFrom(stream);
 	}
@@ -30,7 +30,7 @@ export class Response {
 	private lstStationURL = new List(new StationURL());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection.title);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.lstStationURL.extractFrom(stream);
 	}
