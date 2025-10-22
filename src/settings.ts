@@ -29,7 +29,8 @@ class SizedArray<T> {
 }
 
 export class Settings {
-	private path = path.join(app.getPath('userData'), 'settings.json');
+	public path = path.join(app.getPath('userData'), 'settings.json');
+
 	private _recentFiles = new SizedArray<string>(10);
 	private _accounts: Account[] = [];
 

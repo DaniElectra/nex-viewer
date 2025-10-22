@@ -1,4 +1,5 @@
-import { Menu, dialog } from 'electron';
+import path from 'node:path';
+import { Menu, dialog, shell } from 'electron';
 import Session from '@/nex/session';
 import type { MenuItemConstructorOptions, BrowserWindow } from 'electron';
 import type State from '@/types/state';
@@ -125,7 +126,23 @@ export default function createMenu(state: State): Menu {
 					role: 'quit'
 				}
 			]
+		},
+		{
+			label: 'Settings',
+			submenu: [ // TODO - Add back in the PING packet and maybe RawRMC settings?
+				{
+					label: 'Open settings.json',
+					click: (): void => {
+						shell.openPath(state.settings.path);
+					}
+				},
+				{
+					label: 'Open settings.json folder',
+					click: (): void => {
+						shell.openPath(path.dirname(state.settings.path));
+					}
+				}
+			]
 		}
-		// TODO - Add back in the PING packet and maybe RawRMC settings?
 	]);
 }
