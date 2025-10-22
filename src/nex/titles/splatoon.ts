@@ -1,3 +1,9 @@
+import MatchMakingProtocol from '@/nex/protocols/match-making';
+import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
+import MatchmakeExtensionProtocol from '@/nex/protocols/matchmake-extension';
+import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
+import NotificationEventsProtocol from '@/nex/protocols/notification-events';
+import RankingProtocol from '@/nex/protocols/ranking';
 import Title from '@/nex/titles/title';
 
 export default class Splatoon extends Title {
@@ -38,5 +44,12 @@ export default class Splatoon extends Title {
 		'00050000101D6C00'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		NATTraversalProtocol,
+		RankingProtocol,
+		MatchMakingProtocol,
+		MatchmakeExtensionProtocol,
+		MatchMakingExtProtocol,
+		NotificationEventsProtocol
+	];
 }
