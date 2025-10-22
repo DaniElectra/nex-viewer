@@ -1,4 +1,4 @@
-export function initResizeables() {
+export function initResizeables(): void {
 	const container: HTMLElement = document.querySelector('.container')!;
 	const horizontalResizer: HTMLElement = document.querySelector('.hr')!;
 	const verticalResizer: HTMLElement = document.querySelector('.vr')!;

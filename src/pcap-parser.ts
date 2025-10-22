@@ -89,7 +89,7 @@ export default class PCAPParser {
 		}
 	}
 
-	public *packets(): Generator<Packet> {
+	public* packets(): Generator<Packet> {
 		this.stream.seek(this.packetStartOffset);
 
 		while (this.stream.hasDataLeft()) {

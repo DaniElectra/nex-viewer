@@ -13,7 +13,7 @@ export class Request {
 	private pid = new PID();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!!);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.localFriendCode.extractFrom(stream);
 		this.pid.extractFrom(stream);
@@ -33,7 +33,7 @@ export class Response {
 	private friendRelationship = new FriendRelationship();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!!);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.friendRelationship.extractFrom(stream);
 	}

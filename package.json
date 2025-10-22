@@ -30,6 +30,7 @@
     "compare-versions": "^6.1.1",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.3.9",
+    "fs-extra": "^11.3.2",
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
@@ -43,7 +44,8 @@
     "@electron-toolkit/eslint-config-ts": "^3.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
     "@electron/fuses": "^1.8.0",
-    "@pretendonetwork/eslint-config": "^0.0.11",
+    "@pretendonetwork/eslint-config": "^0.1.3",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.16.5",
     "@vitejs/plugin-vue": "^6.0.1",
     "electron": "^37.2.3",

@@ -4,6 +4,7 @@
 		"skipLibCheck": true,
 		"types": ["node", "electron"],
     "lib": ["ES2020", "DOM"],
+		"esModuleInterop": true,
     "paths": {
       "@/*": ["src/*"],
       "@main/*": ["src/electron/main/*"],

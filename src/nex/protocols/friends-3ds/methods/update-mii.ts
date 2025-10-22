@@ -10,7 +10,7 @@ export class Request {
 	private mii = new Mii();
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!!);
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
 		this.mii.extractFrom(stream);
 	}

@@ -115,7 +115,7 @@ export default class CharlesParser {
 		return transactions;
 	}
 
-	public *transactions(): Generator<CharlesHTTPTransaction> {
+	public* transactions(): Generator<CharlesHTTPTransaction> {
 		for (const transaction of this._transactions) {
 			yield transaction;
 		}

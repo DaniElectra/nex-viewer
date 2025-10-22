@@ -2,6 +2,7 @@ import eslintConfig from '@pretendonetwork/eslint-config';
 import tseslint from '@electron-toolkit/eslint-config-ts';
 import eslintPluginVue from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
+import globals from 'globals';
 
 export default tseslint.config(
 	{ ignores: ['**/node_modules', '**/dist', '**/out', 'scripts/*'] },
@@ -17,6 +18,10 @@ export default tseslint.config(
 				},
 				extraFileExtensions: ['.vue'],
 				parser: tseslint.parser
+			},
+			globals: {
+				...globals.browser,
+				...globals.node
 			}
 		}
 	},

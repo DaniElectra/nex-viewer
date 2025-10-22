@@ -378,7 +378,7 @@ export default class PCAPNGParser {
 		};
 	}
 
-	public *packets(): Generator<SimplePacketBlock | EnhancedPacketBlock> {
+	public* packets(): Generator<SimplePacketBlock | EnhancedPacketBlock> {
 		this.stream.seek(0); // * Make sure we're always at the start
 
 		while (this.stream.hasDataLeft()) {

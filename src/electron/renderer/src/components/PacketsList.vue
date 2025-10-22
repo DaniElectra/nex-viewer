@@ -35,7 +35,7 @@ import RMCMessage from '@/nex/rmc-message';
 import type SerializedPacket from '@/types/nex/serialized-packet';
 
 const props = defineProps<{ search: string }>();
-const emit = defineEmits<{ (e: 'select', packet: SerializedPacket): void }>();
+const emit = defineEmits<{ (_e: 'select', _packet: SerializedPacket): void }>();
 
 const packets = ref<SerializedPacket[]>([]);
 const selected = ref<SerializedPacket | null>(null);

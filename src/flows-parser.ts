@@ -255,7 +255,7 @@ export default class FlowsParser {
 		return flow;
 	}
 
-	public *flows(): Generator<Flow> {
+	public* flows(): Generator<Flow> {
 		const tnetstring = new TNetStringParser(this.buffer);
 
 		while (tnetstring.hasDataLeft()) {

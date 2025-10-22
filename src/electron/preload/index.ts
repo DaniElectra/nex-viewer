@@ -1,12 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
+import type { IpcRenderer } from 'electron';
 
 // * Custom APIs for renderer
 const api = {
-	ready: () => ipcRenderer.send('renderer-ready'),
-	onClearSections: (callback: () => void) => ipcRenderer.on('clear-sections', _event => callback()),
-	onPacket: (callback: (packet: any) => void) => ipcRenderer.on('packet', (_event, packet) => callback(JSON.parse(packet))),
-	onConnections: (callback: (connections: any) => void) => ipcRenderer.on('connections', (_event, connections) => callback(JSON.parse(connections)))
+	ready: (): void => ipcRenderer.send('renderer-ready'),
+	onClearSections: (callback: () => void): IpcRenderer => ipcRenderer.on('clear-sections', _event => callback()),
+	onPacket: (callback: (packet: any) => void): IpcRenderer => ipcRenderer.on('packet', (_event, packet) => callback(JSON.parse(packet))),
+	onConnections: (callback: (connections: any) => void): IpcRenderer => ipcRenderer.on('connections', (_event, connections) => callback(JSON.parse(connections)))
 };
 
 if (process.contextIsolated) {
@@ -17,8 +18,8 @@ if (process.contextIsolated) {
 		console.error(error);
 	}
 } else {
-	// @ts-ignore (define in dts)
+	// @ts-expect-error - Defined in dts
 	window.electron = electronAPI;
-	// @ts-ignore (define in dts)
+	// @ts-expect-error - Defined in dts
 	window.api = api;
 }
