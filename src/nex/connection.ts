@@ -173,8 +173,10 @@ export default class Connection {
 		} catch (error) {
 			if (typeof error === 'string') {
 				packet.stackTrace = error;
+			} else if (error instanceof Error && error.stack) {
+				packet.stackTrace = error.stack;
 			} else if (error instanceof Error) {
-				packet.stackTrace = error.message;
+				packet.stackTrace = JSON.stringify(error);
 			} else {
 				packet.stackTrace = `Unknown error type: ${error}`;
 			}
