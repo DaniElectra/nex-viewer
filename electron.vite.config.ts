@@ -10,7 +10,8 @@ export default defineConfig({
 			rollupOptions: {
 				input: resolve(__dirname, 'src/electron/main/index.ts')
 			},
-			outDir: 'dist/main'
+			outDir: 'dist/main',
+			sourcemap: true
 		},
 		resolve: {
 			alias: {
@@ -24,7 +25,8 @@ export default defineConfig({
 			rollupOptions: {
 				input: resolve(__dirname, 'src/electron/preload/index.ts')
 			},
-			outDir: 'dist/preload'
+			outDir: 'dist/preload',
+			sourcemap: true
 		}
 	},
 	renderer: {
@@ -33,7 +35,8 @@ export default defineConfig({
 			rollupOptions: {
 				input: resolve(__dirname, 'src/electron/renderer/index.html')
 			},
-			outDir: resolve(__dirname, 'dist/renderer')
+			outDir: resolve(__dirname, 'dist/renderer'),
+			sourcemap: true
 		},
 		plugins: [vue()],
 		resolve: {
