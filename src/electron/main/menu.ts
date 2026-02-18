@@ -75,18 +75,6 @@ export default function createMenu(state: State): Menu {
 			]
 		},
 		{
-			label: 'Edit',
-			submenu: [
-				{ role: 'undo' },
-				{ role: 'redo' },
-				{ type: 'separator' },
-				{ role: 'cut' },
-				{ role: 'copy' },
-				{ role: 'paste' },
-				{ role: 'selectAll' }
-			]
-		},
-		{
 			label: 'File',
 			id: 'file',
 			submenu: [
@@ -125,6 +113,18 @@ export default function createMenu(state: State): Menu {
 				{
 					role: 'quit'
 				}
+			]
+		},
+		{
+			label: 'Edit',
+			submenu: [
+				{ role: 'undo' },
+				{ role: 'redo' },
+				{ type: 'separator' },
+				{ role: 'cut' },
+				{ role: 'copy' },
+				{ role: 'paste' },
+				{ role: 'selectAll' }
 			]
 		},
 		{
