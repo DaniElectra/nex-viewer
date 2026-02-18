@@ -5,6 +5,7 @@ import ByteStream from '@/byte-stream';
 import PCAPParser from '@/pcap-parser';
 import PCAPNGParser from '@/pcapng-parser';
 import CharlesParser from '@/charles-parser';
+import CharlesZipParser from '@/charles-zip-parser';
 import FlowsParser from '@/flows-parser';
 import Connection from '@/nex/connection';
 import PRUDPPacketV0 from '@/nex/prudp-packetv0';
@@ -42,6 +43,9 @@ export default class Session extends EventEmitter {
 				break;
 			case '.chls':
 				this.parseCharles(capturePath);
+				break;
+			case '.chlz':
+				this.parseCharlesZip(capturePath);
 				break;
 			case '.flows':
 			case '.flow':
@@ -86,6 +90,35 @@ export default class Session extends EventEmitter {
 	private parseCharles(capturePath: string): void {
 		const captureData = fs.readFileSync(capturePath);
 		const parser = new CharlesParser(captureData);
+
+		for (const transaction of parser.transactions()) {
+			for (const message of transaction.websocketMessages) {
+				const stream = new ByteStream(message.data);
+				const packet = new PRUDPPacketLite(stream);
+
+				if (message.source === 'SERVER') {
+					packet.sourceAddress = transaction.url.host;
+					packet.sourcePort = transaction.serverLocalPort;
+					packet.destinationAddress = 'CLIENT';
+					packet.destinationPort = transaction.clientLocalPort;
+				} else {
+					packet.sourceAddress = 'CLIENT';
+					packet.sourcePort = transaction.clientLocalPort;
+					packet.destinationAddress = transaction.url.host;
+					packet.destinationPort = transaction.serverLocalPort;
+				}
+
+				this.processPacket(packet);
+				this.emit('packet', packet);
+			}
+		}
+
+		this.emit('finished', this.connections);
+	}
+
+	private parseCharlesZip(captureZipPath: string): void {
+		const captureData = fs.readFileSync(captureZipPath);
+		const parser = new CharlesZipParser(captureData);
 
 		for (const transaction of parser.transactions()) {
 			for (const message of transaction.websocketMessages) {

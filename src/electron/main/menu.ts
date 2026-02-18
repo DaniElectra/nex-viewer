@@ -88,7 +88,7 @@ export default function createMenu(state: State): Menu {
 									name: 'Packet Capture',
 									extensions: [
 										'pcapng', 'pcap',
-										'chls',
+										'chls', 'chlz',
 										'flows', 'flow'
 									]
 								}

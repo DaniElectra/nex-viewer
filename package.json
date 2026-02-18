@@ -27,6 +27,7 @@
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
     "@pretendonetwork/java.io": "^1.0.1",
+    "adm-zip": "^0.5.16",
     "compare-versions": "^6.1.1",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.3.9",
