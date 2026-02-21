@@ -7,8 +7,8 @@
   "author": "Pretendo Network",
   "homepage": "https://github.com/PretendoNetwork/nex-viewer",
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
