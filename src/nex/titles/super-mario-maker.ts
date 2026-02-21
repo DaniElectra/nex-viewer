@@ -1,3 +1,4 @@
+import DataStoreProtocol from '@/nex/protocols/datastore';
 import Title from '@/nex/titles/title';
 
 export default class SuperMarioMaker extends Title {
@@ -34,5 +35,7 @@ export default class SuperMarioMaker extends Title {
 		'000500001018DD00'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		DataStoreProtocol
+	];
 }

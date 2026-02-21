@@ -2,7 +2,7 @@ import type RVType from '@/nex/types/rv-type';
 import type NEXByteStream from '@/nex/byte-stream';
 
 export default class List<T extends RVType> {
-	private readonly typeName = 'List';
+	public readonly typeName = 'List';
 
 	private list: T[] = [];
 
