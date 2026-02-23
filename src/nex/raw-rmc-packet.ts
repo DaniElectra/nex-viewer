@@ -14,6 +14,7 @@ export default class RawRMCPacket extends PRUDPPacket {
 	}
 
 	private parse(): void {
+		const start = this.stream.pos();
 		const version = this.stream.readUInt8();
 
 		if (version !== 1) {
@@ -29,6 +30,12 @@ export default class RawRMCPacket extends PRUDPPacket {
 			throw new Error('Invalid raw RMC packet');
 		}
 
+		const end = this.stream.pos();
+		const bytesRead = end - start;
+
+		this.stream.seek(start);
+
+		this.originalBuffer = this.stream.readBytes(bytesRead);
 		this.type = PRUDPPacket.TYPES.DATA; // TODO - Is this a good assumption?
 		this.fragmentID = 0; // TODO - Is this a good assumption?
 		this.substreamID = 0; // TODO - Is this a good assumption?

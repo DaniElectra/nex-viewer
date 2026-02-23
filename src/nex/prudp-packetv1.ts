@@ -24,6 +24,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 	}
 
 	private parse(): void {
+		const start = this.stream.pos();
 		const magic = this.stream.readBytes(0x2);
 
 		if (!magic.equals(PRUDPPacketV1.Magic)) {
@@ -34,6 +35,13 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 		this.signature = this.stream.readBytes(0x10);
 		this.parseOptions();
 		this.payload = this.stream.readBytes(this.payloadLength);
+
+		const end = this.stream.pos();
+		const bytesRead = end - start;
+
+		this.stream.seek(start);
+
+		this.originalBuffer = this.stream.readBytes(bytesRead);
 	}
 
 	private parseHeader(): void {

@@ -48,5 +48,12 @@ export default tseslint.config(
 			],
 			'vue/html-indent': ['error', 'tab']
 		}
+	},
+	{
+		files: ['**/*.vue'],
+		rules: {
+			'vue/max-attributes-per-line': 'off',
+			'vue/singleline-html-element-content-newline': 'off'
+		}
 	}
 );

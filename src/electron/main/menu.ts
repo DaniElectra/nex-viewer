@@ -17,10 +17,6 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 		browserWindow.webContents.send('packet', JSON.stringify(packet));
 	});
 
-	session.on('finished', (connections) => {
-		browserWindow.webContents.send('connections', JSON.stringify(connections));
-	});
-
 	session.parse(path);
 
 	state.settings.addRecentFile(path);

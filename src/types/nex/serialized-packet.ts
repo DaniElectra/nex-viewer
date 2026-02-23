@@ -24,6 +24,7 @@ export type SerializedPRUDPPacket = {
 	defragmented_payload?: number[];
 	message?: SerializedRMCMessage;
 	stack_trace?: string;
+	original_buffer: number[];
 };
 
 export type SerializedPRUDPV0Packet = SerializedPRUDPPacket & {

@@ -61,7 +61,7 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 
 		this.payload = this.stream.readBytes(payloadSize);
 
-		const end = this.stream.pos();
+		let end = this.stream.pos();
 
 		this.stream.seek(start);
 		this.packetData = this.stream.read(end - start);
@@ -69,6 +69,13 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 		// TODO - Quazal encoding? How do we tell the decoder the size BEFORE decoding?
 		// TODO - Validate this
 		this._checksum = this.stream.readUInt8();
+
+		end = this.stream.pos();
+		const bytesRead = end - start;
+
+		this.stream.seek(start);
+
+		this.originalBuffer = this.stream.readBytes(bytesRead);
 	}
 
 	public calculateChecksum(key: string): number {

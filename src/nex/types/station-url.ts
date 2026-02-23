@@ -30,7 +30,7 @@ export default class StationURL {
 		return {
 			__displayTypeName: this.typeName,
 			__typeName: this.typeName,
-			__value: this.url
+			__value: this.url.value
 		};
 	}
 }

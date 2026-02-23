@@ -2,10 +2,14 @@ import { resolve } from 'node:path';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 // @ts-expect-error - `@vitejs/plugin-vue` is installed but TypeScript says it can't find its types for some reason
 import vue from '@vitejs/plugin-vue';
+// @ts-expect-error - `@tailwindcss/vite` is installed but TypeScript says it can't find its types for some reason
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
 	main: {
-		plugins: [externalizeDepsPlugin()],
+		plugins: [
+			externalizeDepsPlugin()
+		],
 		build: {
 			rollupOptions: {
 				input: resolve(__dirname, 'src/electron/main/index.ts')
@@ -20,7 +24,9 @@ export default defineConfig({
 		}
 	},
 	preload: {
-		plugins: [externalizeDepsPlugin()],
+		plugins: [
+			externalizeDepsPlugin()
+		],
 		build: {
 			rollupOptions: {
 				input: resolve(__dirname, 'src/electron/preload/index.ts')
@@ -38,7 +44,10 @@ export default defineConfig({
 			outDir: resolve(__dirname, 'dist/renderer'),
 			sourcemap: true
 		},
-		plugins: [vue()],
+		plugins: [
+			vue(),
+			tailwindcss()
+		],
 		resolve: {
 			alias: {
 				'@': resolve(__dirname, 'src'),

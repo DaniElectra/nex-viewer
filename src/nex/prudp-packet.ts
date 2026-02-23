@@ -6,6 +6,7 @@ import type { SerializedPRUDPPacket } from '@/types/nex/serialized-packet';
 export default class PRUDPPacket {
 	public time?: number;
 	public readonly version!: number;
+	public originalBuffer!: Buffer;
 
 	public fromClientToServer!: boolean;
 	public fromServerToClient!: boolean;
@@ -126,7 +127,8 @@ export default class PRUDPPacket {
 			flags: this.serializeFlags(),
 			session_id: this.sessionID,
 			signature: this.signature ? [...this.signature.values()] : [], // * Raw RMC packets have no signature
-			sequence_id: this.sequenceID
+			sequence_id: this.sequenceID,
+			original_buffer: [...this.originalBuffer.values()]
 		};
 
 		if (this.connectionSignature) {
