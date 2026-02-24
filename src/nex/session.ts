@@ -73,12 +73,14 @@ export default class Session extends EventEmitter {
 		for (const packet of parser.packets()) {
 			let elapsedTime = 0;
 			if ('timestamp' in packet) {
+				const timestampSeconds = packet.timestamp.seconds + (packet.timestamp.microseconds ?? 0) / 1_000_000;
+
 				if (this.lastPacketTime !== 0) {
-					this.elapsedTime += packet.timestamp.seconds - this.lastPacketTime;
+					this.elapsedTime += timestampSeconds - this.lastPacketTime;
 					elapsedTime = this.elapsedTime;
 				}
 
-				this.lastPacketTime = packet.timestamp.seconds;
+				this.lastPacketTime = timestampSeconds;
 			}
 
 			this.handlePacket(packet, elapsedTime);
