@@ -92,9 +92,19 @@ export default class Session extends EventEmitter {
 	private parseCharles(capturePath: string): void {
 		const captureData = fs.readFileSync(capturePath);
 		const parser = new CharlesParser(captureData);
+		let elapsedTime = 0;
 
 		for (const transaction of parser.transactions()) {
 			for (const message of transaction.websocketMessages) {
+				const timestampSeconds = Number(message.startTime) / 1000;
+
+				if (this.lastPacketTime !== 0) {
+					this.elapsedTime += timestampSeconds - this.lastPacketTime;
+					elapsedTime = this.elapsedTime;
+				}
+
+				this.lastPacketTime = timestampSeconds;
+
 				const stream = new ByteStream(message.data);
 				const packet = new PRUDPPacketLite(stream);
 
@@ -109,6 +119,8 @@ export default class Session extends EventEmitter {
 					packet.destinationAddress = transaction.url.host;
 					packet.destinationPort = transaction.serverLocalPort;
 				}
+
+				packet.elapsedTime = elapsedTime;
 
 				this.processPacket(packet);
 				this.emit('packet', packet);
@@ -121,9 +133,19 @@ export default class Session extends EventEmitter {
 	private parseCharlesZip(captureZipPath: string): void {
 		const captureData = fs.readFileSync(captureZipPath);
 		const parser = new CharlesZipParser(captureData);
+		let elapsedTime = 0;
 
 		for (const transaction of parser.transactions()) {
 			for (const message of transaction.websocketMessages) {
+				const timestampSeconds = new Date(message.startTime).getTime() / 1000;
+
+				if (this.lastPacketTime !== 0) {
+					this.elapsedTime += timestampSeconds - this.lastPacketTime;
+					elapsedTime = this.elapsedTime;
+				}
+
+				this.lastPacketTime = timestampSeconds;
+
 				const stream = new ByteStream(message.data);
 				const packet = new PRUDPPacketLite(stream);
 
@@ -138,6 +160,8 @@ export default class Session extends EventEmitter {
 					packet.destinationAddress = transaction.url.host;
 					packet.destinationPort = transaction.serverLocalPort;
 				}
+
+				packet.elapsedTime = elapsedTime;
 
 				this.processPacket(packet);
 				this.emit('packet', packet);

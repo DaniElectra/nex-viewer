@@ -126,6 +126,8 @@ export class CharlesWebSocketMessage {
 	private _source!: 'CLIENT' | 'SERVER';
 	private _type!: 'BINARY';
 	private _data!: Buffer;
+	private _startTime!: bigint;
+	private _endTime!: bigint;
 
 	// * Public getters
 	public get source(): 'CLIENT' | 'SERVER' {
@@ -140,6 +142,14 @@ export class CharlesWebSocketMessage {
 		return this._data;
 	}
 
+	public get startTime(): bigint {
+		return this._startTime;
+	}
+
+	public get endTime(): bigint {
+		return this._endTime;
+	}
+
 	constructor(messageJSON: JavaObject) {
 		if (!messageJSON.description) {
 			return; // * This will never happen in this case.
@@ -148,6 +158,8 @@ export class CharlesWebSocketMessage {
 		this._source = messageJSON.description.classData.values.source.constant.value;
 		this._type = messageJSON.description.classData.values.type.constant.value;
 		this._data = Buffer.from(messageJSON.description.classData.values.content.values);
+		this._startTime = messageJSON.description!.classData.values.start.description.classData.annotation[0].data.readBigInt64BE();
+		this._endTime = messageJSON.description!.classData.values.end.description.classData.annotation[0].data.readBigInt64BE();
 	}
 }
 

@@ -66,6 +66,8 @@ export class CharlesWebSocketMessage {
 	private _source!: 'CLIENT' | 'SERVER';
 	private _type!: 'BINARY';
 	private _data!: Buffer;
+	private _startTime!: string;
+	private _endTime!: string;
 
 	// * Public getters
 	public get source(): 'CLIENT' | 'SERVER' {
@@ -80,10 +82,20 @@ export class CharlesWebSocketMessage {
 		return this._data;
 	}
 
+	public get startTime(): string {
+		return this._startTime;
+	}
+
+	public get endTime(): string {
+		return this._endTime;
+	}
+
 	constructor(messageJSON: any) {
 		this._source = messageJSON.source;
 		this._type = messageJSON.type;
 		this._data = Buffer.from(messageJSON.content, 'base64');
+		this._startTime = messageJSON.start;
+		this._endTime = messageJSON.end;
 	}
 }
 
