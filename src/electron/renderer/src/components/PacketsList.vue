@@ -125,7 +125,7 @@ defineExpose({
 					</td>
 				</tr>
 				<template v-else>
-					<tr v-for="packet in filteredPackets" :key="packet.id" :class="[ 'border-b border-[#2e3238] cursor-pointer transition-colors', packet.id === props.selectedPacketId ? 'bg-[#182338] hover:bg-[#1a2740]' : 'hover:bg-[#172030]' ]" @click="emit('selectPacket', packet)">
+					<tr v-for="packet in filteredPackets" :key="packet.id" :class="[ 'border-b border-[#2e3238] cursor-pointer transition-colors', packet.original_packet?.stack_trace ? 'bg-red-900/40 hover:bg-red-900/50' : packet.id === props.selectedPacketId ? 'bg-[#182338] hover:bg-[#1a2740]' : 'hover:bg-[#172030]' ]" @click="emit('selectPacket', packet)">
 						<td class="px-4 py-2 font-mono text-xs">{{ packet.elapsed_time }}</td>
 						<td class="px-4 py-2">
 							<Badge :class="getProtocolColor(packet.protocol)">

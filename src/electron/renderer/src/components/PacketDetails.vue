@@ -31,6 +31,10 @@ const tabs = computed(() => {
 		t.push({ id: 'rmc', label: 'RMC' });
 	}
 
+	if (props.packet?.original_packet?.stack_trace) {
+		t.push({ id: 'stack_trace', label: 'Stack Trace' });
+	}
+
 	return t;
 });
 
@@ -143,6 +147,13 @@ watch(() => props.packet, () => {
 						<RMCField :field-key="'Header'" :field="rmcData.header" :depth="0" />
 						<RMCField :field-key="'Parameters'" :field="rmcData.parameters" :depth="0" />
 					</div>
+				</div>
+
+				<div v-else-if="activeTab === 'stack_trace' && packet.original_packet.stack_trace" class="font-mono text-xs">
+					<div class="mb-4">
+						<div class="text-lg font-medium">Stack Trace</div>
+					</div>
+					<pre class="text-[#F9FAFC] whitespace-pre-wrap break-all">{{ packet.original_packet.stack_trace }}</pre>
 				</div>
 			</div>
 		</div>
