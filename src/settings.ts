@@ -16,6 +16,8 @@ class SizedArray<T> {
 	}
 
 	public add(item: T): void {
+		this.elements = this.elements.filter(e => e !== item);
+
 		if (this.elements.length >= this.maxSize) {
 			this.elements.pop();
 		}

@@ -40,9 +40,9 @@ function createWindow(): void {
 
 	ipcMain.on('renderer-ready', () => {
 		if (process.platform === 'darwin') {
-			Menu.setApplicationMenu(createMenu(state));
+			Menu.setApplicationMenu(createMenu(state, window));
 		} else {
-			window.setMenu(createMenu(state));
+			window.setMenu(createMenu(state, window));
 		}
 	});
 

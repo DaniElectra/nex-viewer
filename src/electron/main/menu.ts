@@ -21,17 +21,22 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 
 	state.settings.addRecentFile(path);
 
-	browserWindow.setMenu(createMenu(state));
+	refreshMenu(state, browserWindow);
 }
 
-export default function createMenu(state: State): Menu {
-	let recentFiles: MenuItemConstructorOptions[] = state.settings.recentFiles().map(path => ({
-		label: path,
+function refreshMenu(state: State, browserWindow: BrowserWindow): void {
+	if (process.platform === 'darwin') {
+		Menu.setApplicationMenu(createMenu(state, browserWindow));
+	} else {
+		browserWindow.setMenu(createMenu(state, browserWindow));
+	}
+}
+
+export default function createMenu(state: State, browserWindow: BrowserWindow): Menu {
+	let recentFiles: MenuItemConstructorOptions[] = state.settings.recentFiles().map(filePath => ({
+		label: filePath,
 		click: (): void => {
-			// TODO - Track the current window and pass it to openSession
-			dialog.showMessageBox({
-				message: 'Recent files not yet implemented'
-			});
+			openSession(filePath, browserWindow, state);
 		}
 	}));
 
@@ -43,7 +48,10 @@ export default function createMenu(state: State): Menu {
 			},
 			{
 				label: 'Clear Menu',
-				click: (): void => state.settings.clearRecentFiles()
+				click: (): void => {
+					state.settings.clearRecentFiles();
+					refreshMenu(state, browserWindow);
+				}
 			}
 		];
 	} else {
@@ -76,7 +84,7 @@ export default function createMenu(state: State): Menu {
 			submenu: [
 				{
 					label: 'Open...',
-					async click(_menuItem, browserWindow): Promise<void> {
+					async click(): Promise<void> {
 						const result = await dialog.showOpenDialog({
 							properties: ['openFile'],
 							filters: [
@@ -95,7 +103,7 @@ export default function createMenu(state: State): Menu {
 							return;
 						}
 
-						openSession(result.filePaths[0], browserWindow as BrowserWindow, state);
+						openSession(result.filePaths[0], browserWindow, state);
 					}
 				},
 				{
