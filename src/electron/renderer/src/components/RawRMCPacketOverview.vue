@@ -22,5 +22,9 @@ defineProps<{
 			<h3 class="text-sm font-medium text-[#9a9fa9]">Destination</h3>
 			<p class="font-mono">{{ packet.destination }}</p>
 		</div>
+		<div>
+			<h3 class="text-sm font-medium text-[#9a9fa9]">Title ID</h3>
+			<p class="font-mono">{{ packet.original_packet.title_id }}</p>
+		</div>
 	</div>
 </template>

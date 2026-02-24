@@ -27,6 +27,11 @@ export type SerializedPRUDPPacket = {
 	original_buffer: number[];
 };
 
+export type SerializedRawRMCPacket = SerializedPRUDPPacket & {
+	version: -1;
+	title_id: string;
+};
+
 export type SerializedPRUDPV0Packet = SerializedPRUDPPacket & {
 	version: 0;
 	checksum: number;

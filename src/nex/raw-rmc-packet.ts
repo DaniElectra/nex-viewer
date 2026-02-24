@@ -1,6 +1,6 @@
 import PRUDPPacket from '@/nex/prudp-packet';
 import type ByteStream from '@/byte-stream';
-import type SerializedPacket from '@/types/nex/serialized-packet';
+import type { SerializedRawRMCPacket } from '@/types/nex/serialized-packet';
 
 export default class RawRMCPacket extends PRUDPPacket {
 	public readonly version = -1;
@@ -54,7 +54,11 @@ export default class RawRMCPacket extends PRUDPPacket {
 		this.destinationStreamID = -1;
 	}
 
-	public toJSON(): SerializedPacket {
-		return this.serialize();
+	public toJSON(): SerializedRawRMCPacket {
+		const serialized = this.serialize() as SerializedRawRMCPacket;
+
+		serialized.title_id = this.titleID;
+
+		return serialized;
 	}
 }
