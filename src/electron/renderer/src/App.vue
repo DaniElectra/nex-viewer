@@ -19,7 +19,7 @@ onMounted(() => {
 		const packetData: Record<string, any> = {
 			id: packet.id,
 			original_packet: packet,
-			time: packet.time?.toFixed(6),
+			elapsed_time: packet.elapsed_time?.toFixed(6),
 			protocol: 'nex',
 			source: `${packet.source_address}:${packet.source_port}`,
 			destination: `${packet.destination_address}:${packet.destination_port}`,

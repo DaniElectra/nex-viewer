@@ -71,17 +71,17 @@ export default class Session extends EventEmitter {
 		}
 
 		for (const packet of parser.packets()) {
-			let time = 0;
+			let elapsedTime = 0;
 			if ('timestamp' in packet) {
 				if (this.lastPacketTime !== 0) {
 					this.elapsedTime += packet.timestamp.seconds - this.lastPacketTime;
-					time = this.elapsedTime;
+					elapsedTime = this.elapsedTime;
 				}
 
 				this.lastPacketTime = packet.timestamp.seconds;
 			}
 
-			this.handlePacket(packet, time);
+			this.handlePacket(packet, elapsedTime);
 		}
 
 		this.emit('finished', this.connections);
@@ -176,7 +176,7 @@ export default class Session extends EventEmitter {
 		this.emit('finished', this.connections);
 	}
 
-	private handlePacket(frame: Frame, time?: number): void {
+	private handlePacket(frame: Frame, elapsedTime?: number): void {
 		// * HokakuCTR produces dumps whose payloads are:
 		// * - u8  Revision (1)
 		// * - u64 Title ID
@@ -194,7 +194,7 @@ export default class Session extends EventEmitter {
 		for (const packet of packets) {
 			this.processPacket(packet);
 
-			packet.time = time;
+			packet.elapsedTime = elapsedTime;
 
 			this.emit('packet', packet);
 		}

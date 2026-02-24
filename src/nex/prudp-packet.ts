@@ -4,7 +4,7 @@ import type Connection from '@/nex/connection';
 import type { SerializedPRUDPPacket } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacket {
-	public time?: number;
+	public elapsedTime?: number;
 	public readonly version!: number;
 	public originalBuffer!: Buffer;
 
@@ -113,7 +113,7 @@ export default class PRUDPPacket {
 	public serialize(): SerializedPRUDPPacket {
 		const serialized: SerializedPRUDPPacket = {
 			id: -1,
-			time: this.time,
+			elapsed_time: this.elapsedTime,
 			version: this.version,
 			source_address: this.sourceAddress,
 			source_port: this.sourcePort,

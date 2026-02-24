@@ -9,8 +9,8 @@ defineProps<{
 <template>
 	<div class="grid grid-cols-2 gap-4">
 		<div>
-			<h3 class="text-sm font-medium text-[#9a9fa9]">Time</h3>
-			<p class="font-mono">{{ packet.time }}</p>
+			<h3 class="text-sm font-medium text-[#9a9fa9]">Elapsed Time</h3>
+			<p class="font-mono">{{ packet.elapsed_time }}</p>
 		</div>
 		<div>
 			<h3 class="text-sm font-medium text-[#9a9fa9]">Protocol</h3>

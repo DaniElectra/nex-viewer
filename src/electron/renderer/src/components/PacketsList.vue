@@ -109,7 +109,7 @@ defineExpose({
 		<table class="w-full text-sm">
 			<thead class="sticky top-0 bg-[#151c27] z-10">
 				<tr class="border-b border-[#2e3238]">
-					<th class="w-44 px-4 py-3 text-left cursor-pointer">Time</th>
+					<th class="w-44 px-4 py-3 text-left cursor-pointer">Elapsed Time</th>
 					<th class="w-24 px-4 py-3 text-left cursor-pointer">Protocol</th>
 					<th class="px-4 py-3 text-left cursor-pointer">Source</th>
 					<th class="px-4 py-3 text-left cursor-pointer">Destination</th>
@@ -126,7 +126,7 @@ defineExpose({
 				</tr>
 				<template v-else>
 					<tr v-for="packet in filteredPackets" :key="packet.id" :class="[ 'border-b border-[#2e3238] cursor-pointer transition-colors', packet.id === props.selectedPacketId ? 'bg-[#182338] hover:bg-[#1a2740]' : 'hover:bg-[#172030]' ]" @click="emit('selectPacket', packet)">
-						<td class="px-4 py-2 font-mono text-xs">{{ packet.time }}</td>
+						<td class="px-4 py-2 font-mono text-xs">{{ packet.elapsed_time }}</td>
 						<td class="px-4 py-2">
 							<Badge :class="getProtocolColor(packet.protocol)">
 								{{ packet.protocol?.toUpperCase() }}
