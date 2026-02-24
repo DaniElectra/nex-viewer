@@ -34,7 +34,7 @@ function getTypeIcon(field: RMCField) {
 		return getTypeIcon(field.__value);
 	}
 
-	if (field.__typeName === 'String' || field.__displayTypeName === 'String') {
+	if (field.__typeName === 'String') {
 		return {
 			icon: FileText,
 			class: 'w-4 h-4 text-blue-500'
@@ -48,7 +48,7 @@ function getTypeIcon(field: RMCField) {
 		};
 	}
 
-	if (field.__typeName === 'DateTime' || field.__displayTypeName === 'DateTime') {
+	if (field.__typeName === 'DateTime') {
 		return {
 			icon: CalendarDays,
 			class: 'w-4 h-4 text-blue-400'
