@@ -1,6 +1,6 @@
 import type ByteStream from '@/byte-stream';
 import type RMCMessage from '@/nex/rmc-message';
-import type Connection from '@/nex/connection';
+import type PRUDPConnection from '@/nex/prudp-connection';
 import type { SerializedPRUDPPacket } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacket {
@@ -31,7 +31,7 @@ export default class PRUDPPacket {
 	public payload?: Buffer;
 	public decryptedPayload?: Buffer;
 	public defragmentedPayload?: Buffer;
-	public connection?: Connection;
+	public connection?: PRUDPConnection;
 	public message?: RMCMessage;
 	public stackTrace?: string;
 

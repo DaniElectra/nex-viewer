@@ -1,5 +1,5 @@
 import type SerializedPacket from '@/types/nex/serialized-packet';
-import type Connection from '@/nex/connection';
+import type PRUDPConnection from '@/nex/prudp-connection';
 
 declare global {
 	interface Window {
@@ -7,7 +7,7 @@ declare global {
 			ready: () => void;
 			onClearSections: (callback: () => void) => void;
 			onPacket: (callback: (packet: SerializedPacket) => void) => void;
-			onConnections: (callback: (connections: Connection[]) => void) => void;
+			onConnections: (callback: (connections: PRUDPConnection[]) => void) => void;
 		};
 	}
 }

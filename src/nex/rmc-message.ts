@@ -1,6 +1,6 @@
 import ByteStream from '@/byte-stream';
 import QResult from '@/nex/types/qresult';
-import type Connection from '@/nex/connection';
+import type PRUDPConnection from '@/nex/prudp-connection';
 import type SerializedRMCMessage from '@/types/nex/serialized-rmc-message';
 
 export default class RMCMessage {
@@ -18,7 +18,7 @@ export default class RMCMessage {
 	public methodName?: string;
 	public methodID!: number;
 	public protocolName?: string;
-	public connection?: Connection;
+	public connection?: PRUDPConnection;
 
 	get type(): 0 | 1 {
 		return this._type;

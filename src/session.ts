@@ -7,7 +7,7 @@ import PCAPNGParser from '@/pcapng-parser';
 import CharlesParser from '@/charles-parser';
 import CharlesZipParser from '@/charles-zip-parser';
 import FlowsParser from '@/flows-parser';
-import Connection from '@/nex/connection';
+import PRUDPConnection from '@/nex/prudp-connection';
 import PRUDPPacketV0 from '@/nex/prudp-packetv0';
 import PRUDPPacketV1 from '@/nex/prudp-packetv1';
 import PRUDPPacketLite from '@/nex/prudp-packetLite';
@@ -22,9 +22,8 @@ function int2ip(int: number): string {
 	return `${int >>> 24}.${int >> 16 & 255}.${int >> 8 & 255}.${int & 255}`;
 }
 
-// * Parses network dumps for NEX/Rendez-Vous connections
 export default class Session extends EventEmitter {
-	private connections: Connection[] = [];
+	private prudpConnections: PRUDPConnection[] = [];
 	private rawRMCMode = false;
 	private lastPacketTime = 0;
 	private elapsedTime = 0;
@@ -39,17 +38,17 @@ export default class Session extends EventEmitter {
 		switch (extension) {
 			case '.pcapng':
 			case '.pcap':
-				this.parsePCAP(capturePath);
+				this.parsePCAP(capturePath); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			case '.chls':
-				this.parseCharles(capturePath);
+				this.parseCharles(capturePath); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			case '.chlz':
-				this.parseCharlesZip(capturePath);
+				this.parseCharlesZip(capturePath); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			case '.flows':
 			case '.flow':
-				this.parseMitmproxyFlows(capturePath);
+				this.parseMitmproxyFlows(capturePath); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			default:
 				throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
@@ -86,7 +85,7 @@ export default class Session extends EventEmitter {
 			this.handlePacket(packet, elapsedTime);
 		}
 
-		this.emit('finished', this.connections);
+		this.emit('finished', this.prudpConnections);
 	}
 
 	private parseCharles(capturePath: string): void {
@@ -127,7 +126,7 @@ export default class Session extends EventEmitter {
 			}
 		}
 
-		this.emit('finished', this.connections);
+		this.emit('finished', this.prudpConnections);
 	}
 
 	private parseCharlesZip(captureZipPath: string): void {
@@ -168,7 +167,7 @@ export default class Session extends EventEmitter {
 			}
 		}
 
-		this.emit('finished', this.connections);
+		this.emit('finished', this.prudpConnections);
 	}
 
 	private parseMitmproxyFlows(capturePath: string): void {
@@ -199,7 +198,7 @@ export default class Session extends EventEmitter {
 			}
 		}
 
-		this.emit('finished', this.connections);
+		this.emit('finished', this.prudpConnections);
 	}
 
 	private handlePacket(frame: Frame, elapsedTime?: number): void {
@@ -422,7 +421,7 @@ export default class Session extends EventEmitter {
 				return;
 			}
 
-			connection = new Connection();
+			connection = new PRUDPConnection();
 
 			connection.clientAddress = packet.sourceAddress;
 			connection.clientPort = packet.sourcePort;
@@ -435,7 +434,7 @@ export default class Session extends EventEmitter {
 			connection.serverStreamID = packet.destinationStreamID;
 
 			// TODO - Link special secure station as well, not just the main secure station
-			for (const otherConnection of this.connections) {
+			for (const otherConnection of this.prudpConnections) {
 				if (otherConnection.mainSecureStation && otherConnection.mainSecureStationTicket) {
 					const address = otherConnection.mainSecureStation.getParam('address');
 					const port = Number(otherConnection.mainSecureStation.getParam('port'));
@@ -476,7 +475,7 @@ export default class Session extends EventEmitter {
 				}
 			}
 
-			this.connections.push(connection);
+			this.prudpConnections.push(connection);
 		}
 
 		packet.connection = connection;
@@ -484,8 +483,8 @@ export default class Session extends EventEmitter {
 		connection.processPacket(packet);
 	}
 
-	private findConnection(packet: Packet): Connection | undefined {
-		return this.connections.find((connection) => {
+	private findConnection(packet: Packet): PRUDPConnection | undefined {
+		return this.prudpConnections.find((connection) => {
 			if (
 				connection.clientAddress === packet.sourceAddress &&
 				connection.clientPort === packet.sourcePort &&

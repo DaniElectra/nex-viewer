@@ -9,7 +9,7 @@ import type StationURL from '@/nex/types/station-url';
 import type { SerializedConnection, Title } from '@/types/nex/serialized-connection';
 
 // * Represents an individual connection to a specific game server
-export default class Connection {
+export default class PRUDPConnection {
 	public clientAddress?: string;
 	public clientPort?: number;
 	public serverAddress?: string;
