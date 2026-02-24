@@ -194,9 +194,7 @@ export default class Session extends EventEmitter {
 		for (const packet of packets) {
 			this.processPacket(packet);
 
-			if (!this.rawRMCMode) {
-				packet.time = time;
-			}
+			packet.time = time;
 
 			this.emit('packet', packet);
 		}
