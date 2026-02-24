@@ -1,6 +1,10 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/ticket-granting/methods';
+import AnyDataHolder from '@/nex/types/any-data-holder';
+import AuthenticationInfo from '@/nex/protocols/ticket-granting/types/authentication-info';
 import type Packet from '@/types/nex/packet';
+
+AnyDataHolder.Classes['AuthenticationInfo'] = AuthenticationInfo;
 
 export default class TicketGrantingProtocol {
 	static ID = 0xA;

@@ -4,6 +4,7 @@ import RVString from '@/nex/types/string';
 import UInt32 from '@/nex/types/uint32';
 import type RVType from '@/nex/types/rv-type';
 
+// TODO - This class is very wrong, see https://github.com/PretendoNetwork/nex-go/issues/74
 export default class AnyDataHolder extends Structure {
 	public static Classes: Record<string, new () => RVType> = {};
 
@@ -42,7 +43,12 @@ export default class AnyDataHolder extends Structure {
 		return {
 			__displayTypeName: this.displayTypeName(),
 			__typeName: this.typeName,
-			__value: this.objectData
+			__fields: {
+				name: this.name,
+				length1: this.length1,
+				length2: this.length2,
+				objectData: this.objectData
+			}
 		};
 	}
 }

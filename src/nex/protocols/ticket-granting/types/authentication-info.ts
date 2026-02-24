@@ -2,7 +2,6 @@ import Data from '@/nex/types/data';
 import RVString from '@/nex/types/string';
 import UInt32 from '@/nex/types/uint32';
 import UInt8 from '@/nex/types/uint8';
-import AnyDataHolder from '@/nex/types/any-data-holder';
 import type NEXByteStream from '@/nex/byte-stream';
 
 export default class AuthenticationInfo extends Data {
@@ -45,5 +44,3 @@ export default class AuthenticationInfo extends Data {
 		};
 	}
 }
-
-AnyDataHolder.Classes['AuthenticationInfo'] = AuthenticationInfo;
