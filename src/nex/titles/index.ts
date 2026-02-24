@@ -63,6 +63,7 @@ import StarWarsPinball from '@/nex/titles/star-wars-pinball';
 import SuperMarioMaker from '@/nex/titles/super-mario-maker';
 import SuperMarioMaker2 from '@/nex/titles/super-mario-maker-2';
 import SuperSmashBros4 from '@/nex/titles/super-smash-bros-4';
+import SuperSmashBrosUltimate from '@/nex/titles/super-smash-bros-ultimate';
 import SushiStrikerTheWayofSushido from '@/nex/titles/sushi-striker-the-way-of-sushido';
 import TeamKirbyClashDeluxe from '@/nex/titles/team-kirby-clash-deluxe';
 import TEKKENTAGTOURNAMENT2WiiUEDITION from '@/nex/titles/tekken-tag-tournament-2-wii-u-edition';
@@ -145,6 +146,7 @@ export default [
 	SuperMarioMaker,
 	SuperMarioMaker2,
 	SuperSmashBros4,
+	SuperSmashBrosUltimate,
 	SushiStrikerTheWayofSushido,
 	TeamKirbyClashDeluxe,
 	TEKKENTAGTOURNAMENT2WiiUEDITION,
