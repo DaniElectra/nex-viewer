@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { Menu, dialog, shell } from 'electron';
-import Session from '@/nex/session';
+import Session from '@/session';
 import type { MenuItemConstructorOptions, BrowserWindow } from 'electron';
 import type State from '@/types/state';
 
