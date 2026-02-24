@@ -30,8 +30,8 @@ export default class RemoteLogDeviceProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static Log(message: RMCMessage): typeof Methods.Log.Request | typeof Methods.Log.Response {

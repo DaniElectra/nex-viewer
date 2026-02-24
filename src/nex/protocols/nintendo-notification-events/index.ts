@@ -32,8 +32,8 @@ export default class NintendoNotificationEventsProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static ProcessNintendoNotificationEvent1(message: RMCMessage): typeof Methods.ProcessNintendoNotificationEvent1.Request | typeof Methods.ProcessNintendoNotificationEvent1.Response {

@@ -58,8 +58,8 @@ export default class RankingProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static UploadScore(message: RMCMessage): typeof Methods.UploadScore.Request | typeof Methods.UploadScore.Response {

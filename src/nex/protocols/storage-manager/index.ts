@@ -42,8 +42,8 @@ export default class StorageManagerProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static AcquireNexUniqueId(message: RMCMessage): typeof Methods.AcquireNexUniqueId.Request | typeof Methods.AcquireNexUniqueId.Response {

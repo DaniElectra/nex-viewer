@@ -44,8 +44,8 @@ export default class SecureConnectionProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static Register(message: RMCMessage): typeof Methods.Register.Request | typeof Methods.Register.Response {

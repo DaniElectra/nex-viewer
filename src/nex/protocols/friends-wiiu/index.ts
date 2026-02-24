@@ -68,8 +68,8 @@ export default class FriendsWiiUProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static UpdateAndGetAllInformation(message: RMCMessage): typeof Methods.UpdateAndGetAllInformation.Request | typeof Methods.UpdateAndGetAllInformation.Response {

@@ -40,8 +40,8 @@ export default class MatchMakingExtProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static EndParticipation(message: RMCMessage): typeof Methods.EndParticipation.Request | typeof Methods.EndParticipation.Response {

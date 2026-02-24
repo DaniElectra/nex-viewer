@@ -54,8 +54,8 @@ export default class MatchmakeRefereeProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static StartRound(message: RMCMessage): typeof Methods.StartRound.Request | typeof Methods.StartRound.Response {

@@ -80,8 +80,8 @@ export default class Friends3DSProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static UpdateProfile(message: RMCMessage): typeof Methods.UpdateProfile.Request | typeof Methods.UpdateProfile.Response {

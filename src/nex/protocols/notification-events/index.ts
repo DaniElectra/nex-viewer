@@ -30,8 +30,8 @@ export default class NotificationEventsProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static ProcessNotificationEvent(message: RMCMessage): typeof Methods.ProcessNotificationEvent.Request | typeof Methods.ProcessNotificationEvent.Response {

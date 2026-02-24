@@ -120,8 +120,8 @@ export default class DataStoreProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static PrepareGetObjectV1(message: RMCMessage): typeof Methods.PrepareGetObjectV1.Request | typeof Methods.PrepareGetObjectV1.Response {

@@ -88,8 +88,8 @@ export default class AccountManagementProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static CreateAccount(message: RMCMessage): typeof Methods.CreateAccount.Request | typeof Methods.CreateAccount.Response {

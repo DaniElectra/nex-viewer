@@ -42,8 +42,8 @@ export default class NATTraversalProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static RequestProbeInitiation(message: RMCMessage): typeof Methods.RequestProbeInitiation.Request | typeof Methods.RequestProbeInitiation.Response {

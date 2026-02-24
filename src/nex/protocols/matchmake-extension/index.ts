@@ -135,8 +135,8 @@ export default class MatchmakeExtensionProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static CloseParticipation(message: RMCMessage): typeof Methods.CloseParticipation.Request | typeof Methods.CloseParticipation.Response {

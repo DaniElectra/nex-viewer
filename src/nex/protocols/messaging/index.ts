@@ -44,8 +44,8 @@ export default class MessagingProtocol {
 
 		const messageDecoder = handler(packet.message);
 
-		packet.message.parameters = new messageDecoder(packet.message);
 		packet.message.methodName = messageDecoder.Name;
+		packet.message.parameters = new messageDecoder(packet.message);
 	}
 
 	private static DeliverMessage(message: RMCMessage): typeof Methods.DeliverMessage.Request | typeof Methods.DeliverMessage.Response {
