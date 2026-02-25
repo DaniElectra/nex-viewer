@@ -89,6 +89,21 @@ export interface ConnectionDoneEvent {
 	timestamp: SystemTime;
 }
 
+export interface ProxideTransaction {
+	uuid: string;
+	connectionUUID: string;
+	uri: string;
+	method: string;
+	requestHeaders: Record<string, string>;
+	responseHeaders: Record<string, string>;
+	requestBody: Buffer;
+	responseBody: Buffer;
+	trailers: Record<string, string>;
+	status: Status;
+	startTime: SystemTime;
+	endTime: SystemTime;
+}
+
 export type SessionEvent = NewConnectionEvent | NewRequestEvent | NewResponseEvent | MessageDataEvent | MessageDoneEvent | RequestDoneEvent | ConnectionDoneEvent;
 
 const MAGIC_CAPTURE = 'PROXIDE-CAPTURE';

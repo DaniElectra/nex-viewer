@@ -4,6 +4,8 @@ import RawRMCPacketOverview from '@renderer/components/RawRMCPacketOverview.vue'
 import PRUDPV0PacketOverview from '@renderer/components/PRUDPV0PacketOverview.vue';
 import PRUDPV1PacketOverview from '@renderer/components/PRUDPV1PacketOverview.vue';
 import PRUDPLitePacketOverview from '@renderer/components/PRUDPLitePacketOverview.vue';
+import NPLNTransactionOverview from '@renderer/components/NPLNTransactionOverview.vue';
+import NPLNMessage from '@renderer/components/NPLNMessage.vue';
 import RMCField from '@renderer/components/RMCField.vue';
 import { copyHex } from '@renderer/assets/js/util';
 
@@ -29,6 +31,11 @@ const tabs = computed(() => {
 
 	if (props.packet?.rmc) {
 		t.push({ id: 'rmc', label: 'RMC' });
+	}
+
+	if (props.packet?.protocol === 'npln') {
+		t.push({ id: 'npln_request', label: 'Request' });
+		t.push({ id: 'npln_response', label: 'Response' });
 	}
 
 	if (props.packet?.original_packet?.stack_trace) {
@@ -101,11 +108,12 @@ watch(() => props.packet, () => {
 			</div>
 
 			<div class="flex-1 overflow-auto p-4">
-				<div v-if="activeTab === 'overview'" class="grid grid-cols-2 gap-4">
-					<RawRMCPacketOverview v-if="packet.original_packet.version === -1" :packet="packet" />
-					<PRUDPV0PacketOverview v-else-if="packet.original_packet.version === 0" :packet="packet" />
-					<PRUDPV1PacketOverview v-else-if="packet.original_packet.version === 1" :packet="packet" />
-					<PRUDPLitePacketOverview v-else-if="packet.original_packet.version === 2" :packet="packet" />
+				<div v-if="activeTab === 'overview'">
+					<RawRMCPacketOverview v-if="packet.original_packet?.version === -1" :packet="packet" />
+					<PRUDPV0PacketOverview v-else-if="packet.original_packet?.version === 0" :packet="packet" />
+					<PRUDPV1PacketOverview v-else-if="packet.original_packet?.version === 1" :packet="packet" />
+					<PRUDPLitePacketOverview v-else-if="packet.original_packet?.version === 2" :packet="packet" />
+					<NPLNTransactionOverview v-else-if="packet.protocol === 'npln'" :transaction="packet" />
 				</div>
 
 				<div v-else-if="activeTab === 'hex'" class="font-mono text-xs">
@@ -113,7 +121,9 @@ watch(() => props.packet, () => {
 						v-for="section in [
 							{ key: 'original_buffer', label: 'Packet' },
 							{ key: 'decrypted_payload', label: 'Decrypted Payload' },
-							{ key: 'defragmented_payload', label: 'Defragmented Payload' }
+							{ key: 'defragmented_payload', label: 'Defragmented Payload' },
+							{ key: 'request_body', label: 'Request Body' },
+							{ key: 'response_body', label: 'Response Body' }
 						]" :key="section.key" class="mb-6 last:mb-0"
 					>
 						<template v-if="packet[section.key]?.length">
@@ -147,6 +157,15 @@ watch(() => props.packet, () => {
 						<RMCField :field-key="'Header'" :field="rmcData.header" :depth="0" />
 						<RMCField :field-key="'Parameters'" :field="rmcData.parameters" :depth="0" />
 					</div>
+				</div>
+
+				<!-- TODO - Is this really the best way to structure this? -->
+				<div v-else-if="activeTab === 'npln_request'" class="font-mono text-xs">
+					<NPLNMessage :transaction="packet" :direction="'Request'" />
+				</div>
+
+				<div v-else-if="activeTab === 'npln_response'" class="font-mono text-xs">
+					<NPLNMessage :transaction="packet" :direction="'Response'" />
 				</div>
 
 				<div v-else-if="activeTab === 'stack_trace' && packet.original_packet.stack_trace" class="font-mono text-xs">

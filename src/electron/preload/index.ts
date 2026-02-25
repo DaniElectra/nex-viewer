@@ -6,7 +6,8 @@ import type { IpcRenderer } from 'electron';
 const api = {
 	ready: (): void => ipcRenderer.send('renderer-ready'),
 	onClearSections: (callback: () => void): IpcRenderer => ipcRenderer.on('clear-sections', _event => callback()),
-	onPacket: (callback: (packet: any) => void): IpcRenderer => ipcRenderer.on('packet', (_event, packet) => callback(JSON.parse(packet)))
+	onPacket: (callback: (packet: any) => void): IpcRenderer => ipcRenderer.on('packet', (_event, packet) => callback(JSON.parse(packet))),
+	onNPLNTransaction: (callback: (transaction: any) => void): IpcRenderer => ipcRenderer.on('nplnTransaction', (_event, transaction) => callback(JSON.parse(transaction)))
 };
 
 if (process.contextIsolated) {

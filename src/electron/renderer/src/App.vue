@@ -56,6 +56,24 @@ onMounted(() => {
 		packetsList.value?.addPacket(packetData);
 	});
 
+	window.api.onNPLNTransaction((transaction) => {
+		const url = new URL(transaction.uri)
+		const packetData: Record<string, any> = {
+			id: 0,
+			original_packet: transaction,
+			elapsed_time: 0,
+			protocol: 'npln',
+			source: 'Client',
+			destination: `${url.protocol}//${url.hostname}`,
+			service: transaction.fully_qualified_service_name,
+			method: transaction.method_name,
+			request_body: transaction.request.body,
+			response_body: transaction.response.body,
+		};
+
+		packetsList.value?.addPacket(packetData);
+	});
+
 	window.api.ready();
 });
 </script>

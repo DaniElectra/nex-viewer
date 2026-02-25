@@ -7,14 +7,17 @@ import PCAPNGParser from '@/pcapng-parser';
 import CharlesParser from '@/charles-parser';
 import CharlesZipParser from '@/charles-zip-parser';
 import FlowsParser from '@/flows-parser';
+import ProxideParser, { SessionEventType, RequestPart, Status } from '@/proxide-parser';
 import PRUDPConnection from '@/nex/prudp-connection';
 import PRUDPPacketV0 from '@/nex/prudp-packetv0';
 import PRUDPPacketV1 from '@/nex/prudp-packetv1';
 import PRUDPPacketLite from '@/nex/prudp-packetLite';
 import RawRMCPacket from '@/nex/raw-rmc-packet';
+import NPLNTransaction from '@/npln/npln-transaction';
 import type Frame from '@/types/frame';
 import type Packet from '@/types/nex/packet';
 import type UDPPacket from '@/types/nex/udp-packet';
+import type { ProxideTransaction } from '@/proxide-parser';
 
 const PIA_MAGIC = Buffer.from([0x32, 0xAB, 0x98, 0x64]);
 
@@ -49,6 +52,9 @@ export default class Session extends EventEmitter {
 			case '.flows':
 			case '.flow':
 				this.parseMitmproxyFlows(capturePath); // TODO - Always assumes NEX connections. Make this more generic
+				break;
+			case '.bin': // TODO - Replace this with a `parseBin` function that supports other .bin formats
+				this.parseProxideConnection(capturePath); // TODO - Always assumes gRPC connections. Make this more generic?
 				break;
 			default:
 				throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
@@ -199,6 +205,92 @@ export default class Session extends EventEmitter {
 		}
 
 		this.emit('finished', this.prudpConnections);
+	}
+
+	private parseProxideConnection(capturePath: string): void {
+		const captureData = fs.readFileSync(capturePath);
+		const parser = new ProxideParser(captureData);
+		const partialTransactions = new Map<string, Partial<ProxideTransaction> & { requestChunks: Buffer[], responseChunks: Buffer[] }>();
+		const transactions: ProxideTransaction[] = [];
+
+		for (const event of parser.events()) {
+			switch (event.type) {
+				case SessionEventType.NewRequest:
+					partialTransactions.set(event.uuid, {
+						uuid: event.uuid,
+						connectionUUID: event.connectionUUID,
+						uri: event.uri,
+						method: event.method,
+						requestHeaders: event.headers,
+						startTime: event.timestamp,
+						requestChunks: [],
+						responseChunks: [],
+					});
+					break;
+
+				case SessionEventType.NewResponse: {
+					const req = partialTransactions.get(event.requestUUID);
+					if (req) {
+						req.responseHeaders = event.headers;
+					}
+					break;
+				}
+
+				case SessionEventType.MessageData: {
+					const req = partialTransactions.get(event.requestUUID);
+					if (req) {
+						if (event.part === RequestPart.Request) {
+							req.requestChunks.push(event.data);
+						} else {
+							req.responseChunks.push(event.data);
+						}
+					}
+					break;
+				}
+
+				case SessionEventType.RequestDone: {
+					const req = partialTransactions.get(event.requestUUID);
+					if (req) {
+						req.status = event.status;
+						req.endTime = event.timestamp;
+					}
+					break;
+				}
+
+				case SessionEventType.MessageDone: {
+					const req = partialTransactions.get(event.requestUUID);
+					if (req && event.part === RequestPart.Response) {
+						req.trailers = event.trailers;
+					}
+					break;
+				}
+			}
+		}
+
+		for (const transaction of partialTransactions.values()) {
+			transactions.push({
+				uuid: transaction.uuid!,
+				connectionUUID: transaction.connectionUUID!,
+				uri: transaction.uri!,
+				method: transaction.method!,
+				requestHeaders: transaction.requestHeaders ?? {},
+				responseHeaders: transaction.responseHeaders ?? {},
+				requestBody: Buffer.concat(transaction.requestChunks),
+				responseBody: Buffer.concat(transaction.responseChunks),
+				trailers: transaction.trailers ?? {},
+				status: transaction.status ?? Status.InProgress,
+				startTime: transaction.startTime!,
+				endTime: transaction.endTime ?? transaction.startTime!,
+			});
+		}
+
+		for (const transaction of transactions) {
+			const contentType = transaction.requestHeaders['content-type'] ?? transaction.responseHeaders['content-type'] ?? '';
+
+			if (contentType.startsWith('application/grpc')) {
+				this.emit('nplnTransaction', NPLNTransaction.parseFromProxideTransaction(transaction));
+			}
+		}
 	}
 
 	private handlePacket(frame: Frame, elapsedTime?: number): void {

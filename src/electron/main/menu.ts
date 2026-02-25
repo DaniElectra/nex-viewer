@@ -17,6 +17,10 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 		browserWindow.webContents.send('packet', JSON.stringify(packet));
 	});
 
+	session.on('nplnTransaction', (transaction) => {
+		browserWindow.webContents.send('nplnTransaction', JSON.stringify(transaction));
+	});
+
 	session.parse(path);
 
 	state.settings.addRecentFile(path);
@@ -93,7 +97,8 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 									extensions: [
 										'pcapng', 'pcap',
 										'chls', 'chlz',
-										'flows', 'flow'
+										'flows', 'flow',
+										'bin'
 									]
 								}
 							]

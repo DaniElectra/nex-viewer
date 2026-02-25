@@ -34,7 +34,9 @@
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.3.9",
     "fs-extra": "^11.3.2",
+    "glob": "^13.0.6",
     "lucide-vue-next": "^0.575.0",
+    "protobufjs": "^8.0.0",
     "reka-ui": "^2.8.2",
     "source-map-support": "^0.5.21",
     "vue-resizable-panels": "^0.0.1"
