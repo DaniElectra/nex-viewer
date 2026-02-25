@@ -1,0 +1,3 @@
+[submodule "src/npln/protobufs"]
+	path = src/npln/protobufs
+	url = https://github.com/kinnay/NPLN-Protocols

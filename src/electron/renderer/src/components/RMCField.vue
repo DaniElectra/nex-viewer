@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDays, MapPin, Brackets, Braces } from 'lucide-vue-next';
+import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDays, MapPin, Brackets, Braces, CircleQuestionMark } from 'lucide-vue-next';
 import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from 'reka-ui';
 import { toHexString, copyHex } from '@renderer/assets/js/util';
 
@@ -98,7 +98,7 @@ function getTypeIcon(field: RMCField) {
 	}
 
 	return {
-		icon: Package,
+		icon: CircleQuestionMark,
 		class: 'w-4 h-4 text-gray-500'
 	};
 }
