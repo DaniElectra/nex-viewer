@@ -1,5 +1,5 @@
 # NEX Viewer
-### Utility for viewing PRUDP connections and NEX/Rendez-Vous sessions.
+### Utility for viewing game play sessions from various Nintendo consoles, including the 3DS, Wii U and Switch.
 
 ## Support
 ### Packets
@@ -9,7 +9,7 @@
 - [x] PRUDPLite
 - [ ] HPP
 - [ ] HTTP
-- [ ] gRPC/NPLN
+- [x] gRPC/NPLN
 
 ### Dump Formats
 - [x] [PCAP (`.pacp`)](https://www.ietf.org/archive/id/draft-gharris-opsawg-pcap-01.html)
@@ -18,6 +18,7 @@
 - [x] [Charles (`.chls`, `.chlz`)](https://www.charlesproxy.com)
 - [x] [Mitmproxy Flows (`.flow`, `.flows`)](https://mitmproxy.org)
 - [ ] [Fiddler (`.saz`)](https://docs.telerik.com/fiddler-everywhere/knowledge-base/fiddler-archives)
+- [x] [Proxide (`.bin`)](https://github.com/Rantanen/proxide)
 
 ### NEX Protocols
 - [x] [RemoteLogDevice](https://nintendo-wiki.pretendo.network/docs/nex/protocols/remote-log-device)
