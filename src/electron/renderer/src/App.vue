@@ -53,6 +53,12 @@ onMounted(() => {
 			packetData.defragmented_payload = packet.defragmented_payload;
 		}
 
+		if (packet.source_stream_type === 'NAT') {
+			packetData.nat_message_id = packet.nat_message_id;
+			packetData.nat_connection_id = packet.nat_connection_id;
+			packetData.nat_time = packet.nat_time;
+		}
+
 		packetsList.value?.addPacket(packetData);
 	});
 

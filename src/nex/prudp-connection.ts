@@ -1,6 +1,8 @@
+import ByteStream from '@/byte-stream';
 import settings from '@/settings';
 import titles from '@/nex/titles';
 import Substream from '@/nex/substream';
+import PRUDPPacket from '@/nex/prudp-packet';
 import RMCMessage from '@/nex/rmc-message';
 import { keyDerivationOld, keyDerivationNew, Ticket } from '@/nex/kerberos';
 import TicketGrantingProtocol from '@/nex/protocols/ticket-granting';
@@ -101,7 +103,16 @@ export default class PRUDPConnection {
 				return;
 			}
 
-			if (!this.title) {
+			// TODO - DO packets uses a different algorithm compared to regular packets,
+			// using the session key from the MatchmakeSession on the calculations of the signatures.
+			// And on V0 checksums we don't even have that, the checksum is always calculated with an
+			// access key sum of 0, regardless of game. Somehow handle that alongside the possibility
+			// for the session host to change, which requires the console to disconnect from the
+			// existing host and connect to the new one.
+			//
+			// For the time being, we're going to skip the signature checks and handle version
+			// differences as best as we can.
+			if (!this.title && packet.sourceStreamType !== 1) {
 				for (const title of titles) {
 					if (packet.version === -1) {
 						if (title.titleIDs.includes(packet.titleID)) {
@@ -145,16 +156,18 @@ export default class PRUDPConnection {
 						}
 					}
 				}
-			}
 
-			if (!this.title) {
-				throw new Error('Failed to find title for network dump');
+				if (!this.title) {
+					throw new Error('Failed to find title for network dump');
+				}
 			}
 
 			let packets: Packet[];
 			const substreamID = packet.substreamID || 0;
 
-			if (packet.version !== -1) {
+			// * NAT packets always use a sequence ID of 0, since there is no SYN handshake.
+			// * This doesn't work with the substreams, so skipping it
+			if (packet.version !== -1 && packet.sourceStreamType !== 5) {
 				const substream = packet.fromClientToServer ? this.clientSubstream(substreamID) : this.serverSubstream(substreamID);
 				packets = substream.update(packet);
 			} else {
@@ -175,8 +188,12 @@ export default class PRUDPConnection {
 
 					if (packet.fragmentID === 0 && defragmentedPayload) {
 						packet.defragmentedPayload = defragmentedPayload;
-						this.processPacketMessage(packet);
+						if (packet.sourceStreamType !== 1) {
+							this.processPacketMessage(packet);
+						}
 					}
+				} else if (packet.sourceStreamType === 5) {
+					this.processNATPacketMessage(packet);
 				}
 			}
 		} catch (error) {
@@ -277,6 +294,13 @@ export default class PRUDPConnection {
 				}
 			}
 		}
+	}
+
+	private processNATPacketMessage(packet: PRUDPPacket): void {
+		const stream = new ByteStream(packet.payload!);
+		packet.natMessageID = stream.readUInt8();
+		packet.natConnectionID = stream.readUInt32LE();
+		packet.natTime = stream.readUInt64LE();
 	}
 
 	private processKerberosTicket(ticketData: Buffer, sourcePID: bigint, sourceKey: string): void {

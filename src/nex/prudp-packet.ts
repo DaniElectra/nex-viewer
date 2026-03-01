@@ -35,6 +35,11 @@ export default class PRUDPPacket {
 	public message?: RMCMessage;
 	public stackTrace?: string;
 
+	// * Fields exclusive to NAT packets
+	public natMessageID?: number;
+	public natConnectionID?: number;
+	public natTime?: bigint;
+
 	protected stream: ByteStream;
 
 	static FLAGS = {
@@ -153,6 +158,13 @@ export default class PRUDPPacket {
 			if (this.message) {
 				serialized.message = this.message.toJSON();
 			}
+		}
+
+		// * NAT-exclusive fields
+		if (this.sourceStreamType === 5) {
+			serialized.nat_message_id = this.natMessageID;
+			serialized.nat_connection_id = this.natConnectionID;
+			serialized.nat_time = this.natTime;
 		}
 
 		if (this.stackTrace) {

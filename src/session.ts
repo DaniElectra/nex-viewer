@@ -382,21 +382,8 @@ export default class Session extends EventEmitter {
 	}
 
 	private validatePRUDPPacket(packet: Packet): boolean {
-		// * Try to filter out p2p traffic from both Net-Z and PIA sessions
-		// TODO - If we ever want to support viewing p2p traffic, remove these checks
-		if (packet.sourceStreamID === packet.destinationStreamID) {
-			// * Likely a Quazal Net-Z packet
-			// ! NOTE - This WILL catch valid connections if the client uses 14 connections (making the server and client both use port 1)
-			return false;
-		}
-
-		if (packet.sourceStreamType === 1 || packet.destinationStreamType === 1) {
-			// * Packet uses the "DO" stream type
-			return false;
-		}
-
-		if (packet.sourceStreamType === 5 || packet.destinationStreamType === 5) {
-			// * Packet uses the "NAT" stream type
+		if (packet.sourceStreamType !== packet.destinationStreamType) {
+			// * Stream types don't match. This has not been seen in any packet
 			return false;
 		}
 
@@ -501,9 +488,10 @@ export default class Session extends EventEmitter {
 		let connection = this.findConnection(packet);
 
 		if (!connection) {
-			if (packet.version !== -1 && !packet.isTypeSyn()) {
+			if (packet.version !== -1 && !packet.isTypeSyn() && packet.sourceStreamType !== 5) {
 				// * If we find a new connection on a packet besides the SYN,
-				// * assume only part of the connection is present and ignore
+				// * assume only part of the connection is present and ignore.
+				// * NAT packets don't do the SYN handshake, so allow them
 				return;
 			}
 

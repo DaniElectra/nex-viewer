@@ -80,5 +80,17 @@ defineProps<{
 			<h3 class="text-sm font-medium text-[#9a9fa9]">Lite Signature</h3>
 			<p class="font-mono">{{ toHexString(packet.original_packet.lite_signature) }}</p>
 		</div>
+		<div v-if="packet.original_packet.nat_message_id !== undefined && packet.original_packet.nat_message_id !== null">
+			<h3 class="text-sm font-medium text-[#9a9fa9]">Message ID</h3>
+			<p class="font-mono break-all">{{ packet.original_packet.nat_message_id }}</p>
+		</div>
+		<div v-if="packet.original_packet.nat_connection_id !== undefined && packet.original_packet.nat_connection_id !== null">
+			<h3 class="text-sm font-medium text-[#9a9fa9]">Connection ID</h3>
+			<p class="font-mono break-all">{{ packet.original_packet.nat_connection_id }}</p>
+		</div>
+		<div v-if="packet.original_packet.nat_time !== undefined && packet.original_packet.nat_time !== null">
+			<h3 class="text-sm font-medium text-[#9a9fa9]">Time Counter</h3>
+			<p class="font-mono break-all">{{ packet.original_packet.nat_time }}</p>
+		</div>
 	</div>
 </template>

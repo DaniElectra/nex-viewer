@@ -25,6 +25,11 @@ export type SerializedPRUDPPacket = {
 	message?: SerializedRMCMessage;
 	stack_trace?: string;
 	original_buffer: number[];
+
+	// * Fields exclusive to NAT packets
+	nat_message_id?: number;
+	nat_connection_id?: number;
+	nat_time?: bigint;
 };
 
 export type SerializedRawRMCPacket = SerializedPRUDPPacket & {

@@ -60,8 +60,9 @@ export default class Substream {
 			throw new Error('No cipher set on substream. `setKey` not called');
 		}
 
-		// * Raw RMC packets and PRUDP Lite do not encrypt payloads
-		if ((packet.version === 0 || packet.version === 1) && payload) {
+		// * Raw RMC packets and PRUDP Lite do not encrypt payloads.
+		// * The same applies for DO packets (usually? Is there a game which encrypts them?)
+		if ((packet.version === 0 || packet.version === 1) && payload && packet.sourceStreamType !== 1) {
 			payload = cipher.update(payload);
 		}
 
