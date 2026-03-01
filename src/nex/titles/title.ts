@@ -39,9 +39,10 @@ export default class Title {
 
 	public static getProtocolHandler(message: RMCMessage): ServiceProtocol | undefined {
 		const protocolID = message.protocolID === 0x7F ? message.extendedProtocolID : message.protocolID;
+		// * Put the game-specific protocols first to allow overrides
 		const protocols = [
-			...this.commonProtocols,
-			...this.protocols
+			...this.protocols,
+			...this.commonProtocols
 		];
 
 		for (const protocol of protocols) {

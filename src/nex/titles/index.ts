@@ -52,7 +52,8 @@ import Puddle from '@/nex/titles/puddle';
 import PuyoPuyoTetris from '@/nex/titles/puyo-puyo-tetris';
 import RESIDENTEVILREVELATIONS from '@/nex/titles/resident-evil-revelations';
 import RomanceoftheThreeKingdoms12 from '@/nex/titles/romance-of-the-three-kingdoms-12';
-import SonicAllStarsRacingTransformed from '@/nex/titles/sonic--all-stars-racing-transformed';
+import SonicAllStarsRacingTransformed3DS from '@/nex/titles/sonic--all-stars-racing-transformed-3ds';
+import SonicAllStarsRacingTransformedWiiU from '@/nex/titles/sonic--all-stars-racing-transformed-wii-u';
 import SONICLOSTWORLD from '@/nex/titles/sonic-lost-world';
 import Splatoon from '@/nex/titles/splatoon';
 import StealthInc2AGameofClones from '@/nex/titles/stealth-inc-2-a-game-of-clones';
@@ -135,7 +136,8 @@ export default [
 	PuyoPuyoTetris,
 	RESIDENTEVILREVELATIONS,
 	RomanceoftheThreeKingdoms12,
-	SonicAllStarsRacingTransformed,
+	SonicAllStarsRacingTransformed3DS,
+	SonicAllStarsRacingTransformedWiiU,
 	SONICLOSTWORLD,
 	Splatoon,
 	StealthInc2AGameofClones,

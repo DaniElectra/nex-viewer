@@ -1,3 +1,4 @@
+import DataStoreProtocol from '@/nex/protocols/datastore';
 import Title from '@/nex/titles/title';
 
 export default class WiiPartyU extends Title {
@@ -30,5 +31,7 @@ export default class WiiPartyU extends Title {
 		'0005000010137E00'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		DataStoreProtocol
+	];
 }

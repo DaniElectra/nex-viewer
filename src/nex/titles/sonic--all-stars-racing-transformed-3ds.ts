@@ -5,17 +5,17 @@ import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import NotificationEventsProtocol from '@/nex/protocols/notification-events';
 import Title from '@/nex/titles/title';
 
-export default class MARIOKART7 extends Title {
-	public static displayName = 'MARIO KART 7';
+export default class SonicAllStarsRacingTransformed3DS extends Title {
+	public static displayName = 'Sonic & All-Stars Racing Transformed (3DS)';
 	public static gameServerID = '';
-	public static accessKey = '6181dff1';
+	public static accessKey = '53e42e5b';
 	public static libraryVersions = {
-		main: '2.4.3',
-		ranking: '2.4.3',
-		datastore: '2.4.3',
-		match_making: '2.4.3',
-		messaging: '2.4.3',
-		utility: '2.4.3'
+		main: '2.7.3',
+		ranking: '2.7.3',
+		datastore: '2.7.3',
+		match_making: '2.7.3',
+		messaging: '2.7.3',
+		utility: '2.7.3'
 	};
 
 	public static settings = {
@@ -30,11 +30,8 @@ export default class MARIOKART7 extends Title {
 	};
 
 	public static titleIDs = [
-		'0004000000030600',
-		'0004000000030700',
-		'0004000000030800',
-		'0004000000030A00',
-		'000400000008B400'
+		'000400000008FC00',
+		'00040000000B3500'
 	];
 
 	public static protocols = [
@@ -43,5 +40,5 @@ export default class MARIOKART7 extends Title {
 		MatchmakeExtensionrotocol,
 		NATTraversalProtocol,
 		NotificationEventsProtocol
-	]; // TODO - Legacy Ranking and Storage Manager protocols
+	];
 }
