@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import RMCField from '@renderer/components/RMCField.vue';
 
-const props = defineProps<{
+defineProps<{
 	transaction: any | null;
 	direction: 'Request' | 'Response';
 }>();

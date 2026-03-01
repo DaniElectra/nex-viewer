@@ -21,7 +21,7 @@ let rmcData: {
 		__fields: Record<string, any>;
 	};
 	parameters: any;
-};
+} | null;
 
 const tabs = computed(() => {
 	const t = [

@@ -7,7 +7,7 @@ import PacketDetails from '@renderer/components/PacketDetails.vue';
 import RMCMessage from '@/nex/rmc-message';
 
 const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);
-const selectedPacket = ref(null);
+const selectedPacket = ref<Record<string, any> | null>(null); // TODO - Strongly type this
 
 onMounted(() => {
 	window.api.onClearSections(() => {

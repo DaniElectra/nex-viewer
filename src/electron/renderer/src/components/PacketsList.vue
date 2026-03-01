@@ -5,7 +5,7 @@ import ProtocolSelector from '@renderer/components/ProtocolSelector.vue';
 import Badge from '@renderer/components/Badge.vue';
 
 const search = ref('');
-const packets = ref([]);
+const packets = ref<Record<string, any>[]>([]); // TODO - Strongly type this
 const props = defineProps<{
 	selectedPacketId?: number;
 }>();

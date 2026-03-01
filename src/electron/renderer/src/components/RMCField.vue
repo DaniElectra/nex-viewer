@@ -218,7 +218,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 		</div>
 	</div>
 
-	<AccordionRoot v-else-if="isVariant && variantIsComplex" class="w-full" type="single" :collapsible="true">
+	<AccordionRoot v-else-if="isVariant && variantIsComplex && variantInner" class="w-full" type="single" :collapsible="true">
 		<AccordionItem v-slot="{ open }" class="border-0" :value="fieldKey">
 			<AccordionTrigger class="flex py-1 hover:no-underline border-b border-[#25282d]" :class="depth > 0 ? 'ml-4 w-[calc(100%-1rem)]' : 'w-full'">
 				<div class="flex items-center justify-between w-full">
@@ -257,7 +257,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 	</div>
 
 	<AccordionRoot v-else class="w-full" type="single" :collapsible="true">
-		<AccordionItem v-slot="{ open }" class="border-0" :value="field.__displayTypeName">
+		<AccordionItem v-slot="{ open }" class="border-0" :value="field.__displayTypeName || typeName">
 			<AccordionTrigger class="flex py-1 hover:no-underline" :class="depth > 0 ? 'ml-4 w-[calc(100%-1rem)]' : 'w-full'">
 				<div class="flex items-center justify-between w-full">
 					<div class="flex items-center">
