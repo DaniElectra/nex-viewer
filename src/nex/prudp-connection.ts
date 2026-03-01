@@ -188,11 +188,11 @@ export default class PRUDPConnection {
 
 					if (packet.fragmentID === 0 && defragmentedPayload) {
 						packet.defragmentedPayload = defragmentedPayload;
-						if (packet.sourceStreamType !== 1) {
+						if (!packet.isStreamTypeDO()) {
 							this.processPacketMessage(packet);
 						}
 					}
-				} else if (packet.sourceStreamType === 5) {
+				} else if (packet.isStreamTypeNAT()) {
 					this.processNATPacketMessage(packet);
 				}
 			}

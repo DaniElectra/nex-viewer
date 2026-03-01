@@ -56,7 +56,23 @@ export default class PRUDPPacket {
 		DATA: 2,
 		DISCONNECT: 3,
 		PING: 4,
-		USER: 5
+		USER: 5,
+		ROUTE: 6,
+		RAW: 7
+	};
+
+	static STREAM_TYPES = {
+		DO: 1,
+		RV: 2,
+		OLDRVSEC: 3,
+		SBMGMT: 4,
+		NAT: 5,
+		SESSIONDISCOVERY: 6,
+		NATECHO: 7,
+		ROUTING: 8,
+		GAME: 9,
+		RVSECURE: 10,
+		RELAY: 11
 	};
 
 	constructor(stream: ByteStream) {
@@ -69,6 +85,10 @@ export default class PRUDPPacket {
 
 	private hasFlag(flag: number): boolean {
 		return (this.flags & flag) !== 0;
+	}
+
+	private isStreamType(type: number): boolean {
+		return this.sourceStreamType === type;
 	}
 
 	public isTypeSyn(): boolean {
@@ -95,6 +115,14 @@ export default class PRUDPPacket {
 		return this.isType(PRUDPPacket.TYPES.USER);
 	}
 
+	public isTypeRoute(): boolean {
+		return this.isType(PRUDPPacket.TYPES.ROUTE);
+	}
+
+	public isTypeRaw(): boolean {
+		return this.isType(PRUDPPacket.TYPES.RAW);
+	}
+
 	public hasFlagAck(): boolean {
 		return this.hasFlag(PRUDPPacket.FLAGS.ACK);
 	}
@@ -113,6 +141,50 @@ export default class PRUDPPacket {
 
 	public hasFlagMultiAck(): boolean {
 		return this.hasFlag(PRUDPPacket.FLAGS.MULTI_ACK);
+	}
+
+	public isStreamTypeDO(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.DO);
+	}
+
+	public isStreamTypeRV(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.RV);
+	}
+
+	public isStreamTypeOldRVSec(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.OLDRVSEC);
+	}
+
+	public isStreamTypeSBMGMT(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.SBMGMT);
+	}
+
+	public isStreamTypeNAT(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.NAT);
+	}
+
+	public isStreamTypeSessionDiscovery(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.SESSIONDISCOVERY);
+	}
+
+	public isStreamTypeNATEcho(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.NATECHO);
+	}
+
+	public isStreamTypeRouting(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.ROUTING);
+	}
+
+	public isStreamTypeGame(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.GAME);
+	}
+
+	public isStreamTypeRVSecure(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.RVSECURE);
+	}
+
+	public isStreamTypeRelay(): boolean {
+		return this.isStreamType(PRUDPPacket.STREAM_TYPES.RELAY);
 	}
 
 	public serialize(): SerializedPRUDPPacket {
@@ -161,7 +233,7 @@ export default class PRUDPPacket {
 		}
 
 		// * NAT-exclusive fields
-		if (this.sourceStreamType === 5) {
+		if (this.isStreamTypeNAT()) {
 			serialized.nat_message_id = this.natMessageID;
 			serialized.nat_connection_id = this.natConnectionID;
 			serialized.nat_time = this.natTime;
@@ -227,6 +299,10 @@ export default class PRUDPPacket {
 				return 'PING';
 			case 5:
 				return 'USER';
+			case 6:
+				return 'ROUTE';
+			case 7:
+				return 'RAW';
 		}
 
 		return `UnknownPacketType_${this.type}`;
