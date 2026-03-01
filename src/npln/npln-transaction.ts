@@ -11,7 +11,7 @@ const root = new protobuf.Root();
 
 root.resolvePath = (_origin, target) => path.resolve(PROTO_ROOT, target); // * Needed to process relative imports correctly
 
-const protobufs = root.loadSync(glob.sync('**/*.proto', {
+const protobufs = root.loadSync(glob.sync('proto/**/*.proto', {
 	cwd: PROTO_ROOT,
 	absolute: true
 }));
