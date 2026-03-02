@@ -58,7 +58,8 @@ export default class PRUDPPacket {
 		PING: 4,
 		USER: 5,
 		ROUTE: 6,
-		RAW: 7
+		RAW: 7,
+		UNKNOWN_8: 8 // * Only seen in some Switch games. Seems to be a new PING packet type? Functions identically to PING packets but with a separate sequence counter
 	};
 
 	static STREAM_TYPES = {
