@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RMCField from '@renderer/components/RMCField.vue';
+import SerializedField from '@renderer/components/SerializedField.vue';
 
 defineProps<{
 	transaction: any | null;
@@ -21,6 +21,6 @@ function makeField(message) {
 	</div>
 	<div v-for="(message, i) in (direction === 'Response' ? transaction.original_packet.response.messages : transaction.original_packet.request.messages)" class="space-y-1">
 		<!-- * This probably shouldn't be treated as an RMC, but if we keep the same structure we should rename this component -->
-		<RMCField :field-key="`Message ${Number(i)+1}`" :field="makeField(message)" :depth="0" />
+		<SerializedField :field-key="`Message ${Number(i)+1}`" :field="makeField(message)" :depth="0" />
 	</div>
 </template>

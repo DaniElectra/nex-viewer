@@ -6,7 +6,7 @@ import PRUDPV1PacketOverview from '@renderer/components/PRUDPV1PacketOverview.vu
 import PRUDPLitePacketOverview from '@renderer/components/PRUDPLitePacketOverview.vue';
 import NPLNTransactionOverview from '@renderer/components/NPLNTransactionOverview.vue';
 import NPLNMessage from '@renderer/components/NPLNMessage.vue';
-import RMCField from '@renderer/components/RMCField.vue';
+import SerializedField from '@renderer/components/SerializedField.vue';
 import { copyHex } from '@renderer/assets/js/util';
 
 const props = defineProps<{
@@ -154,8 +154,8 @@ watch(() => props.packet, () => {
 						</div>
 					</div>
 					<div class="space-y-1">
-						<RMCField :field-key="'Header'" :field="rmcData.header" :depth="0" />
-						<RMCField :field-key="'Parameters'" :field="rmcData.parameters" :depth="0" />
+						<SerializedField :field-key="'Header'" :field="rmcData.header" :depth="0" />
+						<SerializedField :field-key="'Parameters'" :field="rmcData.parameters" :depth="0" />
 					</div>
 				</div>
 

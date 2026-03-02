@@ -3,26 +3,26 @@ import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDa
 import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from 'reka-ui';
 import { toHexString, copyHex } from '@renderer/assets/js/util';
 
-interface RMCBasicField {
+interface BasicSerializedField {
 	__displayTypeName?: string;
 	__typeName?: string;
 	__value?: any;
 }
 
-interface RMCClassField extends RMCBasicField {
+interface ExpandableSerializedField extends BasicSerializedField {
 	__version?: number;
-	__fields?: Record<string, RMCField | RMCClassField>;
+	__fields?: Record<string, SerializedField | ExpandableSerializedField>;
 }
 
-type RMCField = RMCBasicField | RMCClassField;
+type SerializedField = BasicSerializedField | ExpandableSerializedField;
 
 const props = defineProps<{
 	fieldKey: string;
-	field: RMCField;
+	field: SerializedField;
 	depth: number;
 }>();
 
-function getTypeIcon(field: RMCField) {
+function getTypeIcon(field: SerializedField) {
 	if (field === null || field === undefined) {
 		return {
 			icon: AlertCircle,
@@ -103,7 +103,7 @@ function getTypeIcon(field: RMCField) {
 	};
 }
 
-function getDisplayValue(field: RMCField): string {
+function getDisplayValue(field: SerializedField): string {
 	if (field.__typeName === 'Buffer' || field.__typeName === 'QBuffer') {
 		return toHexString(field.__value);
 	}
@@ -121,7 +121,7 @@ const hasExpandableContent = props.field && (
 const typeIcon = getTypeIcon(props.field);
 const typeName = props.field.__displayTypeName || props.field.__typeName || typeof props.field;
 const isVariant = props.field.__typeName === 'Variant';
-const variantInner = isVariant ? props.field.__value as RMCField : null;
+const variantInner = isVariant ? props.field.__value as SerializedField : null;
 const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof variantInner.__value === 'object' && variantInner.__value !== null && !Array.isArray(variantInner.__value)));
 </script>
 
@@ -146,7 +146,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 				<div class="pl-2 border-l border-[#25282d] ml-3 space-y-1">
 					<template v-for="(item, itemIndex) in field.__value" :key="itemIndex">
 						<div class="mb-1">
-							<RMCField :field="item" :field-key="`[${itemIndex}]`" :depth="depth + 1" />
+							<SerializedField :field="item" :field-key="`[${itemIndex}]`" :depth="depth + 1" />
 						</div>
 					</template>
 				</div>
@@ -192,8 +192,8 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 									</AccordionTrigger>
 									<AccordionContent class="overflow-hidden text-sm transition-all">
 										<div class="pl-2 border-l border-[#25282d] ml-3 space-y-1">
-											<RMCField :field="entry.key" field-key="Key" :depth="depth + 2" />
-											<RMCField :field="entry.value" field-key="Value" :depth="depth + 2" />
+											<SerializedField :field="entry.key" field-key="Key" :depth="depth + 2" />
+											<SerializedField :field="entry.value" field-key="Value" :depth="depth + 2" />
 										</div>
 									</AccordionContent>
 								</AccordionItem>
@@ -236,7 +236,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			</AccordionTrigger>
 			<AccordionContent class="overflow-hidden text-sm transition-all">
 				<div class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
-					<RMCField :field="variantInner" :field-key="variantInner?.__displayTypeName || 'value'" :depth="depth + 1" />
+					<SerializedField :field="variantInner" :field-key="variantInner?.__displayTypeName || 'value'" :depth="depth + 1" />
 				</div>
 			</AccordionContent>
 		</AccordionItem>
@@ -276,17 +276,17 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 				<div class="pb-0 pt-0">
 					<div v-if="'__fields' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
 						<template v-for="(subField, subKey) in field.__fields" :key="subKey">
-							<RMCField :field="subField" :field-key="String(subKey)" :depth="depth + 1" />
+							<SerializedField :field="subField" :field-key="String(subKey)" :depth="depth + 1" />
 						</template>
 					</div>
 					<div v-else-if="'__value' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
 						<template v-for="(subField, subKey) in field.__value" :key="subKey">
-							<RMCField :field="subField" :field-key="String(subKey)" :depth="depth + 1" />
+							<SerializedField :field="subField" :field-key="String(subKey)" :depth="depth + 1" />
 						</template>
 					</div>
 					<div v-else class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
 						<template v-for="(subField, subKey) in field" :key="subKey">
-							<RMCField v-if="!String(subKey).startsWith('__')" :field="subField" :field-key="String(subKey)" :depth="depth + 1" />
+							<SerializedField v-if="!String(subKey).startsWith('__')" :field="subField" :field-key="String(subKey)" :depth="depth + 1" />
 						</template>
 					</div>
 				</div>
