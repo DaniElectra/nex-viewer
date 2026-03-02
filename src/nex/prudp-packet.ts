@@ -254,27 +254,27 @@ export default class PRUDPPacket {
 		}
 
 		switch (streamType) {
-			case 1:
+			case PRUDPPacket.STREAM_TYPES.DO:
 				return 'DO';
-			case 2:
+			case PRUDPPacket.STREAM_TYPES.RV:
 				return 'RV';
-			case 3:
+			case PRUDPPacket.STREAM_TYPES.OLDRVSEC:
 				return 'OldRVSec';
-			case 4:
+			case PRUDPPacket.STREAM_TYPES.SBMGMT:
 				return 'SBMGMT';
-			case 5:
+			case PRUDPPacket.STREAM_TYPES.NAT:
 				return 'NAT';
-			case 6:
+			case PRUDPPacket.STREAM_TYPES.SESSIONDISCOVERY:
 				return 'SessionDiscovery';
-			case 7:
+			case PRUDPPacket.STREAM_TYPES.NATECHO:
 				return 'NATEcho';
-			case 8:
+			case PRUDPPacket.STREAM_TYPES.ROUTING:
 				return 'Routing';
-			case 9:
+			case PRUDPPacket.STREAM_TYPES.GAME:
 				return 'Game';
-			case 10:
+			case PRUDPPacket.STREAM_TYPES.RVSECURE:
 				return 'RVSecure';
-			case 11:
+			case PRUDPPacket.STREAM_TYPES.RELAY:
 				return 'Relay';
 		}
 
@@ -288,22 +288,24 @@ export default class PRUDPPacket {
 		}
 
 		switch (this.type) {
-			case 0:
+			case PRUDPPacket.TYPES.SYN:
 				return 'SYN';
-			case 1:
+			case PRUDPPacket.TYPES.CONNECT:
 				return 'CONNECT';
-			case 2:
+			case PRUDPPacket.TYPES.DATA:
 				return 'DATA';
-			case 3:
+			case PRUDPPacket.TYPES.DISCONNECT:
 				return 'DISCONNECT';
-			case 4:
+			case PRUDPPacket.TYPES.PING:
 				return 'PING';
-			case 5:
+			case PRUDPPacket.TYPES.USER:
 				return 'USER';
-			case 6:
+			case PRUDPPacket.TYPES.ROUTE:
 				return 'ROUTE';
-			case 7:
+			case PRUDPPacket.TYPES.RAW:
 				return 'RAW';
+			case PRUDPPacket.TYPES.UNKNOWN_8:
+				return 'PING_8';
 		}
 
 		return `UnknownPacketType_${this.type}`;
