@@ -128,7 +128,7 @@ export default class Session extends EventEmitter {
 				packet.elapsedTime = elapsedTime;
 
 				this.processPacket(packet);
-				this.emit('packet', packet);
+				this.emit('serializedMessage', packet);
 			}
 		}
 
@@ -169,7 +169,7 @@ export default class Session extends EventEmitter {
 				packet.elapsedTime = elapsedTime;
 
 				this.processPacket(packet);
-				this.emit('packet', packet);
+				this.emit('serializedMessage', packet);
 			}
 		}
 
@@ -199,7 +199,7 @@ export default class Session extends EventEmitter {
 					}
 
 					this.processPacket(packet);
-					this.emit('packet', packet);
+					this.emit('serializedMessage', packet);
 				}
 			}
 		}
@@ -294,7 +294,7 @@ export default class Session extends EventEmitter {
 			const contentType = transaction.requestHeaders['content-type'] ?? transaction.responseHeaders['content-type'] ?? '';
 
 			if (contentType.startsWith('application/grpc')) {
-				this.emit('nplnTransaction', NPLNTransaction.parseFromProxideTransaction(transaction));
+				this.emit('serializedMessage', NPLNTransaction.parseFromProxideTransaction(transaction));
 			}
 		}
 	}
@@ -319,7 +319,7 @@ export default class Session extends EventEmitter {
 
 			packet.elapsedTime = elapsedTime;
 
-			this.emit('packet', packet);
+			this.emit('serializedMessage', packet);
 		}
 	}
 
