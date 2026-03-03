@@ -7,7 +7,7 @@ import type { SerializedMessage } from '@/types/serialized-message';
 const api = {
 	ready: (): void => ipcRenderer.send('renderer-ready'),
 	onClearSections: (callback: () => void): IpcRenderer => ipcRenderer.on('clear-sections', _event => callback()),
-	onSerializedMessage: (callback: (message: SerializedMessage) => void): IpcRenderer => ipcRenderer.on('serializedMessage', (_event, transaction) => callback(JSON.parse(transaction))),
+	onSerializedMessage: (callback: (message: SerializedMessage) => void): IpcRenderer => ipcRenderer.on('serializedMessage', (_event, transaction) => callback(JSON.parse(transaction)))
 };
 
 if (process.contextIsolated) {

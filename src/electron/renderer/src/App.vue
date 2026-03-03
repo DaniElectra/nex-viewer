@@ -4,7 +4,6 @@ import { /* FolderOpen, Download, */ GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
 import PacketsList from '@renderer/components/PacketsList.vue';
 import PacketDetails from '@renderer/components/PacketDetails.vue';
-import RMCMessage from '@/nex/rmc-message';
 import { SerializedMessage } from '@/types/serialized-message';
 
 const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);

@@ -210,7 +210,7 @@ export default class Session extends EventEmitter {
 	private parseProxideConnection(capturePath: string): void {
 		const captureData = fs.readFileSync(capturePath);
 		const parser = new ProxideParser(captureData);
-		const partialTransactions = new Map<string, Partial<ProxideTransaction> & { requestChunks: Buffer[], responseChunks: Buffer[] }>();
+		const partialTransactions = new Map<string, Partial<ProxideTransaction> & { requestChunks: Buffer[]; responseChunks: Buffer[] }>();
 		const transactions: ProxideTransaction[] = [];
 
 		for (const event of parser.events()) {
@@ -224,7 +224,7 @@ export default class Session extends EventEmitter {
 						requestHeaders: event.headers,
 						startTime: event.timestamp,
 						requestChunks: [],
-						responseChunks: [],
+						responseChunks: []
 					});
 					break;
 
@@ -280,7 +280,7 @@ export default class Session extends EventEmitter {
 				trailers: transaction.trailers ?? {},
 				status: transaction.status ?? Status.InProgress,
 				startTime: transaction.startTime!,
-				endTime: transaction.endTime ?? transaction.startTime!,
+				endTime: transaction.endTime ?? transaction.startTime!
 			});
 		}
 

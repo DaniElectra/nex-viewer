@@ -214,18 +214,24 @@ export default class PRUDPPacketLite extends PRUDPPacket {
 					title: 'PRUDPLite Optional Data',
 					columns: 2,
 					fields: [
-						...(this.supportedFunctions !== undefined ? [{
-							name: 'Supported Functions',
-							value: `${this.supportedFunctions.join(', ')}`
-						}] : []),
-						...(this.connectionSignature !== undefined ? [{
-							name: 'Connection Signature',
-							value: this.connectionSignature.toString('hex')
-						}] : []),
-						...(this.liteSignature !== undefined ? [{
-							name: 'Lite Signature',
-							value: this.liteSignature.toString('hex')
-						}] : [])
+						...(this.supportedFunctions !== undefined
+							? [{
+									name: 'Supported Functions',
+									value: `${this.supportedFunctions.join(', ')}`
+								}]
+							: []),
+						...(this.connectionSignature !== undefined
+							? [{
+									name: 'Connection Signature',
+									value: this.connectionSignature.toString('hex')
+								}]
+							: []),
+						...(this.liteSignature !== undefined
+							? [{
+									name: 'Lite Signature',
+									value: this.liteSignature.toString('hex')
+								}]
+							: [])
 					]
 				}
 			],
@@ -234,63 +240,69 @@ export default class PRUDPPacketLite extends PRUDPPacket {
 					title: 'Packet',
 					bytes: [...this.originalBuffer.values()]
 				},
-				...(this.decryptedPayload !== undefined ? [{
-					title: 'Decrypted Payload',
-					bytes: [...this.decryptedPayload.values()]
-				}] : []),
-				...(this.defragmentedPayload !== undefined ? [{
-					title: 'Defragmented Payload',
-					bytes: [...this.defragmentedPayload.values()]
-				}] : [])
+				...(this.decryptedPayload !== undefined
+					? [{
+							title: 'Decrypted Payload',
+							bytes: [...this.decryptedPayload.values()]
+						}]
+					: []),
+				...(this.defragmentedPayload !== undefined
+					? [{
+							title: 'Defragmented Payload',
+							bytes: [...this.defragmentedPayload.values()]
+						}]
+					: [])
 			],
-			serialized_tabs: this.message ? [
-				{
-					title: 'RMC',
-					subtitle: `Protocol: ${this.message.protocolName || 'Unknown'}, Method: ${this.message.methodName || 'Unknown'}`,
-					fields: [
+			serialized_tabs: this.message
+				? [
 						{
-							name: 'RMC Header',
-							data: {
-								__displayTypeName: 'Header',
-								__fields: {
-									type: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.type
-									},
-									protocol_id: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.protocolID
-									},
-									protocol_name: {
-										__displayTypeName: 'String',
-										__value: this.message.protocolName
-									},
-									method_id: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.methodID
-									},
-									method_name: {
-										__displayTypeName: 'String',
-										__value: this.message.methodName
-									},
-									call_id: {
-										__displayTypeName: 'UInt32',
-										__value: this.message.callID
+							title: 'RMC',
+							subtitle: `Protocol: ${this.message.protocolName || 'Unknown'}, Method: ${this.message.methodName || 'Unknown'}`,
+							fields: [
+								{
+									name: 'RMC Header',
+									data: {
+										__displayTypeName: 'Header',
+										__fields: {
+											type: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.type
+											},
+											protocol_id: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.protocolID
+											},
+											protocol_name: {
+												__displayTypeName: 'String',
+												__value: this.message.protocolName
+											},
+											method_id: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.methodID
+											},
+											method_name: {
+												__displayTypeName: 'String',
+												__value: this.message.methodName
+											},
+											call_id: {
+												__displayTypeName: 'UInt32',
+												__value: this.message.callID
+											}
+										}
+									}
+								},
+								{
+									name: 'Parameters',
+									data: {
+										__displayTypeName: 'Parameters',
+										__fields: this.message.toJSON().parameters
 									}
 								}
-							}
-						},
-						{
-							name: 'Parameters',
-							data: {
-								__displayTypeName: 'Parameters',
-								__fields: this.message.toJSON().parameters
-							}
+							]
 						}
 					]
-				}
-			] : [],
+				: [],
 			stack_trace: this.stackTrace
-		}
+		};
 	}
 }

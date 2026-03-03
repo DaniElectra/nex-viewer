@@ -22,18 +22,20 @@ const tabs = computed(() => {
 		}
 	];
 
-	if (props.packet?.stack_trace) {
-		t.push({
-			id: 'stack_trace',
-			label: 'Stack Trace'
-		});
-	}
+	if (props.packet) {
+		if (props.packet.stack_trace) {
+			t.push({
+				id: 'stack_trace',
+				label: 'Stack Trace'
+			});
+		}
 
-	for (const tab of props.packet?.serialized_tabs) {
-		t.push({
-			id: tab.title.toLowerCase().replace(/ /g, ''),
-			label: tab.title
-		});
+		for (const tab of props.packet.serialized_tabs) {
+			t.push({
+				id: tab.title.toLowerCase().replace(/ /g, ''),
+				label: tab.title
+			});
+		}
 	}
 
 	return t;
@@ -104,7 +106,7 @@ watch(() => props.packet, () => {
 					<pre class="text-[#F9FAFC] whitespace-pre-wrap break-all">{{ packet.stack_trace }}</pre>
 				</div>
 
-				<div v-for="tab in packet.serialized_tabs" :key="tab.title.toLowerCase().replace(/ /g, '')" v-show="activeTab === tab.title.toLowerCase().replace(/ /g, '')" class="font-mono text-xs">
+				<div v-for="tab in packet.serialized_tabs" v-show="activeTab === tab.title.toLowerCase().replace(/ /g, '')" :key="tab.title.toLowerCase().replace(/ /g, '')" class="font-mono text-xs">
 					<div class="mb-4">
 						<div class="text-lg font-medium">{{ tab.title }}</div>
 						<div v-if="tab.subtitle" class="text-sm text-[#9a9fa9]">{{ tab.subtitle }}</div>

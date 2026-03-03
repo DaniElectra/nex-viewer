@@ -1,5 +1,5 @@
-import ByteStream from '@/byte-stream';
 import { decode } from '@msgpack/msgpack';
+import ByteStream from '@/byte-stream';
 
 export enum SessionEventType {
 	NewConnection = 0,
@@ -198,7 +198,7 @@ export default class ProxideParser {
 					uuid: args[0] as string,
 					protocolStack: (args[1] as Record<string, null>[]).map(entry => this.decodeEnumMap(entry)),
 					clientAddress: args[2] as string,
-					timestamp: this.decodeSystemTime(args[3]),
+					timestamp: this.decodeSystemTime(args[3])
 				};
 
 			case SessionEventType.NewRequest:
@@ -209,7 +209,7 @@ export default class ProxideParser {
 					uri: args[2] as string,
 					method: args[3] as string,
 					headers: args[4] as Record<string, string>,
-					timestamp: this.decodeSystemTime(args[5]),
+					timestamp: this.decodeSystemTime(args[5])
 				};
 
 			case SessionEventType.NewResponse:
@@ -218,7 +218,7 @@ export default class ProxideParser {
 					connectionUUID: args[0] as string,
 					requestUUID: args[1] as string,
 					headers: args[2] as Record<string, string>,
-					timestamp: this.decodeSystemTime(args[3]),
+					timestamp: this.decodeSystemTime(args[3])
 				};
 
 			case SessionEventType.MessageData:
@@ -226,7 +226,7 @@ export default class ProxideParser {
 					type: SessionEventType.MessageData,
 					requestUUID: args[0] as string,
 					data: Buffer.from(args[1] as Uint8Array),
-					part: this.decodeEnumMap(args[2]),
+					part: this.decodeEnumMap(args[2])
 				};
 
 			case SessionEventType.MessageDone:
@@ -236,7 +236,7 @@ export default class ProxideParser {
 					part: this.decodeEnumMap(args[1]),
 					status: this.decodeEnumMap(args[2]),
 					timestamp: this.decodeSystemTime(args[3]),
-					trailers: args[4] as Record<string, string>,
+					trailers: args[4] as Record<string, string>
 				};
 
 			case SessionEventType.RequestDone:
@@ -244,7 +244,7 @@ export default class ProxideParser {
 					type: SessionEventType.RequestDone,
 					requestUUID: args[0] as string,
 					status: this.decodeEnumMap(args[1]),
-					timestamp: this.decodeSystemTime(args[2]),
+					timestamp: this.decodeSystemTime(args[2])
 				};
 
 			case SessionEventType.ConnectionDone:
@@ -252,7 +252,7 @@ export default class ProxideParser {
 					type: SessionEventType.ConnectionDone,
 					connectionUUID: args[0] as string,
 					status: this.decodeEnumMap(args[1]),
-					timestamp: this.decodeSystemTime(args[2]),
+					timestamp: this.decodeSystemTime(args[2])
 				};
 
 			default:

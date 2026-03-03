@@ -105,54 +105,56 @@ export default class RawRMCPacket extends PRUDPPacket {
 					bytes: [...this.decryptedPayload!.values()]
 				}
 			],
-			serialized_tabs: this.message ? [
-				{
-					title: 'RMC',
-					subtitle: `Protocol: ${this.message.protocolName || 'Unknown'}, Method: ${this.message.methodName || 'Unknown'}`,
-					fields: [
+			serialized_tabs: this.message
+				? [
 						{
-							name: 'RMC Header',
-							data: {
-								__displayTypeName: 'Header',
-								__fields: {
-									type: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.type
-									},
-									protocol_id: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.protocolID
-									},
-									protocol_name: {
-										__displayTypeName: 'String',
-										__value: this.message.protocolName
-									},
-									method_id: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.methodID
-									},
-									method_name: {
-										__displayTypeName: 'String',
-										__value: this.message.methodName
-									},
-									call_id: {
-										__displayTypeName: 'UInt32',
-										__value: this.message.callID
+							title: 'RMC',
+							subtitle: `Protocol: ${this.message.protocolName || 'Unknown'}, Method: ${this.message.methodName || 'Unknown'}`,
+							fields: [
+								{
+									name: 'RMC Header',
+									data: {
+										__displayTypeName: 'Header',
+										__fields: {
+											type: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.type
+											},
+											protocol_id: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.protocolID
+											},
+											protocol_name: {
+												__displayTypeName: 'String',
+												__value: this.message.protocolName
+											},
+											method_id: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.methodID
+											},
+											method_name: {
+												__displayTypeName: 'String',
+												__value: this.message.methodName
+											},
+											call_id: {
+												__displayTypeName: 'UInt32',
+												__value: this.message.callID
+											}
+										}
+									}
+								},
+								{
+									name: 'Parameters',
+									data: {
+										__displayTypeName: 'Parameters',
+										__fields: this.message.toJSON().parameters
 									}
 								}
-							}
-						},
-						{
-							name: 'Parameters',
-							data: {
-								__displayTypeName: 'Parameters',
-								__fields: this.message.toJSON().parameters
-							}
+							]
 						}
 					]
-				}
-			] : [],
+				: [],
 			stack_trace: this.stackTrace
-		}
+		};
 	}
 }

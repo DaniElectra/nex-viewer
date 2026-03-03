@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { app } from 'electron';
-import glob from 'glob';
+import { glob } from 'glob';
 import protobuf from 'protobufjs';
 import type { ProxideTransaction } from '@/proxide-parser';
 import type { SerializedMessage } from '@/types/serialized-message';
@@ -10,7 +10,9 @@ import type { SerializedMessage } from '@/types/serialized-message';
 const PROTO_ROOT = path.join(app.getAppPath(), 'src/npln/protobufs/latest'); // TODO - I doubt this will work when packaged, this is a hack
 const root = new protobuf.Root();
 
-root.resolvePath = (_origin, target) => path.resolve(PROTO_ROOT, target); // * Needed to process relative imports correctly
+root.resolvePath = function (_origin, target): string | null {
+	return path.resolve(PROTO_ROOT, target); // * Needed to process relative imports correctly
+};
 
 const protobufs = root.loadSync(glob.sync('proto/**/*.proto', {
 	cwd: PROTO_ROOT,
@@ -147,7 +149,9 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 		}
 
 		const raw = value[field.name];
-		if (raw == null) continue;
+		if (raw == null) {
+			continue;
+		}
 
 		if (field instanceof protobuf.MapField) {
 			const entries: Record<string, any> = {};
@@ -188,7 +192,7 @@ export default class NPLNTransaction {
 	public request!: NPLNMessage;
 	public response!: NPLNMessage;
 
-	public decode() {
+	public decode(): void {
 		const service = protobufs.lookupService(this.fullyQualifiedServiceName);
 		const method = service.methods[this.methodName];
 
@@ -201,7 +205,7 @@ export default class NPLNTransaction {
 		this.response.messages = parseGRPCFrames(this.response.body).map(frame => responseType.decode(frame));
 	}
 
-	public transform(): { requests: any[]; responses: any[]; } {
+	public transform(): { requests: any[]; responses: any[] } {
 		const service = protobufs.lookupService(this.fullyQualifiedServiceName);
 		const method = service.methods[this.methodName];
 
@@ -212,7 +216,7 @@ export default class NPLNTransaction {
 
 		return {
 			requests: parseGRPCFrames(this.request.body).map(frame => transformMessage(requestType, requestType.decode(frame)).__fields),
-			responses: parseGRPCFrames(this.response.body).map(frame => transformMessage(responseType, responseType.decode(frame)).__fields),
+			responses: parseGRPCFrames(this.response.body).map(frame => transformMessage(responseType, responseType.decode(frame)).__fields)
 		};
 	}
 
@@ -299,7 +303,7 @@ export default class NPLNTransaction {
 				{
 					title: 'Request',
 					fields: transformed.requests.map((request, i) => ({
-						name: transformed.requests.length === 1 ? 'Message' : `Message ${i+1}`,
+						name: transformed.requests.length === 1 ? 'Message' : `Message ${i + 1}`,
 						data: {
 							__displayTypeName: 'Parameters',
 							__fields: request
@@ -309,7 +313,7 @@ export default class NPLNTransaction {
 				{
 					title: 'Response',
 					fields: transformed.responses.map((response, i) => ({
-						name: transformed.responses.length === 1 ? 'Message' : `Message ${i+1}`,
+						name: transformed.responses.length === 1 ? 'Message' : `Message ${i + 1}`,
 						data: {
 							__displayTypeName: 'Parameters',
 							__fields: response
@@ -317,6 +321,6 @@ export default class NPLNTransaction {
 					}))
 				}
 			]
-		}
+		};
 	}
 }

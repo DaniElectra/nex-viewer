@@ -18,7 +18,7 @@ const selected = ref<Record<Lowercase<TransportType> | 'all', boolean>>({
 	npln: false
 });
 
-const allTransports: TransportType[] = [ 'NEX', 'HPP', 'HTTP', 'NPLN' ];
+const allTransports: TransportType[] = ['NEX', 'HPP', 'HTTP', 'NPLN'];
 
 function getSelectedLabel() {
 	if (selected.value.all) {

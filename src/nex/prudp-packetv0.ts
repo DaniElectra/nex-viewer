@@ -179,97 +179,115 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 					title: 'PRUDPv0 Optional Data',
 					columns: 2,
 					fields: [
-						...(this.connectionSignature !== undefined ? [{
-							name: 'Connection Signature',
-							value: this.connectionSignature.toString('hex')
-						}] : []),
-						...(this.fragmentID !== undefined ? [{
-							name: 'Fragment ID',
-							value: `${this.fragmentID}`
-						}] : [])
+						...(this.connectionSignature !== undefined
+							? [{
+									name: 'Connection Signature',
+									value: this.connectionSignature.toString('hex')
+								}]
+							: []),
+						...(this.fragmentID !== undefined
+							? [{
+									name: 'Fragment ID',
+									value: `${this.fragmentID}`
+								}]
+							: [])
 					]
 				},
-				...(this.natMessageID !== undefined || this.natConnectionID !== undefined || this.natTime !== undefined ? [{
-					title: 'NAT Data',
-					columns: 2,
-					fields: [
-						...(this.natMessageID !== undefined ? [{
-							name: 'NAT Message ID',
-							value: `${this.natMessageID}`
-						}] : []),
-						...(this.natConnectionID !== undefined ? [{
-							name: 'NAT Connection ID',
-							value: `${this.natConnectionID}`
-						}] : []),
-						...(this.natTime !== undefined ? [{
-							name: 'NAT Time Counter',
-							value: `${this.natTime}`
-						}] : []),
-					]
-				}] : [])
+				...(this.natMessageID !== undefined || this.natConnectionID !== undefined || this.natTime !== undefined
+					? [{
+							title: 'NAT Data',
+							columns: 2,
+							fields: [
+								...(this.natMessageID !== undefined
+									? [{
+											name: 'NAT Message ID',
+											value: `${this.natMessageID}`
+										}]
+									: []),
+								...(this.natConnectionID !== undefined
+									? [{
+											name: 'NAT Connection ID',
+											value: `${this.natConnectionID}`
+										}]
+									: []),
+								...(this.natTime !== undefined
+									? [{
+											name: 'NAT Time Counter',
+											value: `${this.natTime}`
+										}]
+									: [])
+							]
+						}]
+					: [])
 			],
 			hex_views: [
 				{
 					title: 'Packet',
 					bytes: [...this.originalBuffer.values()]
 				},
-				...(this.decryptedPayload !== undefined ? [{
-					title: 'Decrypted Payload',
-					bytes: [...this.decryptedPayload.values()]
-				}] : []),
-				...(this.defragmentedPayload !== undefined ? [{
-					title: 'Defragmented Payload',
-					bytes: [...this.defragmentedPayload.values()]
-				}] : [])
+				...(this.decryptedPayload !== undefined
+					? [{
+							title: 'Decrypted Payload',
+							bytes: [...this.decryptedPayload.values()]
+						}]
+					: []),
+				...(this.defragmentedPayload !== undefined
+					? [{
+							title: 'Defragmented Payload',
+							bytes: [...this.defragmentedPayload.values()]
+						}]
+					: [])
 			],
-			serialized_tabs: this.message ? [
-				{
-					title: 'RMC',
-					subtitle: `Protocol: ${this.message.protocolName || 'Unknown'}, Method: ${this.message.methodName || 'Unknown'}`,
-					fields: [
+			serialized_tabs: this.message
+				? [
 						{
-							name: 'RMC Header',
-							data: {
-								__displayTypeName: 'Header',
-								__fields: {
-									type: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.type
-									},
-									protocol_id: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.protocolID
-									},
-									protocol_name: {
-										__displayTypeName: 'String',
-										__value: this.message.protocolName
-									},
-									method_id: {
-										__displayTypeName: 'UInt8',
-										__value: this.message.methodID
-									},
-									method_name: {
-										__displayTypeName: 'String',
-										__value: this.message.methodName
-									},
-									call_id: {
-										__displayTypeName: 'UInt32',
-										__value: this.message.callID
+							title: 'RMC',
+							subtitle: `Protocol: ${this.message.protocolName || 'Unknown'}, Method: ${this.message.methodName || 'Unknown'}`,
+							fields: [
+								{
+									name: 'RMC Header',
+									data: {
+										__displayTypeName: 'Header',
+										__fields: {
+											type: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.type
+											},
+											protocol_id: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.protocolID
+											},
+											protocol_name: {
+												__displayTypeName: 'String',
+												__value: this.message.protocolName
+											},
+											method_id: {
+												__displayTypeName: 'UInt8',
+												__value: this.message.methodID
+											},
+											method_name: {
+												__displayTypeName: 'String',
+												__value: this.message.methodName
+											},
+											call_id: {
+												__displayTypeName: 'UInt32',
+												__value: this.message.callID
+											}
+										}
+									}
+								},
+								{
+									name: 'Parameters',
+									data: {
+										__displayTypeName: 'Parameters',
+										__fields: this.message.toJSON().parameters
 									}
 								}
-							}
-						},
-						{
-							name: 'Parameters',
-							data: {
-								__displayTypeName: 'Parameters',
-								__fields: this.message.toJSON().parameters
-							}
+							]
 						}
 					]
-				}
-			] : [],
+				: [],
 			stack_trace: this.stackTrace
-		}
+		};
 	}
 }

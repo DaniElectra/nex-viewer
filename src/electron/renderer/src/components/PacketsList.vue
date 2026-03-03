@@ -4,7 +4,7 @@ import { Search } from 'lucide-vue-next';
 import ProtocolSelector from '@renderer/components/TransportSelector.vue';
 import Badge from '@renderer/components/Badge.vue';
 import type { SerializedMessage } from '@/types/serialized-message';
-import type { TransportType } from '@renderer/components/TransportSelector.vue'
+import type { TransportType } from '@renderer/components/TransportSelector.vue';
 
 const search = ref('');
 const packets = ref<SerializedMessage[]>([]); // TODO - Strongly type this
