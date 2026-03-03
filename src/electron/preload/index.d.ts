@@ -1,6 +1,4 @@
 import type { ElectronAPI } from '@electron-toolkit/preload';
-import type SerializedPacket from '@/types/nex/serialized-packet';
-import type { NPLNTransaction } from '@/npln/npln-transaction';
 import type { SerializedMessage } from '@/types/serialized-message';
 
 declare global {
@@ -9,8 +7,6 @@ declare global {
 		api: {
 			ready: () => void;
 			onClearSections: (callback: () => void) => void;
-			onPacket: (callback: (packet: SerializedPacket) => void) => void;
-			onNPLNTransaction: (callback: (nplnTransaction: NPLNTransaction) => void) => void;
 			onSerializedMessage: (callback: (serializedMessage: SerializedMessage) => void) => void;
 		};
 	}
