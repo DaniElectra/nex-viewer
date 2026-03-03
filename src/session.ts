@@ -494,7 +494,7 @@ export default class Session extends EventEmitter {
 		let connection = this.findConnection(packet);
 
 		if (!connection) {
-			if (packet.version !== -1 && !packet.isTypeSyn() && packet.sourceStreamType !== 5) {
+			if (packet.version !== -1 && !packet.isTypeSyn() && !packet.isStreamTypeNAT()) {
 				// * If we find a new connection on a packet besides the SYN,
 				// * assume only part of the connection is present and ignore.
 				// * NAT packets don't do the SYN handshake, so allow them
