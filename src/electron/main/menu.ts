@@ -16,6 +16,7 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 	browserWindow.webContents.send('clearSections');
 
 	session.on('serializedMessage', (message) => {
+		message = message.toJSON(); // * The message classes have a custom toJSON method that always sets `id` to -1, so need to handle that first
 		message.id = messageID++;
 		browserWindow.webContents.send('serializedMessage', JSON.stringify(message));
 	});
