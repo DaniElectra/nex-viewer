@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/storage-manager/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class StorageManagerProtocol {
 	// * This protocol is the predecessor of the Utility protocol,
@@ -26,7 +26,7 @@ export default class StorageManagerProtocol {
 		0x5: StorageManagerProtocol.ActivateWithCardId
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

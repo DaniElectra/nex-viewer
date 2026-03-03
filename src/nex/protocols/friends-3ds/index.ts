@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/friends-3ds/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class Friends3DSProtocol {
 	static ID = 0x65;
@@ -64,7 +64,7 @@ export default class Friends3DSProtocol {
 		0x1A: Friends3DSProtocol.SendInvitation
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/message-delivery/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class MessageDeliveryProtocol {
 	static ID = 0x1B;
@@ -16,7 +16,7 @@ export default class MessageDeliveryProtocol {
 		0x02: MessageDeliveryProtocol.DeliverMessageMultiTarget
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

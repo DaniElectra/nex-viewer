@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/ranking/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class RankingProtocol {
 	static ID = 0x70;
@@ -42,7 +42,7 @@ export default class RankingProtocol {
 		0xF: RankingProtocol.GetCachedTopXRankings
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

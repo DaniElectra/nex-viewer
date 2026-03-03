@@ -5,8 +5,7 @@ import Substream from '@/nex/substream';
 import RMCMessage from '@/nex/rmc-message';
 import { keyDerivationOld, keyDerivationNew, Ticket } from '@/nex/kerberos';
 import TicketGrantingProtocol from '@/nex/protocols/ticket-granting';
-import type PRUDPPacket from '@/nex/prudp-packet';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 import type StationURL from '@/nex/types/station-url';
 import type { SerializedConnection, Title } from '@/types/nex/serialized-connection';
 
@@ -21,7 +20,7 @@ export default class PRUDPConnection {
 	public clientStreamID?: number;
 	public serverStreamType?: number;
 	public serverStreamID?: number;
-	public packets: Packet[] = []; // * Stores all packets in the connection regardless of substream, reliability, etc. Used to display all packets in order as they are sent
+	public packets: PRUDPPacket[] = []; // * Stores all packets in the connection regardless of substream, reliability, etc. Used to display all packets in order as they are sent
 
 	public title?: Title;
 
@@ -72,7 +71,7 @@ export default class PRUDPConnection {
 		return substream;
 	}
 
-	public processPacket(packet: Packet): void {
+	public processPacket(packet: PRUDPPacket): void {
 		try {
 			if (packet.isTypeSyn() && packet.fromClientToServer && this.mainSecureStationTicket) {
 				this.reset(); // * Assume a new connection has started
@@ -162,7 +161,7 @@ export default class PRUDPConnection {
 				}
 			}
 
-			let packets: Packet[];
+			let packets: PRUDPPacket[];
 			const substreamID = packet.substreamID || 0;
 
 			// * NAT packets always use a sequence ID of 0, since there is no SYN handshake.
@@ -211,7 +210,7 @@ export default class PRUDPConnection {
 		}
 	}
 
-	private processPacketMessage(packet: Packet): void {
+	private processPacketMessage(packet: PRUDPPacket): void {
 		packet.message = new RMCMessage(packet.defragmentedPayload!);
 		packet.message.connection = this;
 

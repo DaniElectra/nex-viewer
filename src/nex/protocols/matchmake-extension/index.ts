@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/matchmake-extension/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class MatchmakeExtensionProtocol {
 	static ID = 0x6D;
@@ -119,7 +119,7 @@ export default class MatchmakeExtensionProtocol {
 		0x35: MatchmakeExtensionProtocol.BrowseMatchmakeSessionWithHostUrlsNoHolderNoResultRange
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

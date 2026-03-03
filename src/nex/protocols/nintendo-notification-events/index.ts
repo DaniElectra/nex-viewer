@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/nintendo-notification-events/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class NintendoNotificationEventsProtocol {
 	static ID = 0x64;
@@ -16,7 +16,7 @@ export default class NintendoNotificationEventsProtocol {
 		0x2: NintendoNotificationEventsProtocol.ProcessNintendoNotificationEvent2
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

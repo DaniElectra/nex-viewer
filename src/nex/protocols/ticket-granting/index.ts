@@ -2,7 +2,7 @@ import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/ticket-granting/methods';
 import AnyDataHolder from '@/nex/types/any-data-holder';
 import AuthenticationInfo from '@/nex/protocols/ticket-granting/types/authentication-info';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 AnyDataHolder.Classes['AuthenticationInfo'] = AuthenticationInfo;
 
@@ -46,7 +46,7 @@ export default class TicketGrantingProtocol {
 		0x6: TicketGrantingProtocol.ValidateAndRequestTicketWithParam
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

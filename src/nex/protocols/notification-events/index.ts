@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/notification-events/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class NotificationEventsProtocol {
 	static ID = 0xE;
@@ -14,7 +14,7 @@ export default class NotificationEventsProtocol {
 		0x1: NotificationEventsProtocol.ProcessNotificationEvent
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

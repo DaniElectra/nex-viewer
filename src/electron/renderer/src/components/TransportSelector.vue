@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { ChevronDown, Check } from 'lucide-vue-next';
 
-export type TransportType = 'NEX' | 'RMC' | 'NetZ' | 'HPP' | 'HTTP' | 'NPLN';
+export type TransportType = 'NEX' | 'RMC' | 'NetZ' | 'PIA' | 'HPP' | 'HTTP' | 'NPLN';
 
 const emit = defineEmits<{
 	transportChange: [transports: TransportType[]];
@@ -15,12 +15,13 @@ const selected = ref<Record<Lowercase<TransportType> | 'all', boolean>>({
 	nex: false,
 	rmc: false,
 	netz: false,
+	pia: false,
 	hpp: false,
 	http: false,
 	npln: false
 });
 
-const allTransports: TransportType[] = ['NEX', 'RMC', 'NetZ', 'HPP', 'HTTP', 'NPLN'];
+const allTransports: TransportType[] = ['NEX', 'RMC', 'NetZ', 'PIA', 'HPP', 'HTTP', 'NPLN'];
 
 function getSelectedLabel() {
 	if (selected.value.all) {

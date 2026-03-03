@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/match-making-ext/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class MatchMakingExtProtocol {
 	static ID = 0x32;
@@ -24,7 +24,7 @@ export default class MatchMakingExtProtocol {
 		0x6: MatchMakingExtProtocol.DeleteFromDeletions
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

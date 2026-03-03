@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/remote-log-device/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class RemoteLogDeviceProtocol {
 	static ID = 0x1;
@@ -14,7 +14,7 @@ export default class RemoteLogDeviceProtocol {
 		0x1: RemoteLogDeviceProtocol.Log
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;

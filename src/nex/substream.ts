@@ -1,17 +1,17 @@
 import RC4Stream from '@/rc4';
 import Counter from '@/nex/counter';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class Substream {
-	private pendingClientToServerPackets: Record<number, Packet> = {};
-	private pendingservertoClientPackets: Record<number, Packet> = {};
+	private pendingClientToServerPackets: Record<number, PRUDPPacket> = {};
+	private pendingservertoClientPackets: Record<number, PRUDPPacket> = {};
 	private clientToServerSequenceIDCounter = new Counter(1);
 	private servertoClientSequenceIDCounter = new Counter(1);
 	private clientToServerFragmentedPayload: Buffer = Buffer.alloc(0);
 	private servertoClientFragmentedPayload: Buffer = Buffer.alloc(0);
 
-	public clientToServerSeenPackets: Packet[] = [];
-	public servertoClientSeenPackets: Packet[] = [];
+	public clientToServerSeenPackets: PRUDPPacket[] = [];
+	public servertoClientSeenPackets: PRUDPPacket[] = [];
 
 	public clientToServerCipher?: RC4Stream;
 	public servertoClientCipher?: RC4Stream;
@@ -22,9 +22,9 @@ export default class Substream {
 		this.servertoClientCipher = new RC4Stream(key);
 	}
 
-	public update(packet: Packet): Packet[] {
+	public update(packet: PRUDPPacket): PRUDPPacket[] {
 		// * Keep track of the packet order and reorder them if need be
-		const packets: Packet[] = [];
+		const packets: PRUDPPacket[] = [];
 		const pendingPackets = packet.fromClientToServer ? this.pendingClientToServerPackets : this.pendingservertoClientPackets;
 		const sequenceIDCounter = packet.fromClientToServer ? this.clientToServerSequenceIDCounter : this.servertoClientSequenceIDCounter;
 
@@ -43,7 +43,7 @@ export default class Substream {
 		return packets;
 	}
 
-	public addFragment(packet: Packet): Buffer {
+	public addFragment(packet: PRUDPPacket): Buffer {
 		const seenPackets = packet.fromClientToServer ? this.clientToServerSeenPackets : this.servertoClientSeenPackets;
 		const fragmentedPayload = packet.fromClientToServer ? this.clientToServerFragmentedPayload : this.servertoClientFragmentedPayload;
 		const seenPacket = seenPackets.findIndex(({ sequenceID }) => packet.sequenceID === sequenceID);

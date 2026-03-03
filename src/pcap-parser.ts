@@ -1,5 +1,14 @@
 import ByteStream from '@/byte-stream';
-import type { Packet } from '@/types/pcap-parser';
+
+export type PCAPFrame = {
+	timestamp: {
+		seconds: number;
+		microseconds: number;
+	};
+	storedLength: number;
+	realLength: number;
+	data: Buffer;
+};
 
 const LINKTYPE_ETHERNET = 0x0001;
 const LINKTYPE_RAW = 0x0065;
@@ -89,7 +98,7 @@ export default class PCAPParser {
 		}
 	}
 
-	public* packets(): Generator<Packet> {
+	public* frames(): Generator<PCAPFrame> {
 		this.stream.seek(this.packetStartOffset);
 
 		while (this.stream.hasDataLeft()) {

@@ -1,11 +1,56 @@
 import ByteStream from '@/byte-stream';
-import type {
-	SectionHeaderBlock,
-	InterfaceDescriptionBlock,
-	EnhancedPacketBlock,
-	SimplePacketBlock,
-	EthernetInterface
-} from '@/types/pcapng-parser';
+
+export type OptionalData = Map<number, Buffer>;
+
+export type SectionHeaderBlock = {
+	be: boolean;
+	interfaces: InterfaceDescriptionBlock[];
+	versionMajor: number;
+	versionMinor: number;
+	options: OptionalData;
+};
+
+export type InterfaceDescriptionBlock = {
+	linkLayerType: number;
+	reserved: number;
+	maxPacketLength: number;
+	options: OptionalData;
+};
+
+export type EnhancedPacketBlock = {
+	interfaceID: number;
+	timestamp: {
+		high: number;
+		low: number;
+		seconds: number;
+	};
+	storedLength: number;
+	realLength: number;
+	interface: NetworkInterface;
+	options: OptionalData;
+	data: Buffer;
+};
+
+export type SimplePacketBlock = {
+	realLength: number;
+	interface: NetworkInterface;
+	data: Buffer;
+};
+
+export type NameResolutionBlock = object; // * Unused
+export type InterfaceStatisticsBlock = object; // * Unused
+export type CustomBlock = object; // * Unused
+
+export type EthernetInterface = {
+	type: 1;
+	data: {
+		destinationMAC: string;
+		sourceMAC: string;
+		type: number;
+	};
+};
+
+export type NetworkInterface = EthernetInterface;
 
 const BOM_BE = 0x4D3C2B1A;
 const BOM_LE = 0x1A2B3C4D;
@@ -378,7 +423,7 @@ export default class PCAPNGParser {
 		};
 	}
 
-	public* packets(): Generator<SimplePacketBlock | EnhancedPacketBlock> {
+	public* frames(): Generator<SimplePacketBlock | EnhancedPacketBlock> {
 		this.stream.seek(0); // * Make sure we're always at the start
 
 		while (this.stream.hasDataLeft()) {

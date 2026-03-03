@@ -9,15 +9,19 @@ import CharlesZipParser from '@/charles-zip-parser';
 import FlowsParser from '@/flows-parser';
 import ProxideParser, { SessionEventType, RequestPart, Status } from '@/proxide-parser';
 import PRUDPConnection from '@/nex/prudp-connection';
+import PIAPacket from '@/nex/pia-packet';
 import PRUDPPacketV0 from '@/nex/prudp-packetv0';
 import PRUDPPacketV1 from '@/nex/prudp-packetv1';
 import PRUDPPacketLite from '@/nex/prudp-packetLite';
 import RawRMCPacket from '@/nex/raw-rmc-packet';
 import NPLNTransaction from '@/npln/npln-transaction';
-import type Frame from '@/types/frame';
-import type Packet from '@/types/nex/packet';
+import type { PCAPFrame } from '@/pcap-parser';
+import type { SimplePacketBlock, EnhancedPacketBlock } from '@/pcapng-parser';
 import type UDPPacket from '@/types/nex/udp-packet';
 import type { ProxideTransaction } from '@/proxide-parser';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
+
+type RawNetworkFrame = SimplePacketBlock | EnhancedPacketBlock | PCAPFrame;
 
 const PIA_MAGIC = Buffer.from([0x32, 0xAB, 0x98, 0x64]);
 
@@ -63,7 +67,7 @@ export default class Session extends EventEmitter {
 
 	private parsePCAP(capturePath: string): void {
 		const captureData = fs.readFileSync(capturePath);
-		let parser;
+		let parser: PCAPParser | PCAPNGParser;
 
 		const magic = captureData.readUInt32LE();
 
@@ -75,10 +79,10 @@ export default class Session extends EventEmitter {
 			throw new Error('Invalid capture');
 		}
 
-		for (const packet of parser.packets()) {
+		for (const frame of parser.frames()) {
 			let elapsedTime = 0;
-			if ('timestamp' in packet) {
-				const timestampSeconds = packet.timestamp.seconds + (packet.timestamp.microseconds ?? 0) / 1_000_000;
+			if ('timestamp' in frame) {
+				const timestampSeconds = frame.timestamp.seconds + ('microseconds' in frame.timestamp ? frame.timestamp.microseconds : 0) / 1_000_000;
 
 				if (this.lastPacketTime !== 0) {
 					this.elapsedTime += timestampSeconds - this.lastPacketTime;
@@ -88,7 +92,7 @@ export default class Session extends EventEmitter {
 				this.lastPacketTime = timestampSeconds;
 			}
 
-			this.handlePacket(packet, elapsedTime);
+			this.handlePCAPFrame(frame, elapsedTime);
 		}
 
 		this.emit('finished', this.prudpConnections);
@@ -127,7 +131,7 @@ export default class Session extends EventEmitter {
 
 				packet.elapsedTime = elapsedTime;
 
-				this.processPacket(packet);
+				this.processPRUDPPacket(packet);
 				this.emit('serializedMessage', packet);
 			}
 		}
@@ -168,7 +172,7 @@ export default class Session extends EventEmitter {
 
 				packet.elapsedTime = elapsedTime;
 
-				this.processPacket(packet);
+				this.processPRUDPPacket(packet);
 				this.emit('serializedMessage', packet);
 			}
 		}
@@ -198,7 +202,7 @@ export default class Session extends EventEmitter {
 						packet.destinationPort = flow.client_conn.sockname.port;
 					}
 
-					this.processPacket(packet);
+					this.processPRUDPPacket(packet);
 					this.emit('serializedMessage', packet);
 				}
 			}
@@ -299,7 +303,7 @@ export default class Session extends EventEmitter {
 		}
 	}
 
-	private handlePacket(frame: Frame, elapsedTime?: number): void {
+	private handlePCAPFrame(frame: RawNetworkFrame, elapsedTime?: number): void {
 		// * HokakuCTR produces dumps whose payloads are:
 		// * - u8  Revision (1)
 		// * - u64 Title ID
@@ -312,31 +316,22 @@ export default class Session extends EventEmitter {
 			this.rawRMCMode = true;
 		}
 
-		const packets = this.filterValidPackets(frame);
-
-		for (const packet of packets) {
-			this.processPacket(packet);
-
-			packet.elapsedTime = elapsedTime;
-
-			this.emit('serializedMessage', packet);
-		}
-	}
-
-	private filterValidPackets(frame: Frame): Packet[] {
-		// * Not all packets in the network dumps are packets we care about
-		const packets: Packet[] = [];
-
 		try {
 			if (this.rawRMCMode) {
 				// * Raw RMC packets only include one packet per frame
 				// TODO - Can this contain PIA/Net-Z data as well?
-				packets.push(new RawRMCPacket(new ByteStream(frame.data)));
+				const packet = new RawRMCPacket(new ByteStream(frame.data));
+
+				this.processPRUDPPacket(packet);
+
+				packet.elapsedTime = elapsedTime;
+
+				this.emit('serializedMessage', packet);
 			} else {
 				const udpPacket = this.parseUDPPacket(frame.data);
 
 				if (!udpPacket) {
-					return packets;
+					return;
 				}
 
 				const stream = new ByteStream(udpPacket.payload);
@@ -344,50 +339,55 @@ export default class Session extends EventEmitter {
 				// * Some PRUDP packets are bundled together. Need to split them apart
 				while (stream.hasDataLeft()) {
 					// TODO - The "return" statements here will exit this loop, potentially losing valid bundled packets later in the stream. Fix this?
-					let packet: Packet;
-
+					let packet: PRUDPPacket;
 					let magic = stream.readBytes(0x4);
 
-					if (magic.equals(PIA_MAGIC)) {
-						return packets;
-					}
-
 					stream.skip(-0x4); // * Skip back to realign the stream position
-					magic = stream.readBytes(0x2);
-					stream.skip(-0x2); // * Skip back to realign the stream position
 
-					if (magic.equals(PRUDPPacketV1.Magic)) {
-						packet = new PRUDPPacketV1(stream);
+					if (magic.equals(PIA_MAGIC)) {
+						// TODO - This does basically nothing. We need to track these packets first, determine which PRUDP connection they belong to,
+						//        and then loop back through them with the PIA version determined by the PRUDP connections title. This is just a stub
+						this.emit('serializedMessage', new PIAPacket(stream));
+						return; // * This assumes the whole frame is just one packet. This is likely not the case, we will need to work this out at some point
 					} else {
-						// * Assume packet is v0 and just Try It
-						// *
-						// * THIS IS *EXPECTED* TO FAIL OFTEN!
-						// * PRUDPv0 DOES NOT HAVE A MAGIC LIKE v1!
-						// * OUR BEST OPTION IS TO JUST GUESS
+						magic = stream.readBytes(0x2);
+						stream.skip(-0x2); // * Skip back to realign the stream position
 
-						packet = new PRUDPPacketV0(stream);
+						if (magic.equals(PRUDPPacketV1.Magic)) {
+							packet = new PRUDPPacketV1(stream);
+						} else {
+							// * Assume packet is v0 and just Try It
+							// *
+							// * THIS IS *EXPECTED* TO FAIL OFTEN!
+							// * PRUDPv0 DOES NOT HAVE A MAGIC LIKE v1!
+							// * OUR BEST OPTION IS TO JUST GUESS
+
+							packet = new PRUDPPacketV0(stream);
+						}
+
+						if (!this.validatePRUDPPacket(packet)) {
+							return;
+						}
+
+						packet.sourceAddress = udpPacket.source;
+						packet.sourcePort = udpPacket.sourcePort;
+						packet.destinationAddress = udpPacket.destination;
+						packet.destinationPort = udpPacket.destinationPort;
+
+						this.processPRUDPPacket(packet);
+
+						packet.elapsedTime = elapsedTime;
+
+						this.emit('serializedMessage', packet);
 					}
-
-					if (!this.validatePRUDPPacket(packet)) {
-						return packets;
-					}
-
-					packet.sourceAddress = udpPacket.source;
-					packet.sourcePort = udpPacket.sourcePort;
-					packet.destinationAddress = udpPacket.destination;
-					packet.destinationPort = udpPacket.destinationPort;
-
-					packets.push(packet);
 				}
 			}
 		} catch {
 			// * Eat errors
 		}
-
-		return packets;
 	}
 
-	private validatePRUDPPacket(packet: Packet): boolean {
+	private validatePRUDPPacket(packet: PRUDPPacket): boolean {
 		if (packet.sourceStreamType !== packet.destinationStreamType) {
 			// * Stream types don't match. This has not been seen in any packet
 			return false;
@@ -490,8 +490,8 @@ export default class Session extends EventEmitter {
 		};
 	}
 
-	private processPacket(packet: Packet): void {
-		let connection = this.findConnection(packet);
+	private processPRUDPPacket(packet: PRUDPPacket): void {
+		let connection = this.findPRUDPConnection(packet);
 
 		if (!connection) {
 			if (packet.version !== -1 && !packet.isTypeSyn() && !packet.isStreamTypeNAT()) {
@@ -569,7 +569,7 @@ export default class Session extends EventEmitter {
 		connection.processPacket(packet);
 	}
 
-	private findConnection(packet: Packet): PRUDPConnection | undefined {
+	private findPRUDPConnection(packet: PRUDPPacket): PRUDPConnection | undefined {
 		return this.prudpConnections.find((connection) => {
 			if (
 				connection.clientAddress === packet.sourceAddress &&

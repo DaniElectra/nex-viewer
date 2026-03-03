@@ -3,6 +3,6 @@ import type PRUDPPacketV1 from '@/nex/prudp-packetv1';
 import type PRUDPPacketLite from '@/nex/prudp-packetLite';
 import type RawRMCPacket from '@/nex/raw-rmc-packet';
 
-type Packet = PRUDPPacketV0 | PRUDPPacketV1 | PRUDPPacketLite | RawRMCPacket;
+type PRUDPPacket = PRUDPPacketV0 | PRUDPPacketV1 | PRUDPPacketLite | RawRMCPacket;
 
-export default Packet;
+export default PRUDPPacket;

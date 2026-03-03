@@ -1,6 +1,6 @@
 import RMCMessage from '@/nex/rmc-message';
 import * as Methods from '@/nex/protocols/nat-traversal/methods';
-import type Packet from '@/types/nex/packet';
+import type PRUDPPacket from '@/types/nex/prudp-packet';
 
 export default class NATTraversalProtocol {
 	static ID = 0x3;
@@ -26,7 +26,7 @@ export default class NATTraversalProtocol {
 		0x7: NATTraversalProtocol.ReportNATTraversalResultDetail
 	};
 
-	static handlePacket(packet: Packet): void {
+	static handlePacket(packet: PRUDPPacket): void {
 		if (!packet.message) {
 			// * This will never happen. Only checked to make TypeScript happy
 			return;
