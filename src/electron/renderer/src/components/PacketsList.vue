@@ -7,7 +7,7 @@ import type { SerializedMessage } from '@/types/serialized-message';
 import type { TransportType } from '@renderer/components/TransportSelector.vue';
 
 const search = ref('');
-const packets = ref<SerializedMessage[]>([]); // TODO - Strongly type this
+const packets = ref<SerializedMessage[]>([]);
 const props = defineProps<{
 	selectedPacketId?: number;
 }>();
@@ -17,6 +17,7 @@ const emit = defineEmits<{
 
 const transportBadgeColors = {
 	NEX: 'bg-purple-900/20 text-purple-400 border-purple-800/50',
+	RMC: 'bg-rose-900/20 text-rose-400 border-rose-800/50', // * Used only by HokakuCTR raw RMC dumps
 	HPP: 'bg-blue-900/20 text-blue-400 border-blue-800/50',
 	HTTP: 'bg-green-900/20 text-green-400 border-green-800/50',
 	NPLN: 'bg-amber-900/20 text-amber-400 border-amber-800/50'

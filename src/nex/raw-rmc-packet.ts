@@ -60,7 +60,7 @@ export default class RawRMCPacket extends PRUDPPacket {
 		return {
 			id: -1, // * Gets set later when emitted
 			elapsed_time: this.elapsedTime ?? 0,
-			transport: 'NEX', // TODO - p2p packets should change this
+			transport: 'RMC',
 			source: this.sourceAddress,
 			destination: this.destinationAddress,
 			service: this.message ? this.message.protocolName : undefined,
