@@ -7,7 +7,7 @@ import PacketDetails from '@renderer/components/PacketDetails.vue';
 import { SerializedMessage } from '@/types/serialized-message';
 
 const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);
-const selectedPacket = ref<SerializedMessage | null>(null); // TODO - Strongly type this
+const selectedPacket = ref<SerializedMessage | null>(null);
 
 onMounted(() => {
 	// * Clear up any leftover state from hot reloading

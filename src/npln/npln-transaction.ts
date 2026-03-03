@@ -254,7 +254,7 @@ export default class NPLNTransaction {
 		return {
 			id: -1, // * Gets set later when emitted
 			elapsed_time: 0, // TODO - Add this
-			transport: 'NPLN', // TODO - p2p packets should change this
+			transport: 'NPLN',
 			source: 'Client', // TODO - Change this
 			destination: `${url.protocol}//${url.hostname}`,
 			service: this.fullyQualifiedServiceName,
