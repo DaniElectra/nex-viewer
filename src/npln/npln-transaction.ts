@@ -284,8 +284,6 @@ export default class NPLNTransaction {
 							name: 'Method Path',
 							value: this.methodPath
 						}
-
-						// TODO - Add other data like headers and such
 					]
 				}
 			],
@@ -302,23 +300,57 @@ export default class NPLNTransaction {
 			serialized_tabs: [
 				{
 					title: 'Request',
-					fields: transformed.requests.map((request, i) => ({
-						name: transformed.requests.length === 1 ? 'Message' : `Message ${i + 1}`,
-						data: {
-							__displayTypeName: 'Parameters',
-							__fields: request
-						}
-					}))
+					fields: [
+						{
+							name: 'Headers',
+							data: {
+								__displayTypeName: 'Headers',
+								__fields: Object.fromEntries(
+									Object.entries(this.request.headers).map(([key, value]) => [
+										key,
+										{
+											__displayTypeName: 'String',
+											__value: value
+										}
+									])
+								)
+							}
+						},
+						...transformed.requests.map((request, i) => ({
+							name: transformed.requests.length === 1 ? 'Message' : `Message ${i + 1}`,
+							data: {
+								__displayTypeName: 'Parameters',
+								__fields: request
+							}
+						}))
+					]
 				},
 				{
 					title: 'Response',
-					fields: transformed.responses.map((response, i) => ({
-						name: transformed.responses.length === 1 ? 'Message' : `Message ${i + 1}`,
-						data: {
-							__displayTypeName: 'Parameters',
-							__fields: response
-						}
-					}))
+					fields: [
+						{
+							name: 'Headers',
+							data: {
+								__displayTypeName: 'Headers',
+								__fields: Object.fromEntries(
+									Object.entries(this.response.headers).map(([key, value]) => [
+										key,
+										{
+											__displayTypeName: 'String',
+											__value: value
+										}
+									])
+								)
+							}
+						},
+						...transformed.responses.map((response, i) => ({
+							name: transformed.responses.length === 1 ? 'Message' : `Message ${i + 1}`,
+							data: {
+								__displayTypeName: 'Parameters',
+								__fields: response
+							}
+						}))
+					]
 				}
 			]
 		};
