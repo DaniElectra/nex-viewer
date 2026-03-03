@@ -91,6 +91,10 @@ export default class PRUDPPacket {
 		return this.sourceStreamType === type;
 	}
 
+	public isNetZ(): boolean {
+		return this.isStreamTypeNAT() || this.isStreamTypeDO();
+	}
+
 	public isTypeSyn(): boolean {
 		return this.isType(PRUDPPacket.TYPES.SYN);
 	}
