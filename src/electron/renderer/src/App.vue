@@ -11,6 +11,10 @@ const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);
 const selectedPacket = ref<SerializedMessage | null>(null); // TODO - Strongly type this
 
 onMounted(() => {
+	// * Clear up any leftover state from hot reloading
+	packetsList.value?.clear();
+	selectedPacket.value = null;
+
 	window.api.onClearSections(() => {
 		packetsList.value?.clear();
 		selectedPacket.value = null;

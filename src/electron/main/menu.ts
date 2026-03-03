@@ -7,6 +7,7 @@ import type State from '@/types/state';
 function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
 	browserWindow.webContents.send('clear-sections');
 	browserWindow.setTitle(`NEX Viewer - ${path}`);
+	browserWindow.webContents.send('clearSections');
 
 	const session = new Session();
 	let packetID = 0;
