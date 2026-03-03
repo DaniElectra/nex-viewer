@@ -82,7 +82,7 @@ function getFieldDisplayTypeName(field: protobuf.Field): string {
 function transformValue(field: protobuf.Field, repeated: boolean, value: any): any {
 	if (repeated) {
 		return {
-			__displayTypeName: `List<${(getFieldDisplayTypeName(field))}>`,
+			__displayTypeName: `repeated<${(getFieldDisplayTypeName(field))}>`,
 			__typeName: 'List',
 			__value: value.map((v: any) => transformValue(field, false, v))
 		};
@@ -91,13 +91,13 @@ function transformValue(field: protobuf.Field, repeated: boolean, value: any): a
 	switch (field.type) {
 		case 'string':
 			return {
-				__displayTypeName: 'String',
+				__displayTypeName: field.type,
 				__typeName: 'String',
 				__value: value
 			};
 		case 'bool':
 			return {
-				__displayTypeName: 'Boolean',
+				__displayTypeName: field.type,
 				__typeName: 'Boolean',
 				__value: value
 			};
@@ -107,7 +107,7 @@ function transformValue(field: protobuf.Field, repeated: boolean, value: any): a
 		case 'fixed32':
 		case 'sfixed32':
 			return {
-				__displayTypeName: 'Int32',
+				__displayTypeName: field.type,
 				__typeName: 'Int32',
 				__value: value
 			};
@@ -117,25 +117,25 @@ function transformValue(field: protobuf.Field, repeated: boolean, value: any): a
 		case 'fixed64':
 		case 'sfixed64':
 			return {
-				__displayTypeName: 'Int64',
+				__displayTypeName: field.type,
 				__typeName: 'Int64',
 				__value: value.toString()
 			};
 		case 'float':
 			return {
-				__displayTypeName: 'Float',
+				__displayTypeName: field.type,
 				__typeName: 'Float',
 				__value: value
 			};
 		case 'double':
 			return {
-				__displayTypeName: 'Double',
+				__displayTypeName: field.type,
 				__typeName: 'Double',
 				__value: value
 			};
 		case 'bytes':
 			return {
-				__displayTypeName: 'Buffer',
+				__displayTypeName: field.type,
 				__typeName: 'Buffer',
 				__value: Array.from(value)
 			};
@@ -172,12 +172,12 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 			__typeName: 'Timestamp',
 			__fields: {
 				seconds: {
-					__displayTypeName: 'Int64',
+					__displayTypeName: 'int64',
 					__typeName: 'Int64',
 					__value: value.seconds?.toString() ?? '0'
 				},
 				nanos: {
-					__displayTypeName: 'Int32',
+					__displayTypeName: 'int32',
 					__typeName: 'Int32',
 					__value: value.nanos ?? 0
 				}
@@ -229,7 +229,7 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 			}
 
 			fields[field.name] = {
-				__displayTypeName: `Map<${field.keyType}, ${getFieldDisplayTypeName(field)}>`,
+				__displayTypeName: `map<${field.keyType}, ${getFieldDisplayTypeName(field)}>`,
 				__typeName: 'Map',
 				__value: entries
 			};
