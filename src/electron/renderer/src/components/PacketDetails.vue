@@ -23,17 +23,17 @@ const tabs = computed(() => {
 	];
 
 	if (props.packet) {
-		if (props.packet.stack_trace) {
-			t.push({
-				id: 'stack_trace',
-				label: 'Stack Trace'
-			});
-		}
-
 		for (const tab of props.packet.serialized_tabs) {
 			t.push({
 				id: tab.title.toLowerCase().replace(/ /g, ''),
 				label: tab.title
+			});
+		}
+
+		if (props.packet.stack_trace) {
+			t.push({
+				id: 'stack_trace',
+				label: 'Stack Trace'
 			});
 		}
 	}
@@ -99,13 +99,6 @@ watch(() => props.packet, () => {
 					</div>
 				</div>
 
-				<div v-show="activeTab === 'stack_trace' && packet.stack_trace" class="font-mono text-xs">
-					<div class="mb-4">
-						<div class="text-lg font-medium">Stack Trace</div>
-					</div>
-					<pre class="text-[#F9FAFC] whitespace-pre-wrap break-all">{{ packet.stack_trace }}</pre>
-				</div>
-
 				<div v-for="tab in packet.serialized_tabs" v-show="activeTab === tab.title.toLowerCase().replace(/ /g, '')" :key="tab.title.toLowerCase().replace(/ /g, '')" class="font-mono text-xs">
 					<div class="mb-4">
 						<div class="text-lg font-medium">{{ tab.title }}</div>
@@ -114,6 +107,13 @@ watch(() => props.packet, () => {
 					<div class="space-y-1">
 						<SerializedField v-for="field in tab.fields" :key="field.name" :field-key="field.name" :field="field.data" :depth="0" />
 					</div>
+				</div>
+
+				<div v-show="activeTab === 'stack_trace' && packet.stack_trace" class="font-mono text-xs">
+					<div class="mb-4">
+						<div class="text-lg font-medium">Stack Trace</div>
+					</div>
+					<pre class="text-[#F9FAFC] whitespace-pre-wrap break-all">{{ packet.stack_trace }}</pre>
 				</div>
 			</div>
 		</div>
