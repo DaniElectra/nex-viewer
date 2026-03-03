@@ -306,7 +306,7 @@ export default class NPLNTransaction {
 						{
 							name: 'Headers',
 							data: {
-								__displayTypeName: 'Headers',
+								__displayTypeName: 'HTTP Headers',
 								__fields: Object.fromEntries(
 									Object.entries(this.request.headers).map(([key, value]) => [
 										key,
@@ -321,7 +321,7 @@ export default class NPLNTransaction {
 						...transformed.requests.map((request, i) => ({
 							name: transformed.requests.length === 1 ? 'Message' : `Message ${i + 1}`,
 							data: {
-								__displayTypeName: 'Parameters',
+								__displayTypeName: 'gRPC Parameters',
 								__fields: request
 							}
 						}))
@@ -333,7 +333,7 @@ export default class NPLNTransaction {
 						{
 							name: 'Headers',
 							data: {
-								__displayTypeName: 'Headers',
+								__displayTypeName: 'HTTP Headers',
 								__fields: Object.fromEntries(
 									Object.entries(this.response.headers).map(([key, value]) => [
 										key,
@@ -348,7 +348,7 @@ export default class NPLNTransaction {
 						...transformed.responses.map((response, i) => ({
 							name: transformed.responses.length === 1 ? 'Message' : `Message ${i + 1}`,
 							data: {
-								__displayTypeName: 'Parameters',
+								__displayTypeName: 'gRPC Parameters',
 								__fields: response
 							}
 						}))
