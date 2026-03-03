@@ -69,10 +69,20 @@ function parseGRPCFrames(buffer: Buffer): Buffer[] {
 	return frames;
 }
 
+function getFieldDisplayTypeName(field: protobuf.Field): string {
+	const resolvedType = (field as any).resolvedType as protobuf.Type | protobuf.Enum | null;
+
+	if (resolvedType) {
+		return resolvedType.fullName.replace(/^\./, '');
+	}
+
+	return field.type;
+}
+
 function transformValue(field: protobuf.Field, repeated: boolean, value: any): any {
 	if (repeated) {
 		return {
-			__displayTypeName: `List<${field.type}>`,
+			__displayTypeName: `List<${(getFieldDisplayTypeName(field))}>`,
 			__typeName: 'List',
 			__value: value.map((v: any) => transformValue(field, false, v))
 		};
@@ -80,49 +90,107 @@ function transformValue(field: protobuf.Field, repeated: boolean, value: any): a
 
 	switch (field.type) {
 		case 'string':
-			return { __displayTypeName: 'String', __typeName: 'String', __value: value };
+			return {
+				__displayTypeName: 'String',
+				__typeName: 'String',
+				__value: value
+			};
 		case 'bool':
-			return { __displayTypeName: 'Boolean', __typeName: 'Boolean', __value: value };
-		case 'int32': case 'sint32': case 'uint32': case 'fixed32': case 'sfixed32':
-			return { __displayTypeName: 'Int32', __typeName: 'Int32', __value: value };
-		case 'int64': case 'sint64': case 'uint64': case 'fixed64': case 'sfixed64':
-			return { __displayTypeName: 'Int64', __typeName: 'Int64', __value: value.toString() };
+			return {
+				__displayTypeName: 'Boolean',
+				__typeName: 'Boolean',
+				__value: value
+			};
+		case 'int32':
+		case 'sint32':
+		case 'uint32':
+		case 'fixed32':
+		case 'sfixed32':
+			return {
+				__displayTypeName: 'Int32',
+				__typeName: 'Int32',
+				__value: value
+			};
+		case 'int64':
+		case 'sint64':
+		case 'uint64':
+		case 'fixed64':
+		case 'sfixed64':
+			return {
+				__displayTypeName: 'Int64',
+				__typeName: 'Int64',
+				__value: value.toString()
+			};
 		case 'float':
-			return { __displayTypeName: 'Float', __typeName: 'Float', __value: value };
+			return {
+				__displayTypeName: 'Float',
+				__typeName: 'Float',
+				__value: value
+			};
 		case 'double':
-			return { __displayTypeName: 'Double', __typeName: 'Double', __value: value };
+			return {
+				__displayTypeName: 'Double',
+				__typeName: 'Double',
+				__value: value
+			};
 		case 'bytes':
-			return { __displayTypeName: 'Buffer', __typeName: 'Buffer', __value: Array.from(value) };
+			return {
+				__displayTypeName: 'Buffer',
+				__typeName: 'Buffer',
+				__value: Array.from(value)
+			};
 	}
 
 	const resolvedType = (field as any).resolvedType as protobuf.Type | protobuf.Enum | null;
 
 	if (resolvedType instanceof protobuf.Enum) {
 		const enumName = resolvedType.valuesById[value] ?? value;
-		return { __displayTypeName: resolvedType.name, __typeName: resolvedType.name, __value: enumName };
+		const displayName = resolvedType.fullName.replace(/^\./, '');
+
+		return {
+			__displayTypeName: displayName,
+			__typeName: resolvedType.name,
+			__value: enumName
+		};
 	}
 
 	if (resolvedType instanceof protobuf.Type) {
 		return transformMessage(resolvedType, value);
 	}
 
-	return { __displayTypeName: field.type, __typeName: field.type, __value: value };
+	return {
+		__displayTypeName: field.type,
+		__typeName: field.type,
+		__value: value
+	};
 }
 
 function transformMessage(msgType: protobuf.Type, value: any): any {
 	if (msgType.fullName === '.google.protobuf.Timestamp') {
 		return {
-			__displayTypeName: 'Timestamp',
+			__displayTypeName: 'google.protobuf.Timestamp',
 			__typeName: 'Timestamp',
 			__fields: {
-				seconds: { __displayTypeName: 'Int64', __typeName: 'Int64', __value: value.seconds?.toString() ?? '0' },
-				nanos: { __displayTypeName: 'Int32', __typeName: 'Int32', __value: value.nanos ?? 0 }
+				seconds: {
+					__displayTypeName: 'Int64',
+					__typeName: 'Int64',
+					__value: value.seconds?.toString() ?? '0'
+				},
+				nanos: {
+					__displayTypeName: 'Int32',
+					__typeName: 'Int32',
+					__value: value.nanos ?? 0
+				}
 			}
 		};
 	}
 
 	if (msgType.fullName === '.google.protobuf.NullValue') {
-		return { __displayTypeName: 'Null', __typeName: 'Null', __value: null };
+		return {
+			__displayTypeName: 'google.protobuf.NullValue',
+			__typeName: 'Null',
+			__value: null
+		};
 	}
 
 	const oneofActiveField = new Map<string, string>();
@@ -155,14 +223,17 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 
 		if (field instanceof protobuf.MapField) {
 			const entries: Record<string, any> = {};
+
 			for (const [k, v] of Object.entries(raw)) {
 				entries[k] = transformValue(field, false, v);
 			}
+
 			fields[field.name] = {
-				__displayTypeName: `Map<${field.keyType}, ${field.type}>`,
+				__displayTypeName: `Map<${field.keyType}, ${getFieldDisplayTypeName(field)}>`,
 				__typeName: 'Map',
 				__value: entries
 			};
+
 			continue;
 		}
 
@@ -170,7 +241,7 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 	}
 
 	const result: any = {
-		__displayTypeName: msgType.name,
+		__displayTypeName: msgType.fullName.replace(/^\./, ''),
 		__typeName: msgType.name,
 		__fields: fields
 	};
