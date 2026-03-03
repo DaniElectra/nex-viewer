@@ -4,13 +4,16 @@ import Session from '@/session';
 import type { MenuItemConstructorOptions, BrowserWindow } from 'electron';
 import type State from '@/types/state';
 
+let session: Session;
+
 function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
 	browserWindow.webContents.send('clear-sections');
 	browserWindow.setTitle(`NEX Viewer - ${path}`);
-	browserWindow.webContents.send('clearSections');
 
-	const session = new Session();
+	session = new Session();
 	let packetID = 0;
+
+	browserWindow.webContents.send('clearSections');
 
 	session.on('packet', (packet) => {
 		packet = JSON.parse(JSON.stringify(packet)); // TODO - This is a dirty nasty hack, including the whole "id" system. Needed for Vue though
