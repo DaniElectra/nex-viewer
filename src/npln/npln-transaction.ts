@@ -62,7 +62,7 @@ function parseGRPCFrames(buffer: Buffer): Buffer[] {
 			break;
 		}
 
-		frames.push(buffer.slice(offset, offset + length));
+		frames.push(buffer.subarray(offset, offset + length));
 		offset += length;
 	}
 
