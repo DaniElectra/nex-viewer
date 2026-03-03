@@ -18,6 +18,7 @@ const emit = defineEmits<{
 const transportBadgeColors = {
 	NEX: 'bg-purple-900/20 text-purple-400 border-purple-800/50',
 	RMC: 'bg-rose-900/20 text-rose-400 border-rose-800/50', // * Used only by HokakuCTR raw RMC dumps
+	NetZ: 'bg-cyan-900/20 text-cyan-400 border-cyan-800/50',
 	HPP: 'bg-blue-900/20 text-blue-400 border-blue-800/50',
 	HTTP: 'bg-green-900/20 text-green-400 border-green-800/50',
 	NPLN: 'bg-amber-900/20 text-amber-400 border-amber-800/50'

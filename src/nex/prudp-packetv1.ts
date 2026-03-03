@@ -174,7 +174,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 		return {
 			id: -1, // * Gets set later when emitted
 			elapsed_time: this.elapsedTime ?? 0,
-			transport: 'NEX', // TODO - p2p packets should change this
+			transport: this.isNetZ() ? 'NetZ' : 'NEX', // * NEX is the larger library that houses NetZ, but NetZ is for P2P connections and is also different than PIA
 			source: `${this.sourceAddress}:${this.sourcePort}`,
 			destination: `${this.destinationAddress}:${this.destinationPort}`,
 			service: this.message ? this.message.protocolName : undefined,
