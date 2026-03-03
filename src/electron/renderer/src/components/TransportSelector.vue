@@ -2,15 +2,15 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { ChevronDown, Check } from 'lucide-vue-next';
 
-type Protocol = 'nex' | 'hpp' | 'http' | 'npln';
+export type TransportType = 'NEX' | 'HPP' | 'HTTP' | 'NPLN';
 
 const emit = defineEmits<{
-	protocolChange: [protocols: Protocol[]];
+	transportChange: [transports: TransportType[]];
 }>();
 
 const open = ref(false);
 const container = ref<HTMLElement | null>(null);
-const selected = ref<Record<Protocol | 'all', boolean>>({
+const selected = ref<Record<Lowercase<TransportType> | 'all', boolean>>({
 	all: true,
 	nex: false,
 	hpp: false,
@@ -18,12 +18,7 @@ const selected = ref<Record<Protocol | 'all', boolean>>({
 	npln: false
 });
 
-const protocols: Array<{ id: Protocol; name: string }> = [
-	{ id: 'nex', name: 'NEX' },
-	{ id: 'hpp', name: 'HPP' },
-	{ id: 'http', name: 'HTTP' },
-	{ id: 'npln', name: 'NPLN' }
-];
+const allTransports: TransportType[] = [ 'NEX', 'HPP', 'HTTP', 'NPLN' ];
 
 function getSelectedLabel() {
 	if (selected.value.all) {
@@ -33,15 +28,15 @@ function getSelectedLabel() {
 	return Object.entries(selected.value).filter(([key, value]) => key !== 'all' && value).length.toString();
 }
 
-function toggleProtocol(protocol: Protocol | 'all') {
-	if (protocol === 'all') {
+function toggleTransport(transport: TransportType | 'all') {
+	if (transport === 'all') {
 		Object.keys(selected.value).forEach((key) => {
-			selected.value[key as Protocol | 'all'] = key === 'all';
+			selected.value[key as TransportType | 'all'] = key === 'all';
 		});
 
 		open.value = false;
 	} else {
-		selected.value[protocol] = !selected.value[protocol];
+		selected.value[transport] = !selected.value[transport];
 		selected.value.all = false;
 
 		const hasSelected = Object.entries(selected.value).some(([key, value]) => key !== 'all' && value);
@@ -52,11 +47,11 @@ function toggleProtocol(protocol: Protocol | 'all') {
 		}
 	}
 
-	const active: Protocol[] = selected.value.all
-		? ['nex', 'hpp', 'http', 'npln']
-		: (Object.entries(selected.value).filter(([key, value]) => key !== 'all' && value).map(([key]) => key) as Protocol[]);
+	const active: TransportType[] = selected.value.all
+		? allTransports
+		: (Object.entries(selected.value).filter(([key, value]) => key !== 'all' && value).map(([key]) => key) as TransportType[]);
 
-	emit('protocolChange', active);
+	emit('transportChange', active);
 }
 
 function handleClickOutside(e: MouseEvent) {
@@ -72,25 +67,25 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
 <template>
 	<div ref="container" class="relative">
 		<button class="flex items-center justify-between w-full border border-[#2e3238] rounded-md px-3 py-2 text-sm" @click="open = !open">
-			<span>Protocols ({{ getSelectedLabel() }})</span>
+			<span>Transports ({{ getSelectedLabel() }})</span>
 			<ChevronDown class="h-4 w-4 opacity-50" />
 		</button>
 
 		<div v-if="open" class="absolute z-50 mt-1 w-52 rounded-md border border-[#2e3238] bg-[#151c27] shadow-lg p-1">
-			<div class="px-2 py-1.5 text-sm font-semibold">Select Protocols</div>
+			<div class="px-2 py-1.5 text-sm font-semibold">Select Transports</div>
 			<div class="h-px bg-[#2e3238] my-1" />
-			<div class="relative flex items-center rounded-sm py-1.5 pl-8 pr-2 text-sm cursor-pointer hover:bg-[#182338]" @click="toggleProtocol('all')">
+			<div class="relative flex items-center rounded-sm py-1.5 pl-8 pr-2 text-sm cursor-pointer hover:bg-[#182338]" @click="toggleTransport('all')">
 				<span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
 					<Check v-if="selected.all" class="h-4 w-4" />
 				</span>
 				All
 			</div>
 			<div class="h-px bg-[#2e3238] my-1" />
-			<div v-for="protocol in protocols" :key="protocol.id" class="relative flex items-center rounded-sm py-1.5 pl-8 pr-2 text-sm cursor-pointer hover:bg-[#182338]" @click="toggleProtocol(protocol.id)">
+			<div v-for="transport in allTransports" :key="transport" class="relative flex items-center rounded-sm py-1.5 pl-8 pr-2 text-sm cursor-pointer hover:bg-[#182338]" @click="toggleTransport(transport)">
 				<span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-					<Check v-if="selected[protocol.id]" class="h-4 w-4" />
+					<Check v-if="selected[transport]" class="h-4 w-4" />
 				</span>
-				{{ protocol.name }}
+				{{ transport }}
 			</div>
 		</div>
 	</div>

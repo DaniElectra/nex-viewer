@@ -1,7 +1,6 @@
 import type ByteStream from '@/byte-stream';
 import type RMCMessage from '@/nex/rmc-message';
 import type PRUDPConnection from '@/nex/prudp-connection';
-import type { SerializedPRUDPPacket } from '@/types/nex/serialized-packet';
 
 export default class PRUDPPacket {
 	public elapsedTime?: number;
@@ -188,66 +187,7 @@ export default class PRUDPPacket {
 		return this.isStreamType(PRUDPPacket.STREAM_TYPES.RELAY);
 	}
 
-	public serialize(): SerializedPRUDPPacket {
-		const serialized: SerializedPRUDPPacket = {
-			id: -1,
-			elapsed_time: this.elapsedTime,
-			version: this.version,
-			source_address: this.sourceAddress,
-			source_port: this.sourcePort,
-			destination_address: this.destinationAddress,
-			destination_port: this.destinationPort,
-			source_stream_id: this.sourceStreamID,
-			source_stream_type: this.serializeStreamType(this.sourceStreamType),
-			destination_stream_id: this.destinationStreamID,
-			destination_stream_type: this.serializeStreamType(this.destinationStreamType),
-			type: this.serializeType(),
-			flags: this.serializeFlags(),
-			session_id: this.sessionID,
-			signature: this.signature ? [...this.signature.values()] : [], // * Raw RMC packets have no signature
-			sequence_id: this.sequenceID,
-			original_buffer: [...this.originalBuffer.values()]
-		};
-
-		if (this.connectionSignature) {
-			serialized.connection_signature = [...this.connectionSignature.values()];
-		}
-
-		if (this.payload) {
-			serialized.payload = [...this.payload.values()];
-		}
-
-		if (this.decryptedPayload) {
-			serialized.decrypted_payload = [...this.decryptedPayload.values()];
-		}
-
-		if (this.isTypeData()) {
-			serialized.fragment_id = this.fragmentID;
-
-			if (this.fragmentID === 0 && this.defragmentedPayload) {
-				serialized.defragmented_payload = [...this.defragmentedPayload.values()];
-			}
-
-			if (this.message) {
-				serialized.message = this.message.toJSON();
-			}
-		}
-
-		// * NAT-exclusive fields
-		if (this.isStreamTypeNAT()) {
-			serialized.nat_message_id = this.natMessageID;
-			serialized.nat_connection_id = this.natConnectionID;
-			serialized.nat_time = this.natTime;
-		}
-
-		if (this.stackTrace) {
-			serialized.stack_trace = this.stackTrace;
-		}
-
-		return serialized;
-	}
-
-	private serializeStreamType(streamType: number): string {
+	protected serializeStreamType(streamType: number): string {
 		// * Raw RMC packets have no VirtualPorts
 		if (this.version === -1) {
 			return '';
@@ -281,7 +221,7 @@ export default class PRUDPPacket {
 		return `UnknownStreamType_${streamType}`;
 	}
 
-	private serializeType(): string {
+	protected serializeType(): string {
 		// * Raw RMC packets have no VirtualPorts
 		if (this.version === -1) {
 			return '';
@@ -311,7 +251,7 @@ export default class PRUDPPacket {
 		return `UnknownPacketType_${this.type}`;
 	}
 
-	private serializeFlags(): string[] {
+	protected serializeFlags(): string[] {
 		const flags: string[] = [];
 
 		if (this.hasFlagAck()) {

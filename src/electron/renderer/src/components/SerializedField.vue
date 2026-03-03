@@ -34,7 +34,7 @@ function getTypeIcon(field: SerializedField) {
 		return getTypeIcon(field.__value);
 	}
 
-	if (field.__typeName === 'String') {
+	if (field.__typeName === 'String' || field.__displayTypeName === 'String') {
 		return {
 			icon: FileText,
 			class: 'w-4 h-4 text-blue-500'

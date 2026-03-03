@@ -5,61 +5,15 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
 import PacketsList from '@renderer/components/PacketsList.vue';
 import PacketDetails from '@renderer/components/PacketDetails.vue';
 import RMCMessage from '@/nex/rmc-message';
+import { SerializedMessage } from '@/types/serialized-message';
 
 const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);
-const selectedPacket = ref<Record<string, any> | null>(null); // TODO - Strongly type this
+const selectedPacket = ref<SerializedMessage | null>(null); // TODO - Strongly type this
 
 onMounted(() => {
 	window.api.onClearSections(() => {
 		packetsList.value?.clear();
 		selectedPacket.value = null;
-	});
-
-	window.api.onPacket((packet) => {
-		const packetData: Record<string, any> = {
-			id: packet.id,
-			original_packet: packet,
-			elapsed_time: packet.elapsed_time?.toFixed(6),
-			protocol: 'nex',
-			source: `${packet.source_address}:${packet.source_port}`,
-			destination: `${packet.destination_address}:${packet.destination_port}`,
-			display_domain: null,
-			display_path: null
-		};
-
-		if (packet.message) {
-			packetData.service = packet.message.protocol_name;
-			packetData.method = packet.message.method_name;
-			packetData.direction = packet.message.type === RMCMessage.REQUEST ? 'REQUEST' : 'RESPONSE';
-
-			if (packet.message.error) {
-				packetData.status = `${packet.message.error.name} (0x${packet.message.error.code.toString(16)})`;
-			} else {
-				packetData.status = 'SUCCESS';
-			}
-
-			packetData.rmc = packet.message;
-		}
-
-		if (packet.original_buffer) {
-			packetData.original_buffer = packet.original_buffer;
-		}
-
-		if (packet.decrypted_payload) {
-			packetData.decrypted_payload = packet.decrypted_payload;
-		}
-
-		if (packet.defragmented_payload) {
-			packetData.defragmented_payload = packet.defragmented_payload;
-		}
-
-		if (packet.source_stream_type === 'NAT') {
-			packetData.nat_message_id = packet.nat_message_id;
-			packetData.nat_connection_id = packet.nat_connection_id;
-			packetData.nat_time = packet.nat_time;
-		}
-
-		packetsList.value?.addPacket(packetData);
 	});
 
 	window.api.onNPLNTransaction((transaction) => {
@@ -78,6 +32,10 @@ onMounted(() => {
 		};
 
 		packetsList.value?.addPacket(packetData);
+	});
+
+	window.api.onSerializedMessage((message: SerializedMessage) => {
+		packetsList.value?.addPacket(message);
 	});
 
 	window.api.ready();

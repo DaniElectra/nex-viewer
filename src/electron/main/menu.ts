@@ -14,11 +14,13 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 	session.on('packet', (packet) => {
 		packet = JSON.parse(JSON.stringify(packet)); // TODO - This is a dirty nasty hack, including the whole "id" system. Needed for Vue though
 		packet.id = packetID++;
-		browserWindow.webContents.send('packet', JSON.stringify(packet));
+		browserWindow.webContents.send('serializedMessage', JSON.stringify(packet));
 	});
 
 	session.on('nplnTransaction', (transaction) => {
-		browserWindow.webContents.send('nplnTransaction', JSON.stringify(transaction));
+		transaction = JSON.parse(JSON.stringify(transaction)); // TODO - This is a dirty nasty hack, including the whole "id" system. Needed for Vue though
+		transaction.id = packetID++;
+		browserWindow.webContents.send('serializedMessage', JSON.stringify(transaction));
 	});
 
 	session.parse(path);

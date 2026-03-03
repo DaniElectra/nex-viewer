@@ -3,6 +3,7 @@ import { app } from 'electron';
 import glob from 'glob';
 import protobuf from 'protobufjs';
 import type { ProxideTransaction } from '@/proxide-parser';
+import type { SerializedMessage } from '@/types/serialized-message';
 
 // TODO - I'm just slapping this all into one huge file for now, organize it better later. I am open to changing ALL OF THIS
 
@@ -242,26 +243,80 @@ export default class NPLNTransaction {
 		return transaction;
 	}
 
-	public toJSON(): SerializedNPLNTransaction {
-		const transformed = this.transform();
+	public toJSON(): SerializedMessage {
+		const transformed = this.transform(); // TODO - Update this to set the display type names to include the full name, with the package and such
+		const url = new URL(this.uri);
 
 		return {
-			uri: this.uri,
-			package_name: this.packageName,
-			service_name: this.serviceName,
-			method_name: this.methodName,
-			method_path: this.methodPath,
-			fully_qualified_service_name: this.fullyQualifiedServiceName,
-			request: {
-				headers: this.request.headers,
-				body: [...this.request.body.values()],
-				messages: transformed.requests
-			},
-			response: {
-				headers: this.response.headers,
-				body: [...this.response.body.values()],
-				messages: transformed.responses
-			}
+			id: -1, // * Gets set later when emitted
+			elapsed_time: 0, // TODO - Add this
+			transport: 'NPLN', // TODO - p2p packets should change this
+			source: 'Client', // TODO - Change this
+			destination: `${url.protocol}//${url.hostname}`,
+			service: this.fullyQualifiedServiceName,
+			method: this.methodName,
+			overview_sections: [
+				{
+					title: 'General',
+					columns: 2,
+					fields: [
+						{
+							name: 'URI',
+							value: this.uri
+						},
+						{
+							name: 'Package',
+							value: this.packageName
+						},
+						{
+							name: 'Service',
+							value: this.serviceName
+						},
+						{
+							name: 'Method',
+							value: this.methodName
+						},
+						{
+							name: 'Method Path',
+							value: this.methodPath
+						}
+
+						// TODO - Add other data like headers and such
+					]
+				}
+			],
+			hex_views: [
+				{
+					title: 'Request Body',
+					bytes: [...this.request.body.values()]
+				},
+				{
+					title: 'Response Body',
+					bytes: [...this.response.body.values()]
+				}
+			],
+			serialized_tabs: [
+				{
+					title: 'Request',
+					fields: transformed.requests.map((request, i) => ({
+						name: transformed.requests.length === 1 ? 'Message' : `Message ${i+1}`,
+						data: {
+							__displayTypeName: 'Parameters',
+							__fields: request
+						}
+					}))
+				},
+				{
+					title: 'Response',
+					fields: transformed.responses.map((response, i) => ({
+						name: transformed.responses.length === 1 ? 'Message' : `Message ${i+1}`,
+						data: {
+							__displayTypeName: 'Parameters',
+							__fields: response
+						}
+					}))
+				}
+			]
 		}
 	}
 }
