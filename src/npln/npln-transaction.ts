@@ -79,25 +79,17 @@ function getFieldDisplayTypeName(field: protobuf.Field): string {
 	return field.type;
 }
 
-function transformValue(field: protobuf.Field, repeated: boolean, value: any): any {
-	if (repeated) {
-		return {
-			__displayTypeName: `repeated<${(getFieldDisplayTypeName(field))}>`,
-			__typeName: 'List',
-			__value: value.map((v: any) => transformValue(field, false, v))
-		};
-	}
-
-	switch (field.type) {
+function transformScalar(type: string, value: any): any {
+	switch (type) {
 		case 'string':
 			return {
-				__displayTypeName: field.type,
+				__displayTypeName: type,
 				__typeName: 'String',
 				__value: value
 			};
 		case 'bool':
 			return {
-				__displayTypeName: field.type,
+				__displayTypeName: type,
 				__typeName: 'Boolean',
 				__value: value
 			};
@@ -107,7 +99,7 @@ function transformValue(field: protobuf.Field, repeated: boolean, value: any): a
 		case 'fixed32':
 		case 'sfixed32':
 			return {
-				__displayTypeName: field.type,
+				__displayTypeName: type,
 				__typeName: 'Int32',
 				__value: value
 			};
@@ -117,28 +109,44 @@ function transformValue(field: protobuf.Field, repeated: boolean, value: any): a
 		case 'fixed64':
 		case 'sfixed64':
 			return {
-				__displayTypeName: field.type,
+				__displayTypeName: type,
 				__typeName: 'Int64',
 				__value: value.toString()
 			};
 		case 'float':
 			return {
-				__displayTypeName: field.type,
+				__displayTypeName: type,
 				__typeName: 'Float',
 				__value: value
 			};
 		case 'double':
 			return {
-				__displayTypeName: field.type,
+				__displayTypeName: type,
 				__typeName: 'Double',
 				__value: value
 			};
 		case 'bytes':
 			return {
-				__displayTypeName: field.type,
+				__displayTypeName: type,
 				__typeName: 'Buffer',
 				__value: Array.from(value)
 			};
+	}
+}
+
+function transformValue(field: protobuf.Field, repeated: boolean, value: any): any {
+	if (repeated) {
+		return {
+			__displayTypeName: `repeated<${(getFieldDisplayTypeName(field))}>`,
+			__typeName: 'List',
+			__value: value.map((v: any) => transformValue(field, false, v))
+		};
+	}
+
+	const scalar = transformScalar(field.type, value);
+
+	if (scalar) {
+		return scalar;
 	}
 
 	const resolvedType = (field as any).resolvedType as protobuf.Type | protobuf.Enum | null;
@@ -222,16 +230,13 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 		}
 
 		if (field instanceof protobuf.MapField) {
-			const entries: Record<string, any> = {};
-
-			for (const [k, v] of Object.entries(raw)) {
-				entries[k] = transformValue(field, false, v);
-			}
-
 			fields[field.name] = {
 				__displayTypeName: `map<${field.keyType}, ${getFieldDisplayTypeName(field)}>`,
 				__typeName: 'Map',
-				__value: entries
+				__value: Object.entries(raw).map(([k, v]) => ({
+					key: transformScalar(field.keyType, k),
+					value: transformValue(field, false, v)
+				}))
 			};
 
 			continue;
