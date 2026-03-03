@@ -193,29 +193,23 @@ export default class PRUDPPacketV0 extends PRUDPPacket {
 							: [])
 					]
 				},
-				...(this.natMessageID !== undefined || this.natConnectionID !== undefined || this.natTime !== undefined
+				...(this.isStreamTypeNAT()
 					? [{
 							title: 'NAT Data',
 							columns: 2,
 							fields: [
-								...(this.natMessageID !== undefined
-									? [{
-											name: 'NAT Message ID',
-											value: `${this.natMessageID}`
-										}]
-									: []),
-								...(this.natConnectionID !== undefined
-									? [{
-											name: 'NAT Connection ID',
-											value: `${this.natConnectionID}`
-										}]
-									: []),
-								...(this.natTime !== undefined
-									? [{
-											name: 'NAT Time Counter',
-											value: `${this.natTime}`
-										}]
-									: [])
+								{
+									name: 'NAT Message ID',
+									value: `${this.natMessageID}`
+								},
+								{
+									name: 'NAT Connection ID',
+									value: `${this.natConnectionID}`
+								},
+								{
+									name: 'NAT Time Counter',
+									value: `${this.natTime}`
+								}
 							]
 						}]
 					: [])
