@@ -183,6 +183,7 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 }
 
 export default class NPLNTransaction {
+	public clientAddress!: string;
 	public uri!: string;
 	public packageName!: string;
 	public serviceName!: string;
@@ -227,6 +228,7 @@ export default class NPLNTransaction {
 		const [, fullyQualifiedServiceName, methodName] = methodPath.split('/');
 		const lastDot = fullyQualifiedServiceName.lastIndexOf('.');
 
+		transaction.clientAddress = proxideTransaction.clientAddress;
 		transaction.uri = proxideTransaction.uri;
 		transaction.packageName = fullyQualifiedServiceName.substring(0, lastDot);
 		transaction.serviceName = fullyQualifiedServiceName.substring(lastDot + 1);
@@ -255,7 +257,7 @@ export default class NPLNTransaction {
 			id: -1, // * Gets set later when emitted
 			elapsed_time: 0, // TODO - Add this
 			transport: 'NPLN',
-			source: 'Client', // TODO - Change this
+			source: this.clientAddress,
 			destination: `${url.protocol}//${url.hostname}`,
 			service: this.fullyQualifiedServiceName,
 			method: this.methodName,

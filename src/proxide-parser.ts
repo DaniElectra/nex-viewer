@@ -92,6 +92,7 @@ export interface ConnectionDoneEvent {
 export interface ProxideTransaction {
 	uuid: string;
 	connectionUUID: string;
+	clientAddress: string;
 	uri: string;
 	method: string;
 	requestHeaders: Record<string, string>;

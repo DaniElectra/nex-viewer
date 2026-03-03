@@ -211,14 +211,19 @@ export default class Session extends EventEmitter {
 		const captureData = fs.readFileSync(capturePath);
 		const parser = new ProxideParser(captureData);
 		const partialTransactions = new Map<string, Partial<ProxideTransaction> & { requestChunks: Buffer[]; responseChunks: Buffer[] }>();
+		const clientAddresses = new Map<string, string>(); // * Sort of a hack, but it works
 		const transactions: ProxideTransaction[] = [];
 
 		for (const event of parser.events()) {
 			switch (event.type) {
+				case SessionEventType.NewConnection:
+					clientAddresses.set(event.uuid, event.clientAddress);
+					break;
 				case SessionEventType.NewRequest:
 					partialTransactions.set(event.uuid, {
 						uuid: event.uuid,
 						connectionUUID: event.connectionUUID,
+						clientAddress: clientAddresses.get(event.connectionUUID),
 						uri: event.uri,
 						method: event.method,
 						requestHeaders: event.headers,
@@ -271,6 +276,7 @@ export default class Session extends EventEmitter {
 			transactions.push({
 				uuid: transaction.uuid!,
 				connectionUUID: transaction.connectionUUID!,
+				clientAddress: transaction.clientAddress!,
 				uri: transaction.uri!,
 				method: transaction.method!,
 				requestHeaders: transaction.requestHeaders ?? {},
