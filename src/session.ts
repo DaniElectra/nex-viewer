@@ -345,18 +345,26 @@ export default class Session extends EventEmitter {
 				// * Some PRUDP packets are bundled together. Need to split them apart
 				while (stream.hasDataLeft()) {
 					// TODO - The "return" statements here will exit this loop, potentially losing valid bundled packets later in the stream. Fix this?
-					let packet: PRUDPPacket;
-					let magic = stream.readBytes(0x4);
+					const magic = stream.readBytes(0x4);
 
 					stream.skip(-0x4); // * Skip back to realign the stream position
 
 					if (magic.equals(PIA_MAGIC)) {
 						// TODO - This does basically nothing. We need to track these packets first, determine which PRUDP connection they belong to,
-						//        and then loop back through them with the PIA version determined by the PRUDP connections title. This is just a stub
-						this.emitSerialized(new PIAPacket(stream));
+						//        and then loop back through them with the PIA version determined by the PRUDP connections title. This is just a stubx
+						const packet = new PIAPacket(stream);
+
+						packet.sourceAddress = udpPacket.source;
+						packet.sourcePort = udpPacket.sourcePort;
+						packet.destinationAddress = udpPacket.destination;
+						packet.destinationPort = udpPacket.destinationPort;
+
+						this.emitSerialized(packet);
 						return; // * This assumes the whole frame is just one packet. This is likely not the case, we will need to work this out at some point
 					} else {
-						magic = stream.readBytes(0x2);
+						let packet: PRUDPPacket;
+						const magic = stream.readBytes(0x2);
+
 						stream.skip(-0x2); // * Skip back to realign the stream position
 
 						if (magic.equals(PRUDPPacketV1.Magic)) {

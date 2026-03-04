@@ -4,6 +4,10 @@ import type { SerializedMessage } from '@/types/serialized-message';
 
 export default class PIAPacket {
 	public id = -1; // * Unique ID for the UI layer
+	public sourceAddress!: string;
+	public sourcePort!: number;
+	public destinationAddress!: string;
+	public destinationPort!: number;
 
 	protected stream: ByteStream;
 
@@ -119,8 +123,8 @@ export default class PIAPacket {
 			id: this.id,
 			elapsed_time: 0,
 			transport: 'PIA',
-			source: '',
-			destination: '',
+			source: `${this.sourceAddress}:${this.sourcePort}`,
+			destination: `${this.destinationAddress}:${this.destinationPort}`,
 			overview_sections: [],
 			hex_views: [],
 			serialized_tabs: []
