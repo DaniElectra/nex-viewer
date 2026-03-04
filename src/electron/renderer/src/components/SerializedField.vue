@@ -1,20 +1,8 @@
 <script setup lang="ts">
-import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDays, MapPin, Brackets, Braces, CircleQuestionMark } from 'lucide-vue-next';
+import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDays, MapPin, Brackets, Braces, CircleQuestionMark, ArrowUpFromLine } from 'lucide-vue-next';
 import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from 'reka-ui';
 import { toHexString, copyHex } from '@renderer/assets/js/util';
-
-interface BasicSerializedField {
-	__displayTypeName?: string;
-	__typeName?: string;
-	__value?: any;
-}
-
-interface ExpandableSerializedField extends BasicSerializedField {
-	__version?: number;
-	__fields?: Record<string, SerializedField | ExpandableSerializedField>;
-}
-
-type SerializedField = BasicSerializedField | ExpandableSerializedField;
+import type { SerializedField, ExpandableSerializedField } from '@/types/serialized-message';
 
 const props = defineProps<{
 	fieldKey: string;
@@ -265,7 +253,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 							<component :is="typeIcon.icon" :class="typeIcon.class" />
 						</div>
 						<div class="font-medium text-sm flex items-center">
-							<span class="text-foreground">{{ fieldKey }}</span>
+							<span :class="fieldKey === 'parent' ? 'text-[#aab0bb]/60 italic' : 'text-foreground'">{{ fieldKey }}</span>
 							<span v-if="typeName" class="text-xs text-[#aab0bb] ml-1">({{ typeName }})</span>
 						</div>
 					</div>
@@ -274,6 +262,10 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			</AccordionTrigger>
 			<AccordionContent class="overflow-hidden text-sm transition-all">
 				<div class="pb-0 pt-0">
+					<div v-if="'__parent' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
+						<SerializedField :field="field.__parent" :field-key="'parent'" :depth="depth + 1"/>
+						<div class="border-t border-[#25282d]/70 mx-1 my-0.5" />
+					</div>
 					<div v-if="'__fields' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
 						<template v-for="(subField, subKey) in field.__fields" :key="subKey">
 							<SerializedField :field="subField" :field-key="String(subKey)" :depth="depth + 1" />

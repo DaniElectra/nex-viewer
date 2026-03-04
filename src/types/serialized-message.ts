@@ -5,6 +5,7 @@ export interface BasicSerializedField {
 }
 
 export interface ExpandableSerializedField extends BasicSerializedField {
+	__parent?: ExpandableSerializedField;
 	__version?: number;
 	__fields?: Record<string, SerializedField | ExpandableSerializedField>;
 }
