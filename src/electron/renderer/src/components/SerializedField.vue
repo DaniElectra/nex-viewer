@@ -123,7 +123,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 							<component :is="typeIcon.icon" :class="typeIcon.class" />
 						</div>
 						<div class="font-medium text-sm flex items-center">
-							<span class="text-foreground">{{ fieldKey }}</span>
+							<span>{{ fieldKey }}</span>
 							<span class="text-xs text-[#aab0bb] ml-1">{{ field.__displayTypeName || `Array[${field.__value.length}]` }}</span>
 						</div>
 					</div>
@@ -151,7 +151,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 							<component :is="typeIcon.icon" :class="typeIcon.class" />
 						</div>
 						<div class="font-medium text-sm flex items-center">
-							<span class="text-foreground">{{ fieldKey }}</span>
+							<span>{{ fieldKey }}</span>
 							<span class="text-xs text-[#aab0bb] ml-1">{{ field.__displayTypeName || `Map[${field.__value.length}]` }}</span>
 						</div>
 					</div>
@@ -171,7 +171,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 													<component :is="typeIcon.icon" :class="typeIcon.class" />
 												</div>
 												<div class="font-medium text-sm flex items-center">
-													<span class="text-foreground">Entry {{ entryIndex }}</span>
+													<span>Entry {{ entryIndex }}</span>
 													<span class="text-xs text-[#aab0bb] ml-1">{{ field.__displayTypeName }}</span>
 												</div>
 											</div>
@@ -198,7 +198,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			<component :is="typeIcon.icon" :class="typeIcon.class" />
 		</div>
 		<div class="font-medium text-sm flex items-center">
-			<span class="text-foreground">{{ fieldKey }}</span>
+			<span>{{ fieldKey }}</span>
 			<span class="text-xs text-[#aab0bb] ml-1">({{ typeName }})</span>
 		</div>
 		<div class="ml-2 flex-1 truncate">
@@ -215,7 +215,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 							<component :is="typeIcon.icon" :class="typeIcon.class" />
 						</div>
 						<div class="font-medium text-sm flex items-center">
-							<span class="text-foreground">{{ fieldKey }}</span>
+							<span>{{ fieldKey }}</span>
 							<span class="text-xs text-[#aab0bb] ml-1">({{ typeName }})</span>
 						</div>
 					</div>
@@ -235,7 +235,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			<component :is="typeIcon.icon" :class="typeIcon.class" />
 		</div>
 		<div class="font-medium text-sm flex items-center">
-			<span class="text-foreground">{{ fieldKey }}</span>
+			<span>{{ fieldKey }}</span>
 			<span v-if="typeName" class="text-xs text-[#aab0bb] ml-1">({{ typeName }})</span>
 		</div>
 		<div class="ml-2 flex-1 truncate">
@@ -253,7 +253,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 							<component :is="typeIcon.icon" :class="typeIcon.class" />
 						</div>
 						<div class="font-medium text-sm flex items-center">
-							<span :class="fieldKey === 'parent' ? 'text-[#aab0bb]/60 italic' : 'text-foreground'">{{ fieldKey }}</span>
+							<span :class="fieldKey === 'parent' ? 'text-[#aab0bb]/60 italic' : ''">{{ fieldKey }}</span>
 							<span v-if="typeName" class="text-xs text-[#aab0bb] ml-1">({{ typeName }})</span>
 						</div>
 					</div>
