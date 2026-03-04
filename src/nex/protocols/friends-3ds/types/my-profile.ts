@@ -39,6 +39,7 @@ export default class MyProfile extends Data {
 
 	public toJSON(): any {
 		return {
+			__parent: super.toJSON(),
 			__version: this.structureVersion,
 			__displayTypeName: className,
 			__typeName: className,

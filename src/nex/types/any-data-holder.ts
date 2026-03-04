@@ -6,7 +6,7 @@ import type RVType from '@/nex/types/rv-type';
 
 const className = 'AnyDataHolder';
 
-// TODO - This class is very wrong, see https://github.com/PretendoNetwork/nex-go/issues/74
+// TODO - This class is very wrong, see https://nintendo.wiki/wiki/Online/Nintendo_Network/NEX/Types#Holders and https://github.com/PretendoNetwork/nex-go/issues/74
 export default class AnyDataHolder extends Structure {
 	public static Classes: Record<string, new () => RVType> = {};
 

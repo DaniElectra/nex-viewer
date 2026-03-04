@@ -24,6 +24,7 @@ export default class NintendoLoginData extends Data {
 
 	public toJSON(): Record<string, any> {
 		return {
+			__parent: super.toJSON(),
 			__version: this.structureVersion,
 			__displayTypeName: className,
 			__typeName: className,

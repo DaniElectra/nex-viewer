@@ -37,6 +37,7 @@ export default class FriendInfo extends Data {
 
 	public toJSON(): any {
 		return {
+			__parent: super.toJSON(),
 			__version: this.structureVersion,
 			__displayTypeName: className,
 			__typeName: className,

@@ -3,10 +3,9 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'Data';
 
-// * Data has no fields itself.
-// * This is the parent class for all types which are allowed in AnyDataHolder
+// * This is purely the parent class for all types which are allowed in AnyDataHolder.
+// * See https://nintendo.wiki/wiki/Online/Nintendo_Network/NEX/Types#Data
 export default class Data extends Structure {
-	// * Make this a getter so it can be overridden by child classes
 	public get typeName(): string {
 		return className;
 	}
@@ -23,7 +22,8 @@ export default class Data extends Structure {
 		return {
 			__version: this.structureVersion,
 			__displayTypeName: className,
-			__typeName: className
+			__typeName: className,
+			__fields: {}
 		};
 	}
 }
