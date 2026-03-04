@@ -3,6 +3,8 @@ import type ByteStream from '@/byte-stream';
 import type { SerializedMessage } from '@/types/serialized-message';
 
 export default class PIAPacket {
+	public id = -1; // * Unique ID for the UI layer
+
 	protected stream: ByteStream;
 
 	// * None of this will exist until the packet is parsed
@@ -114,7 +116,7 @@ export default class PIAPacket {
 
 	public toJSON(): SerializedMessage {
 		return {
-			id: -1, // * Gets set later when emitted
+			id: this.id,
 			elapsed_time: 0,
 			transport: 'PIA',
 			source: '',

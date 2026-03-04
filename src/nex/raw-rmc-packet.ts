@@ -58,7 +58,7 @@ export default class RawRMCPacket extends PRUDPPacket {
 
 	public toJSON(): SerializedMessage {
 		return {
-			id: -1, // * Gets set later when emitted
+			id: this.id,
 			elapsed_time: this.elapsedTime ?? 0,
 			transport: 'RMC',
 			source: this.sourceAddress,

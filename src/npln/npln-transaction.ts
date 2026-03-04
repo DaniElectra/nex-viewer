@@ -259,6 +259,8 @@ function transformMessage(msgType: protobuf.Type, value: any): any {
 }
 
 export default class NPLNTransaction {
+	public id = -1; // * Unique ID for the UI layer
+
 	public clientAddress!: string;
 	public uri!: string;
 	public packageName!: string;
@@ -330,7 +332,7 @@ export default class NPLNTransaction {
 		const url = new URL(this.uri);
 
 		return {
-			id: -1, // * Gets set later when emitted
+			id: this.id,
 			elapsed_time: 0, // TODO - Add this
 			transport: 'NPLN',
 			source: this.clientAddress,

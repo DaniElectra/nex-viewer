@@ -172,7 +172,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 
 	public toJSON(): SerializedMessage {
 		return {
-			id: -1, // * Gets set later when emitted
+			id: this.id,
 			elapsed_time: this.elapsedTime ?? 0,
 			transport: this.isNetZ() ? 'NetZ' : 'NEX', // * NEX is the larger library that houses NetZ, but NetZ is for P2P connections and is also different than PIA
 			source: `${this.sourceAddress}:${this.sourcePort}`,

@@ -138,7 +138,7 @@ export default class PRUDPPacketLite extends PRUDPPacket {
 
 	public toJSON(): SerializedMessage {
 		return {
-			id: -1, // * Gets set later when emitted
+			id: this.id,
 			elapsed_time: this.elapsedTime ?? 0,
 			transport: 'NEX', // TODO - p2p packets should change this
 			source: `${this.sourceAddress}:${this.sourcePort}`,

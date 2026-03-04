@@ -3,6 +3,8 @@ import type RMCMessage from '@/nex/rmc-message';
 import type PRUDPConnection from '@/nex/prudp-connection';
 
 export default class PRUDPPacket {
+	public id = -1; // * Unique ID for the UI layer
+
 	public elapsedTime?: number;
 	public readonly version!: number;
 	public originalBuffer!: Buffer;

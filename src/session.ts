@@ -34,6 +34,7 @@ export default class Session extends EventEmitter {
 	private rawRMCMode = false;
 	private lastPacketTime = 0;
 	private elapsedTime = 0;
+	private messageID = 0;
 
 	constructor() {
 		super();
@@ -63,6 +64,11 @@ export default class Session extends EventEmitter {
 			default:
 				throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
 		}
+	}
+
+	private emitSerialized(message: any): void {
+		message.id = this.messageID++;
+		this.emit('serializedMessage', message);
 	}
 
 	private parsePCAP(capturePath: string): void {
@@ -132,7 +138,7 @@ export default class Session extends EventEmitter {
 				packet.elapsedTime = elapsedTime;
 
 				this.processPRUDPPacket(packet);
-				this.emit('serializedMessage', packet);
+				this.emitSerialized(packet);
 			}
 		}
 
@@ -173,7 +179,7 @@ export default class Session extends EventEmitter {
 				packet.elapsedTime = elapsedTime;
 
 				this.processPRUDPPacket(packet);
-				this.emit('serializedMessage', packet);
+				this.emitSerialized(packet);
 			}
 		}
 
@@ -203,7 +209,7 @@ export default class Session extends EventEmitter {
 					}
 
 					this.processPRUDPPacket(packet);
-					this.emit('serializedMessage', packet);
+					this.emitSerialized(packet);
 				}
 			}
 		}
@@ -298,7 +304,7 @@ export default class Session extends EventEmitter {
 			const contentType = transaction.requestHeaders['content-type'] ?? transaction.responseHeaders['content-type'] ?? '';
 
 			if (contentType.startsWith('application/grpc')) {
-				this.emit('serializedMessage', NPLNTransaction.parseFromProxideTransaction(transaction));
+				this.emitSerialized(NPLNTransaction.parseFromProxideTransaction(transaction));
 			}
 		}
 	}
@@ -326,7 +332,7 @@ export default class Session extends EventEmitter {
 
 				packet.elapsedTime = elapsedTime;
 
-				this.emit('serializedMessage', packet);
+				this.emitSerialized(packet);
 			} else {
 				const udpPacket = this.parseUDPPacket(frame.data);
 
@@ -347,7 +353,7 @@ export default class Session extends EventEmitter {
 					if (magic.equals(PIA_MAGIC)) {
 						// TODO - This does basically nothing. We need to track these packets first, determine which PRUDP connection they belong to,
 						//        and then loop back through them with the PIA version determined by the PRUDP connections title. This is just a stub
-						this.emit('serializedMessage', new PIAPacket(stream));
+						this.emitSerialized(new PIAPacket(stream));
 						return; // * This assumes the whole frame is just one packet. This is likely not the case, we will need to work this out at some point
 					} else {
 						magic = stream.readBytes(0x2);
@@ -378,7 +384,7 @@ export default class Session extends EventEmitter {
 
 						packet.elapsedTime = elapsedTime;
 
-						this.emit('serializedMessage', packet);
+						this.emitSerialized(packet);
 					}
 				}
 			}
