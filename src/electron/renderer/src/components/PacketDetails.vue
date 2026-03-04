@@ -71,7 +71,7 @@ watch(() => props.packet, () => {
 								{{ section.title }}
 							</h3>
 						</div>
-						<div :class="`grid grid-cols-${section.columns} gap-4`">
+						<div :class="`grid gap-4`" :style="`grid-template-columns: repeat(${section.columns}, minmax(0, 1fr))`">
 							<div v-for="field in section.fields" :key="field.name">
 								<h3 class="text-sm font-medium text-[#9a9fa9]">{{ field.name }}</h3>
 								<p class="font-mono">{{ field.value }}</p>
