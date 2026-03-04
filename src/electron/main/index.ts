@@ -6,6 +6,14 @@ import createMenu from '@/electron/main/menu';
 import settings from '@/settings';
 import type State from '@/types/state';
 
+function quitApp(): void {
+	app.quit();
+}
+
+process.on('SIGINT', quitApp);
+process.on('SIGTERM', quitApp);
+process.on('SIGHUP', quitApp);
+
 // * Required for getting source maps to work in Electron apps
 // * See https://github.com/electron/electron/issues/38875
 sourceMapSupport.install();
@@ -77,6 +85,6 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
-		app.quit();
+		quitApp();
 	}
 });
