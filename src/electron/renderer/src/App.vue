@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { /* FolderOpen, Download, */ GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
+import ClipboardCopier from '@renderer/components/ClipboardCopier.vue';
 import PacketsList from '@renderer/components/PacketsList.vue';
 import PacketDetails from '@renderer/components/PacketDetails.vue';
 import { SerializedMessage } from '@/types/serialized-message';
@@ -28,6 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
+	<ClipboardCopier />
 	<div class="h-screen flex flex-col">
 		<header class="sticky top-0 z-50 w-full border-b border-[#2e3238] backdrop-blur-sm">
 			<div class="flex h-16 items-center px-6">

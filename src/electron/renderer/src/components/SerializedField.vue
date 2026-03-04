@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDays, MapPin, Brackets, Braces, CircleQuestionMark, ArrowUpFromLine } from 'lucide-vue-next';
+import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDays, MapPin, Brackets, Braces, CircleQuestionMark } from 'lucide-vue-next';
 import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from 'reka-ui';
-import { toHexString, copyToClipBoard, copyHexToClipBoard } from '@renderer/assets/js/util';
+import { useClipboard } from '@renderer/composables/useClipboard';
+import { toHexString } from '@renderer/assets/js/util';
 import type { SerializedField } from '@/types/serialized-message';
+
+const { copyToClipboard } = useClipboard();
 
 const props = defineProps<{
 	fieldKey: string;
@@ -99,11 +102,11 @@ function getDisplayValue(field: SerializedField): string {
 	return `${field.__value}`;
 }
 
-function copyValue(field: SerializedField): void {
+function copyValue(e: MouseEvent, field: SerializedField): void {
 	if (field.__typeName === 'Buffer' || field.__typeName === 'QBuffer') {
-		copyHexToClipBoard(field.__value);
+		copyToClipboard(e, toHexString(field.__value));
 	} else {
-		copyToClipBoard(field.__value.toString());
+		copyToClipboard(e, field.__value.toString());
 	}
 }
 
@@ -247,7 +250,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			<span v-if="typeName" class="text-xs text-[#aab0bb] ml-1">({{ typeName }})</span>
 		</div>
 		<div class="ml-2 flex-1 truncate">
-			<span class="text-sm cursor-pointer hover:underline" @click="copyValue(field)">{{ getDisplayValue(field) }}</span>
+			<span class="text-sm cursor-pointer hover:underline" @click="copyValue($event, field)">{{ getDisplayValue(field) }}</span>
 		</div>
 	</div>
 
@@ -270,7 +273,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			<AccordionContent class="overflow-hidden text-sm transition-all">
 				<div class="pb-0 pt-0">
 					<div v-if="'__parent' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
-						<SerializedField :field="field.__parent" :field-key="'parent'" :depth="depth + 1"/>
+						<SerializedField :field="field.__parent" :field-key="'parent'" :depth="depth + 1" />
 						<div class="border-t border-[#25282d]/70 mx-1 my-0.5" />
 					</div>
 					<div v-if="'__fields' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import SerializedField from '@renderer/components/SerializedField.vue';
-import { copyHexToClipBoard } from '@renderer/assets/js/util';
+import { useClipboard } from '@renderer/composables/useClipboard';
+import { toHexString } from '@renderer/assets/js/util';
 import type { SerializedMessage } from '@/types/serialized-message';
+
+const { copyToClipboard } = useClipboard();
 
 const props = defineProps<{
 	packet: SerializedMessage | null;
@@ -84,7 +87,7 @@ watch(() => props.packet, () => {
 					<div v-for="section in packet.hex_views" :key="section.title.toLowerCase().replace(/ /g, '')" class="mb-6 last:mb-0">
 						<div class="flex items-center gap-2 mb-2">
 							<div class="text-sm font-medium text-[#F9FAFC]">{{ section.title }}</div>
-							<button class="text-xs text-[#9a9fa9] hover:text-[#F9FAFC] transition-colors cursor-pointer" @click="copyHexToClipBoard(section.bytes)">Copy hex</button>
+							<button class="text-xs text-[#9a9fa9] hover:text-[#F9FAFC] transition-colors cursor-pointer" @click="copyToClipboard($event, toHexString(section.bytes))">Copy hex</button>
 						</div>
 						<div v-for="(row, rowIndex) in Array.from({ length: Math.ceil(section.bytes.length / 16) }, (_, i) => section.bytes.slice(i * 16, i * 16 + 16))" :key="rowIndex" class="flex gap-4 mb-0.5">
 							<span class="text-[#9a9fa9] w-10 flex-shrink-0">{{ (rowIndex * 16).toString(16).padStart(4, '0') }}</span>
