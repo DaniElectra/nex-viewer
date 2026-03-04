@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ChevronDown, FileText, Hash, Check, X, Package, AlertCircle, CalendarDays, MapPin, Brackets, Braces, CircleQuestionMark, ArrowUpFromLine } from 'lucide-vue-next';
 import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from 'reka-ui';
-import { toHexString, copyHex } from '@renderer/assets/js/util';
-import type { SerializedField, ExpandableSerializedField } from '@/types/serialized-message';
+import { toHexString, copyToClipBoard, copyHexToClipBoard } from '@renderer/assets/js/util';
+import type { SerializedField } from '@/types/serialized-message';
 
 const props = defineProps<{
 	fieldKey: string;
@@ -97,6 +97,14 @@ function getDisplayValue(field: SerializedField): string {
 	}
 
 	return `${field.__value}`;
+}
+
+function copyValue(field: SerializedField): void {
+	if (field.__typeName === 'Buffer' || field.__typeName === 'QBuffer') {
+		copyHexToClipBoard(field.__value);
+	} else {
+		copyToClipBoard(field.__value.toString());
+	}
 }
 
 const isList = props.field && props.field.__typeName === 'List' && props.field.__value !== null && props.field.__value !== undefined && Array.isArray(props.field.__value);
@@ -239,8 +247,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			<span v-if="typeName" class="text-xs text-[#aab0bb] ml-1">({{ typeName }})</span>
 		</div>
 		<div class="ml-2 flex-1 truncate">
-			<span v-if="field.__typeName === 'Buffer' || field.__typeName === 'QBuffer'" class="text-sm cursor-pointer hover:underline" @click="copyHex(field.__value)">{{ getDisplayValue(field) }}</span>
-			<span v-else class="text-sm">{{ getDisplayValue(field) }}</span>
+			<span class="text-sm cursor-pointer hover:underline" @click="copyValue(field)">{{ getDisplayValue(field) }}</span>
 		</div>
 	</div>
 

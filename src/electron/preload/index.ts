@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, clipboard } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 import type { IpcRenderer } from 'electron';
 import type { SerializedMessage } from '@/types/serialized-message';
@@ -7,7 +7,8 @@ import type { SerializedMessage } from '@/types/serialized-message';
 const api = {
 	ready: (): void => ipcRenderer.send('renderer-ready'),
 	onClearSections: (callback: () => void): IpcRenderer => ipcRenderer.on('clear-sections', _event => callback()),
-	onSerializedMessage: (callback: (message: SerializedMessage) => void): IpcRenderer => ipcRenderer.on('serializedMessage', (_event, transaction) => callback(JSON.parse(transaction)))
+	onSerializedMessage: (callback: (message: SerializedMessage) => void): IpcRenderer => ipcRenderer.on('serializedMessage', (_event, transaction) => callback(JSON.parse(transaction))),
+	copyToClipboard: (text: string) => clipboard.writeText(text) // TODO - Should this go on the electron global instead?
 };
 
 if (process.contextIsolated) {

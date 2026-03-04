@@ -6,6 +6,7 @@ declare global {
 			ready: () => void;
 			onClearSections: (callback: () => void) => void;
 			onSerializedMessage: (callback: (serializedMessage: SerializedMessage) => void) => void;
+			copyToClipboard: (text: string) => void;
 		};
 	}
 }
