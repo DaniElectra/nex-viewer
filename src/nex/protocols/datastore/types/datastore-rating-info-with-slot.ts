@@ -1,11 +1,11 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import Int8 from '@/nex/types/int8';
 import DataStoreRatingInfo from '@/nex/protocols/datastore/types/datastore-rating-info';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreRatingInfoWithSlot';
 
-export default class DataStoreRatingInfoWithSlot extends Structure {
+export default class DataStoreRatingInfoWithSlot extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -26,7 +26,7 @@ export default class DataStoreRatingInfoWithSlot extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

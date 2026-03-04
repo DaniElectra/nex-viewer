@@ -1,12 +1,12 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt32 from '@/nex/types/uint32';
 import PID from '@/nex/types/pid';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'MessageRecipient';
 
-export default class MessageRecipient extends Structure {
+export default class MessageRecipient extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -37,7 +37,7 @@ export default class MessageRecipient extends Structure {
 
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

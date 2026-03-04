@@ -1,5 +1,5 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt8 from '@/nex/types/uint8';
 import List from '@/nex/types/list';
 import PID from '@/nex/types/pid';
@@ -13,7 +13,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreSearchParam';
 
-export default class DataStoreSearchParam extends Structure {
+export default class DataStoreSearchParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -58,17 +58,17 @@ export default class DataStoreSearchParam extends Structure {
 		this.resultOption.extractFrom(stream);
 		this.minimalRatingFrequency.extractFrom(stream);
 
-		if (this.structureVersion >= 1 || semver.satisfies(stream.title.libraryVersions.datastore, '>=4.0.0')) {
+		if (this.revision >= 1 || semver.satisfies(stream.title.libraryVersions.datastore, '>=4.0.0')) {
 			this.useCache = new Bool();
 			this.useCache.extractFrom(stream);
 		}
 
-		if (this.structureVersion >= 3 || semver.satisfies(stream.title.libraryVersions.datastore, '>=4.0.0')) {
+		if (this.revision >= 3 || semver.satisfies(stream.title.libraryVersions.datastore, '>=4.0.0')) {
 			this.totalCountEnabled = new Bool();
 			this.totalCountEnabled.extractFrom(stream);
 		}
 
-		if (this.structureVersion >= 2 || semver.satisfies(stream.title.libraryVersions.datastore, '>=4.0.0')) {
+		if (this.revision >= 2 || semver.satisfies(stream.title.libraryVersions.datastore, '>=4.0.0')) {
 			this.dataTypes = new List(new UInt16());
 			this.dataTypes.extractFrom(stream);
 		}
@@ -80,7 +80,7 @@ export default class DataStoreSearchParam extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

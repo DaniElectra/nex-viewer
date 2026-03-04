@@ -1,11 +1,11 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import Int32 from '@/nex/types/int32';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreRateObjectParam';
 
-export default class DataStoreRateObjectParam extends Structure {
+export default class DataStoreRateObjectParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -26,7 +26,7 @@ export default class DataStoreRateObjectParam extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

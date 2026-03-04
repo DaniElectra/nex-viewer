@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import Bool from '@/nex/types/bool';
 import PID from '@/nex/types/pid';
 import Int32 from '@/nex/types/int32';
@@ -7,7 +7,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreRatingLog';
 
-export default class DataStoreRatingLog extends Structure {
+export default class DataStoreRatingLog extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -32,7 +32,7 @@ export default class DataStoreRatingLog extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

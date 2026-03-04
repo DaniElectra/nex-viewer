@@ -1,5 +1,5 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt32 from '@/nex/types/uint32';
 import List from '@/nex/types/list';
 import PID from '@/nex/types/pid';
@@ -11,7 +11,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'JoinMatchmakeSessionParam';
 
-export default class JoinMatchmakeSessionParam extends Structure {
+export default class JoinMatchmakeSessionParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -41,7 +41,7 @@ export default class JoinMatchmakeSessionParam extends Structure {
 		this.joinMessage.extractFrom(stream);
 		this.participationCount.extractFrom(stream);
 
-		if (this.structureVersion >= 1 || semver.satisfies(stream.title.libraryVersions.match_making, '>=4.0.0')) {
+		if (this.revision >= 1 || semver.satisfies(stream.title.libraryVersions.match_making, '>=4.0.0')) {
 			this.extraParticipants = new UInt16();
 			this.extraParticipants.extractFrom(stream);
 		}
@@ -58,7 +58,7 @@ export default class JoinMatchmakeSessionParam extends Structure {
 
 	public toJSON(): Record<string, any> {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

@@ -58,7 +58,7 @@ export default class UserMessage extends Data {
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
 			__parent: super.toJSON(),
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

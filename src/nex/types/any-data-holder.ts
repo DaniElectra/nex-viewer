@@ -1,5 +1,5 @@
 import NEXByteStream from '@/nex/byte-stream';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import RVString from '@/nex/types/string';
 import UInt32 from '@/nex/types/uint32';
 import type RVType from '@/nex/types/rv-type';
@@ -7,7 +7,7 @@ import type RVType from '@/nex/types/rv-type';
 const className = 'AnyDataHolder';
 
 // TODO - This class is very wrong, see https://nintendo.wiki/wiki/Online/Nintendo_Network/NEX/Types#Holders and https://github.com/PretendoNetwork/nex-go/issues/74
-export default class AnyDataHolder extends Structure {
+export default class AnyDataHolder extends DDLClass {
 	public static Classes: Record<string, new () => RVType> = {};
 
 	public get typeName(): string {

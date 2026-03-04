@@ -1,10 +1,10 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt32 from '@/nex/types/uint32';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStorePrepareGetParamV1';
 
-export default class DataStorePrepareGetParamV1 extends Structure {
+export default class DataStorePrepareGetParamV1 extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -25,7 +25,7 @@ export default class DataStorePrepareGetParamV1 extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

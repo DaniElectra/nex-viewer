@@ -29,7 +29,7 @@ export default class NNAInfo extends Data {
 	public toJSON(): any {
 		return {
 			__parent: super.toJSON(),
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

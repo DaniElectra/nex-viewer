@@ -1,11 +1,11 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'Data';
 
 // * This is purely the parent class for all types which are allowed in AnyDataHolder.
 // * See https://nintendo.wiki/wiki/Online/Nintendo_Network/NEX/Types#Data
-export default class Data extends Structure {
+export default class Data extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -20,7 +20,7 @@ export default class Data extends Structure {
 
 	public toJSON(): Record<string, any> {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

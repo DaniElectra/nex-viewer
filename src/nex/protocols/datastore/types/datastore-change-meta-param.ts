@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt64 from '@/nex/types/uint64';
 import UInt32 from '@/nex/types/uint32';
 import RVString from '@/nex/types/string';
@@ -13,7 +13,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreChangeMetaParam';
 
-export default class DataStoreChangeMetaParam extends Structure {
+export default class DataStoreChangeMetaParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -50,7 +50,7 @@ export default class DataStoreChangeMetaParam extends Structure {
 		this.status.extractFrom(stream);
 		this.compareParam.extractFrom(stream);
 
-		if (this.structureVersion >= 1) {
+		if (this.revision >= 1) {
 			this.persistenceTarget = new DataStorePersistenceTarget();
 			this.persistenceTarget.extractFrom(stream);
 		}
@@ -62,7 +62,7 @@ export default class DataStoreChangeMetaParam extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

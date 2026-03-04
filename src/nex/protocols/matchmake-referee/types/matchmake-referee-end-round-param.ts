@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt64 from '@/nex/types/uint64';
 import List from '@/nex/types/list';
 import MatchmakeRefereePersonalRoundResult from '@/nex/protocols/matchmake-referee/types/matchmake-referee-personal-round-result';
@@ -6,7 +6,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'MatchmakeRefereeEndRoundParam';
 
-export default class MatchmakeRefereeEndRoundParam extends Structure {
+export default class MatchmakeRefereeEndRoundParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -27,7 +27,7 @@ export default class MatchmakeRefereeEndRoundParam extends Structure {
 
 	public toJSON(): any {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

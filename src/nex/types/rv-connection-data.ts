@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import StationURL from '@/nex/types/station-url';
 import List from '@/nex/types/list';
 import UInt8 from '@/nex/types/uint8';
@@ -7,7 +7,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'RVConnectionData';
 
-export default class RVConnectionData extends Structure {
+export default class RVConnectionData extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -24,7 +24,7 @@ export default class RVConnectionData extends Structure {
 		this.m_lstSpecialProtocols.extractFrom(stream);
 		this.m_urlSpecialProtocols.extractFrom(stream);
 
-		if (this.structureVersion <= 1) {
+		if (this.revision <= 1) {
 			this.m_currentUTCTime = new DateTime();
 			this.m_currentUTCTime.extractFrom(stream);
 		}
@@ -36,7 +36,7 @@ export default class RVConnectionData extends Structure {
 
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

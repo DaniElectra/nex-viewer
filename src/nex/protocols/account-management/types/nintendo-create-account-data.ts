@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import NNAInfo from '@/nex/protocols/friends-wiiu/types/nna-info';
 import RVString from '@/nex/types/string';
 import DateTime from '@/nex/types/datetime';
@@ -7,7 +7,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'NintendoCreateAccountData';
 
-export default class NintendoCreateAccountData extends Structure {
+export default class NintendoCreateAccountData extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -32,7 +32,7 @@ export default class NintendoCreateAccountData extends Structure {
 
 	public toJSON(): any {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

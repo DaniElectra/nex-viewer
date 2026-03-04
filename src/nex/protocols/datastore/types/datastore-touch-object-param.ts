@@ -1,11 +1,11 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt64 from '@/nex/types/uint64';
 import UInt32 from '@/nex/types/uint32';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreTouchObjectParam';
 
-export default class DataStoreTouchObjectParam extends Structure {
+export default class DataStoreTouchObjectParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -28,7 +28,7 @@ export default class DataStoreTouchObjectParam extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

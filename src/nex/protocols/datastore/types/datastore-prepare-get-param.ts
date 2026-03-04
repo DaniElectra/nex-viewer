@@ -1,5 +1,5 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt64 from '@/nex/types/uint64';
 import UInt32 from '@/nex/types/uint32';
 import List from '@/nex/types/list';
@@ -9,7 +9,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStorePrepareGetParam';
 
-export default class DataStorePrepareGetParam extends Structure {
+export default class DataStorePrepareGetParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -40,7 +40,7 @@ export default class DataStorePrepareGetParam extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

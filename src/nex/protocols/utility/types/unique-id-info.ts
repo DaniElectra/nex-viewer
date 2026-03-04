@@ -1,10 +1,10 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'UniqueIdInfo';
 
-export default class UniqueIdInfo extends Structure {
+export default class UniqueIdInfo extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -25,7 +25,7 @@ export default class UniqueIdInfo extends Structure {
 
 	public toJSON(): any {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

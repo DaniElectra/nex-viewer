@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt32 from '@/nex/types/uint32';
 import PID from '@/nex/types/pid';
 import UInt16 from '@/nex/types/uint16';
@@ -8,7 +8,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'Gathering';
 
-export default class Gathering extends Structure {
+export default class Gathering extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -45,7 +45,7 @@ export default class Gathering extends Structure {
 
 	public toJSON(): Record<string, any> {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

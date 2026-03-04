@@ -1,5 +1,5 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import List from '@/nex/types/list';
 import PID from '@/nex/types/pid';
 import UInt32 from '@/nex/types/uint32';
@@ -12,7 +12,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'AutoMatchmakeParam';
 
-export default class AutoMatchmakeParam extends Structure {
+export default class AutoMatchmakeParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -51,7 +51,7 @@ export default class AutoMatchmakeParam extends Structure {
 
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

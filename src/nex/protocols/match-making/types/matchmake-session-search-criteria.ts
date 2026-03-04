@@ -1,5 +1,5 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import List from '@/nex/types/list';
 import RVString from '@/nex/types/string';
 import Bool from '@/nex/types/bool';
@@ -11,7 +11,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'MatchmakeSessionSearchCriteria';
 
-export default class MatchmakeSessionSearchCriteria extends Structure {
+export default class MatchmakeSessionSearchCriteria extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -95,7 +95,7 @@ export default class MatchmakeSessionSearchCriteria extends Structure {
 
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

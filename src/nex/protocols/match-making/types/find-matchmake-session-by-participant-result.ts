@@ -1,11 +1,11 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import PID from '@/nex/types/pid';
 import MatchmakeSession from '@/nex/protocols/match-making/types/matchmake-session';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'FindMatchmakeSessionByParticipantResult';
 
-export default class FindMatchmakeSessionByParticipantResult extends Structure {
+export default class FindMatchmakeSessionByParticipantResult extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -26,7 +26,7 @@ export default class FindMatchmakeSessionByParticipantResult extends Structure {
 
 	public toJSON(): Record<string, any> {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

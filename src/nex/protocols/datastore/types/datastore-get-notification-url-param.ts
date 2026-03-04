@@ -1,10 +1,10 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreGetNotificationUrlParam';
 
-export default class DataStoreGetNotificationUrlParam extends Structure {
+export default class DataStoreGetNotificationUrlParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -23,7 +23,7 @@ export default class DataStoreGetNotificationUrlParam extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt32 from '@/nex/types/uint32';
 import RVString from '@/nex/types/string';
 import AnyDataHolder from '@/nex/types/any-data-holder';
@@ -7,7 +7,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'ValidateAndRequestTicketParam';
 
-export default class ValidateAndRequestTicketParam extends Structure {
+export default class ValidateAndRequestTicketParam extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -36,7 +36,7 @@ export default class ValidateAndRequestTicketParam extends Structure {
 
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

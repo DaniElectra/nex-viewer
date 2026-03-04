@@ -1,5 +1,5 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt32 from '@/nex/types/uint32';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
@@ -8,7 +8,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 // * THE SWITCH USES A DIFFERENT STRUCTURE!
 const className = 'NotificationEvent';
 
-export default class NotificationEvent extends Structure {
+export default class NotificationEvent extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -41,7 +41,7 @@ export default class NotificationEvent extends Structure {
 
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

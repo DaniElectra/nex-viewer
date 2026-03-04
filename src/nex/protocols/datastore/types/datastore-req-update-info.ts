@@ -1,5 +1,5 @@
 import * as semver from 'compare-versions';
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import UInt16 from '@/nex/types/uint16';
 import UInt32 from '@/nex/types/uint32';
 import RVString from '@/nex/types/string';
@@ -10,7 +10,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'DataStoreReqUpdateInfo';
 
-export default class DataStoreReqUpdateInfo extends Structure {
+export default class DataStoreReqUpdateInfo extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -43,7 +43,7 @@ export default class DataStoreReqUpdateInfo extends Structure {
 
 	public toJSON(): any {
 		const json: Record<string, any> = {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {}

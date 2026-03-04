@@ -1,4 +1,4 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import List from '@/nex/types/list';
 import RankingRankData from '@/nex/protocols/ranking/types/ranking-rank-data';
 import UInt32 from '@/nex/types/uint32';
@@ -7,7 +7,7 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'RankingResult';
 
-export default class RankingResult extends Structure {
+export default class RankingResult extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -30,7 +30,7 @@ export default class RankingResult extends Structure {
 
 	public toJSON(): any {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {

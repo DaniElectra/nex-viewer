@@ -1,9 +1,9 @@
-import Structure from '@/nex/types/structure';
+import DDLClass from '@/nex/types/ddl-class';
 import type NEXByteStream from '@/nex/byte-stream';
 
 const className = 'RankingStats';
 
-export default class RankingStats extends Structure {
+export default class RankingStats extends DDLClass {
 	public get typeName(): string {
 		return className;
 	}
@@ -18,7 +18,7 @@ export default class RankingStats extends Structure {
 
 	public toJSON(): any {
 		return {
-			__version: this.structureVersion,
+			__version: this.revision,
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {
