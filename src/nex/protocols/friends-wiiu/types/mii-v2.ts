@@ -5,9 +5,11 @@ import RVBuffer from '@/nex/types/buffer';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MiiV2';
+
 export default class MiiV2 extends Data {
 	public get typeName(): string {
-		return 'MiiV2';
+		return className;
 	}
 
 	private name = new RVString();
@@ -33,8 +35,8 @@ export default class MiiV2 extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				name: this.name,
 				unknown1: this.unknown1,

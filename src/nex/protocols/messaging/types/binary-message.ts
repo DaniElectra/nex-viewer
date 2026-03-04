@@ -2,9 +2,11 @@ import UserMessage from '@/nex/protocols/messaging/types/user-message';
 import QBuffer from '@/nex/types/qbuffer';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'BinaryMessage';
+
 export default class BinaryMessage extends UserMessage {
 	public get typeName(): string {
-		return 'BinaryMessage';
+		return className;
 	}
 
 	private m_binaryBody = new QBuffer();
@@ -22,8 +24,8 @@ export default class BinaryMessage extends UserMessage {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_binaryBody: this.m_binaryBody
 			}

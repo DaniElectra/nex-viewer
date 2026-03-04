@@ -4,8 +4,12 @@ import PID from '@/nex/types/pid';
 import AnyDataHolder from '@/nex/types/any-data-holder';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'NintendoNotificationEvent';
+
 export default class NintendoNotificationEvent extends Structure {
-	public readonly typeName = 'NintendoNotificationEvent';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_uiType = new UInt32();
 	private m_uiParam1 = new PID();
@@ -26,8 +30,8 @@ export default class NintendoNotificationEvent extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_uiType: this.m_uiType,
 				m_uiParam1: this.m_uiParam1,

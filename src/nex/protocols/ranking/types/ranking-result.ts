@@ -5,9 +5,11 @@ import UInt32 from '@/nex/types/uint32';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'RankingResult';
+
 export default class RankingResult extends Structure {
 	public get typeName(): string {
-		return 'RankingResult';
+		return className;
 	}
 
 	private rankDataList = new List(new RankingRankData());
@@ -29,8 +31,8 @@ export default class RankingResult extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				rankDataList: this.rankDataList,
 				totalCount: this.totalCount,

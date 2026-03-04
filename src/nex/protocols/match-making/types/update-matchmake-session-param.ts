@@ -10,8 +10,12 @@ import UInt16 from '@/nex/types/uint16';
 import MatchmakeParam from '@/nex/protocols/match-making/types/matchmake-param';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'UpdateMatchmakeSessionParam';
+
 export default class UpdateMatchmakeSessionParam extends Structure {
-	public readonly typeName = 'UpdateMatchmakeSessionParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private gid = new UInt32();
 	private modificationFlag = new UInt32();
@@ -60,8 +64,8 @@ export default class UpdateMatchmakeSessionParam extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				gid: this.gid,
 				modificationFlag: this.modificationFlag,

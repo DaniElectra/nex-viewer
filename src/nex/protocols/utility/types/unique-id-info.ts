@@ -2,9 +2,11 @@ import Structure from '@/nex/types/structure';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'UniqueIdInfo';
+
 export default class UniqueIdInfo extends Structure {
 	public get typeName(): string {
-		return 'UniqueIdInfo';
+		return className;
 	}
 
 	private nexUniqueId = new UInt64();
@@ -24,8 +26,8 @@ export default class UniqueIdInfo extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				nexUniqueId: this.nexUniqueId,
 				nexUniqueIdPassword: this.nexUniqueIdPassword

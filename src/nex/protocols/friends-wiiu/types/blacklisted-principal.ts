@@ -4,9 +4,11 @@ import GameKey from '@/nex/protocols/friends-wiiu/types/game-key';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'BlacklistedPrincipal';
+
 export default class BlacklistedPrincipal extends Data {
 	public get typeName(): string {
-		return 'BlacklistedPrincipal';
+		return className;
 	}
 
 	private principalBasicInfo = new PrincipalBasicInfo();
@@ -28,8 +30,8 @@ export default class BlacklistedPrincipal extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				principalBasicInfo: this.principalBasicInfo,
 				gameKey: this.gameKey,

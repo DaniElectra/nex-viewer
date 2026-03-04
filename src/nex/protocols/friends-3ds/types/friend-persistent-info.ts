@@ -6,9 +6,11 @@ import RVString from '@/nex/types/string';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendPersistentInfo';
+
 export default class FriendPersistentInfo extends Data {
 	public get typeName(): string {
-		return 'FriendPersistentInfo';
+		return className;
 	}
 
 	private pid = new PID();
@@ -46,8 +48,8 @@ export default class FriendPersistentInfo extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				pid: this.pid,
 				region: this.region,

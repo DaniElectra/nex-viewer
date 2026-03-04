@@ -4,8 +4,12 @@ import List from '@/nex/types/list';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'RankingChangeAttributesParam';
+
 export default class RankingChangeAttributesParam extends Structure {
-	public readonly typeName = 'RankingChangeAttributesParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private modificationFlag = new UInt8();
 	private groups = new List(new UInt8());
@@ -26,8 +30,8 @@ export default class RankingChangeAttributesParam extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				modificationFlag: this.modificationFlag,
 				groups: this.groups,

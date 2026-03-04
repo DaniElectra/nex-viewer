@@ -3,8 +3,12 @@ import List from '@/nex/types/list';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreGetSpecificMetaParam';
+
 export default class DataStoreGetSpecificMetaParam extends Structure {
-	public readonly typeName = 'DataStoreGetSpecificMetaParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private dataIDs = new List(new UInt64());
 
@@ -21,8 +25,8 @@ export default class DataStoreGetSpecificMetaParam extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

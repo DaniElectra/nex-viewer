@@ -11,8 +11,12 @@ import ResultRange from '@/nex/types/result-range';
 import Bool from '@/nex/types/bool';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreSearchParam';
+
 export default class DataStoreSearchParam extends Structure {
-	public readonly typeName = 'DataStoreSearchParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private searchTarget = new UInt8();
 	private ownerIDs = new List(new PID());
@@ -77,8 +81,8 @@ export default class DataStoreSearchParam extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

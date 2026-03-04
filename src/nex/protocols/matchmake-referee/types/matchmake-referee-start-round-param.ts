@@ -4,8 +4,12 @@ import List from '@/nex/types/list';
 import PID from '@/nex/types/pid';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MatchmakeRefereeStartRoundParam';
+
 export default class MatchmakeRefereeStartRoundParam extends Structure {
-	public readonly typeName = 'MatchmakeRefereeStartRoundParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private personalDataCategory = new UInt32();
 	private gid = new UInt32();
@@ -26,8 +30,8 @@ export default class MatchmakeRefereeStartRoundParam extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				personalDataCategory: this.personalDataCategory,
 				gid: this.gid,

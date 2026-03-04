@@ -7,9 +7,11 @@ import AnyDataHolder from '@/nex/types/any-data-holder';
 import Gathering from '@/nex/protocols/match-making/types/gathering';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'PersistentGathering';
+
 export default class PersistentGathering extends Gathering {
 	public get typeName(): string {
-		return 'PersistentGathering';
+		return className;
 	}
 
 	private m_CommunityType = new UInt32();
@@ -44,8 +46,8 @@ export default class PersistentGathering extends Gathering {
 		return {
 			__parent: super.toJSON(),
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_CommunityType: this.m_CommunityType,
 				m_Password: this.m_Password,

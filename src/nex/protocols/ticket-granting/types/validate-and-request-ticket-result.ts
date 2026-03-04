@@ -6,8 +6,12 @@ import DateTime from '@/nex/types/datetime';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'ValidateAndRequestTicketResult';
+
 export default class ValidateAndRequestTicketResult extends Structure {
-	public readonly typeName = 'ValidateAndRequestTicketResult';
+	public get typeName(): string {
+		return className;
+	}
 
 	private sourcePid = new PID();
 	private bufResponse = new RVBuffer();
@@ -34,8 +38,8 @@ export default class ValidateAndRequestTicketResult extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				sourcePid: this.sourcePid,
 				bufResponse: this.bufResponse,

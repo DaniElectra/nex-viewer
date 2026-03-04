@@ -5,8 +5,12 @@ import UInt32 from '@/nex/types/uint32';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'AccountData';
+
 export default class AccountData extends Structure {
-	public readonly typeName = 'AccountData';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_pid = new PID();
 	private m_strName = new RVString();
@@ -39,8 +43,8 @@ export default class AccountData extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_pid: this.m_pid,
 				m_strName: this.m_strName,

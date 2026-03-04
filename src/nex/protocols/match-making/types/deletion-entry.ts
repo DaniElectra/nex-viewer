@@ -3,8 +3,12 @@ import UInt32 from '@/nex/types/uint32';
 import PID from '@/nex/types/pid';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DeletionEntry';
+
 export default class DeletionEntry extends Structure {
-	public readonly typeName = 'DeletionEntry';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_idGathering = new UInt32();
 	private m_pid = new PID();
@@ -25,8 +29,8 @@ export default class DeletionEntry extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_idGathering: this.m_idGathering,
 				m_pid: this.m_pid,

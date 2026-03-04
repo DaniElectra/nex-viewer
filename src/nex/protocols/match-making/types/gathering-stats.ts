@@ -5,8 +5,12 @@ import List from '@/nex/types/list';
 import Float from '@/nex/types/float';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'GatheringStats';
+
 export default class GatheringStats extends Structure {
-	public readonly typeName = 'GatheringStats';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_pidParticipant = new PID();
 	private m_uiFlags = new UInt32();
@@ -27,8 +31,8 @@ export default class GatheringStats extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_pidParticipant: this.m_pidParticipant,
 				m_uiFlags: this.m_uiFlags,

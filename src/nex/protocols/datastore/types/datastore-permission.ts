@@ -4,8 +4,12 @@ import List from '@/nex/types/list';
 import PID from '@/nex/types/pid';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStorePermission';
+
 export default class DataStorePermission extends Structure {
-	public readonly typeName = 'DataStorePermission';
+	public get typeName(): string {
+		return className;
+	}
 
 	private permission = new UInt8();
 	private recipientIDs = new List(new PID());
@@ -24,8 +28,8 @@ export default class DataStorePermission extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

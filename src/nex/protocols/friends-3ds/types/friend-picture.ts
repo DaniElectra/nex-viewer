@@ -4,9 +4,11 @@ import RVBuffer from '@/nex/types/buffer';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendPicture';
+
 export default class FriendPicture extends Data {
 	public get typeName(): string {
-		return 'FriendPicture';
+		return className;
 	}
 
 	private unknown1 = new UInt32();
@@ -28,8 +30,8 @@ export default class FriendPicture extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				unknown1: this.unknown1,
 				data: this.data,

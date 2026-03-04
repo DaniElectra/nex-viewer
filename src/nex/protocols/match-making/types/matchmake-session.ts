@@ -11,9 +11,11 @@ import Gathering from '@/nex/protocols/match-making/types/gathering';
 import MatchmakeParam from '@/nex/protocols/match-making/types/matchmake-param';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MatchmakeSession';
+
 export default class MatchmakeSession extends Gathering {
 	public get typeName(): string {
-		return 'MatchmakeSession';
+		return className;
 	}
 
 	private m_GameMode = new UInt32();
@@ -97,8 +99,8 @@ export default class MatchmakeSession extends Gathering {
 		const json: Record<string, any> = {
 			__parent: super.toJSON(),
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_GameMode: this.m_GameMode,
 				m_Attribs: this.m_Attribs,

@@ -7,8 +7,12 @@ import UInt16 from '@/nex/types/uint16';
 import MatchmakeSession from '@/nex/protocols/match-making/types/matchmake-session';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'CreateMatchmakeSessionParam';
+
 export default class CreateMatchmakeSessionParam extends Structure {
-	public readonly typeName = 'CreateMatchmakeSessionParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private sourceMatchmakeSession = new MatchmakeSession();
 	private additionalParticipants = new List(new PID());
@@ -35,8 +39,8 @@ export default class CreateMatchmakeSessionParam extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				sourceMatchmakeSession: this.sourceMatchmakeSession,
 				additionalParticipants: this.additionalParticipants,

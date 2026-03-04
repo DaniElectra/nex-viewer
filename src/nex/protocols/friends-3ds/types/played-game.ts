@@ -3,9 +3,11 @@ import GameKey from '@/nex/protocols/friends-3ds/types/game-key';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'PlayedGame';
+
 export default class PlayedGame extends Data {
 	public get typeName(): string {
-		return 'PlayedGame';
+		return className;
 	}
 
 	private gamekey = new GameKey();
@@ -25,8 +27,8 @@ export default class PlayedGame extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				gamekey: this.gamekey,
 				unknown: this.unknown

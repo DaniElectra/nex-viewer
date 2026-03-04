@@ -3,9 +3,11 @@ import String from '@/nex/types/string';
 import AnyDataHolder from '@/nex/types/any-data-holder';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'NintendoLoginData';
+
 export default class NintendoLoginData extends Data {
 	public get typeName(): string {
-		return 'NintendoLoginData';
+		return className;
 	}
 
 	private token = new String();
@@ -23,8 +25,8 @@ export default class NintendoLoginData extends Data {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				token: this.token
 			}

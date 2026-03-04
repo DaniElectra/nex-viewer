@@ -4,9 +4,11 @@ import FriendRequestMessage from '@/nex/protocols/friends-wiiu/types/friend-requ
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendRequest';
+
 export default class FriendRequest extends Data {
 	public get typeName(): string {
-		return 'FriendRequest';
+		return className;
 	}
 
 	private principalBasicInfo = new PrincipalBasicInfo();
@@ -28,8 +30,8 @@ export default class FriendRequest extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				principalBasicInfo: this.principalBasicInfo,
 				message: this.message,

@@ -2,9 +2,11 @@ import UserMessage from '@/nex/protocols/messaging/types/user-message';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'TextMessage';
+
 export default class TextMessage extends UserMessage {
 	public get typeName(): string {
-		return 'TextMessage';
+		return className;
 	}
 
 	private m_strTextBody = new RVString();
@@ -22,8 +24,8 @@ export default class TextMessage extends UserMessage {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_strTextBody: this.m_strTextBody
 			}

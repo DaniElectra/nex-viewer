@@ -3,8 +3,12 @@ import RVString from '@/nex/types/string';
 import RVBuffer from '@/nex/types/buffer';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreReqGetNotificationUrlInfo';
+
 export default class DataStoreReqGetNotificationUrlInfo extends Structure {
-	public readonly typeName = 'DataStoreReqGetNotificationUrlInfo';
+	public get typeName(): string {
+		return className;
+	}
 
 	private uRL = new RVString();
 	private key = new RVString();
@@ -27,8 +31,8 @@ export default class DataStoreReqGetNotificationUrlInfo extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

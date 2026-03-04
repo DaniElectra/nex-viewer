@@ -5,8 +5,12 @@ import DateTime from '@/nex/types/datetime';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'NintendoCreateAccountData';
+
 export default class NintendoCreateAccountData extends Structure {
-	public readonly typeName = 'NintendoCreateAccountData';
+	public get typeName(): string {
+		return className;
+	}
 
 	private NNAInfo = new NNAInfo();
 	private token = new RVString();
@@ -29,8 +33,8 @@ export default class NintendoCreateAccountData extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				NNAInfo: this.NNAInfo,
 				token: this.token,

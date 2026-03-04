@@ -7,9 +7,11 @@ import RVString from '@/nex/types/string';
 import MessageRecipient from '@/nex/protocols/messaging/types/message-recipient';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'UserMessage';
+
 export default class UserMessage extends Data {
 	public get typeName(): string {
-		return 'UserMessage';
+		return className;
 	}
 
 	private libraryVersion?: string;
@@ -56,8 +58,8 @@ export default class UserMessage extends Data {
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_uiID: this.m_uiID
 			}

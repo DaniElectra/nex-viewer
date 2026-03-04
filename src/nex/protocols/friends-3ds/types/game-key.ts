@@ -3,9 +3,11 @@ import UInt64 from '@/nex/types/uint64';
 import UInt16 from '@/nex/types/uint16';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'GameKey';
+
 export default class GameKey extends Data {
 	public get typeName(): string {
-		return 'GameKey';
+		return className;
 	}
 
 	private m_gameCode = new UInt64();
@@ -25,8 +27,8 @@ export default class GameKey extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_gameCode: this.m_gameCode,
 				m_gameVersion: this.m_gameVersion

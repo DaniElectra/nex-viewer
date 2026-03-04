@@ -6,8 +6,12 @@ import List from '@/nex/types/list';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStorePrepareUpdateParam';
+
 export default class DataStorePrepareUpdateParam extends Structure {
-	public readonly typeName = 'DataStorePrepareUpdateParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private dataID?: UInt32 | UInt64; // * NEX v2.0.0 vs NEX v3.0.0
 	private size = new UInt32();
@@ -44,8 +48,8 @@ export default class DataStorePrepareUpdateParam extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

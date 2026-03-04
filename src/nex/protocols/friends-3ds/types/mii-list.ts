@@ -6,9 +6,11 @@ import List from '@/nex/types/list';
 import RVBuffer from '@/nex/types/buffer';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MiiList';
+
 export default class MiiList extends Data {
 	public get typeName(): string {
-		return 'MiiList';
+		return className;
 	}
 
 	private unknown1 = new RVString();
@@ -32,8 +34,8 @@ export default class MiiList extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				unknown1: this.unknown1,
 				unknown2: this.unknown2,

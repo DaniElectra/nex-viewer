@@ -9,8 +9,12 @@ import UInt16 from '@/nex/types/uint16';
 import MatchmakeBlockListParam from '@/nex/protocols/match-making/types/matchmake-block-list-param';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'JoinMatchmakeSessionParam';
+
 export default class JoinMatchmakeSessionParam extends Structure {
-	public readonly typeName = 'JoinMatchmakeSessionParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private gid = new UInt32();
 	private additionalParticipants = new List(new PID());
@@ -55,8 +59,8 @@ export default class JoinMatchmakeSessionParam extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				gid: this.gid,
 				additionalParticipants: this.additionalParticipants,

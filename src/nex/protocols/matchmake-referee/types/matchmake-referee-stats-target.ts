@@ -3,8 +3,12 @@ import PID from '@/nex/types/pid';
 import UInt32 from '@/nex/types/uint32';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MatchmakeRefereeStatsTarget';
+
 export default class MatchmakeRefereeStatsTarget extends Structure {
-	public readonly typeName = 'MatchmakeRefereeStatsTarget';
+	public get typeName(): string {
+		return className;
+	}
 
 	private pid = new PID();
 	private category = new UInt32();
@@ -23,8 +27,8 @@ export default class MatchmakeRefereeStatsTarget extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				pid: this.pid,
 				category: this.category

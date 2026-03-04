@@ -3,8 +3,12 @@ import Int64 from '@/nex/types/int64';
 import UInt32 from '@/nex/types/uint32';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreRatingInfo';
+
 export default class DataStoreRatingInfo extends Structure {
-	public readonly typeName = 'DataStoreRatingInfo';
+	public get typeName(): string {
+		return className;
+	}
 
 	private totalValue = new Int64();
 	private count = new UInt32();
@@ -25,8 +29,8 @@ export default class DataStoreRatingInfo extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

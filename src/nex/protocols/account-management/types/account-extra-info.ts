@@ -5,8 +5,12 @@ import RVString from '@/nex/types/string';
 import AnyDataHolder from '@/nex/types/any-data-holder';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'AccountExtraInfo';
+
 export default class AccountExtraInfo extends Structure {
-	public readonly typeName = 'AccountExtraInfo';
+	public get typeName(): string {
+		return className;
+	}
 
 	private localFriendCode = new UInt64();
 	private moveCount = new UInt32();
@@ -27,8 +31,8 @@ export default class AccountExtraInfo extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				localFriendCode: this.localFriendCode,
 				moveCount: this.moveCount,

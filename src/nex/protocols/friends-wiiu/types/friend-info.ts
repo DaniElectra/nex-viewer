@@ -6,9 +6,11 @@ import DateTime from '@/nex/types/datetime';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendInfo';
+
 export default class FriendInfo extends Data {
 	public get typeName(): string {
-		return 'FriendInfo';
+		return className;
 	}
 
 	private NNAInfo = new NNAInfo();
@@ -36,8 +38,8 @@ export default class FriendInfo extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				NNAInfo: this.NNAInfo,
 				nintendoPresence: this.nintendoPresence,

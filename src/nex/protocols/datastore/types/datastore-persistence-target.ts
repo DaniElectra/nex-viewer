@@ -3,8 +3,12 @@ import PID from '@/nex/types/pid';
 import UInt16 from '@/nex/types/uint16';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStorePersistenceTarget';
+
 export default class DataStorePersistenceTarget extends Structure {
-	public readonly typeName = 'DataStorePersistenceTarget';
+	public get typeName(): string {
+		return className;
+	}
 
 	private ownerID = new PID();
 	private persistenceSlotID = new UInt16();
@@ -23,8 +27,8 @@ export default class DataStorePersistenceTarget extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

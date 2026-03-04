@@ -4,9 +4,11 @@ import UInt64 from '@/nex/types/uint64';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MyProfile';
+
 export default class MyProfile extends Data {
 	public get typeName(): string {
-		return 'MyProfile';
+		return className;
 	}
 
 	private region = new UInt8();
@@ -38,8 +40,8 @@ export default class MyProfile extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				region: this.region,
 				country: this.country,

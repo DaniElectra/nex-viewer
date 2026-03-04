@@ -4,8 +4,12 @@ import PID from '@/nex/types/pid';
 import UInt16 from '@/nex/types/uint16';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreSpecificMetaInfoV1';
+
 export default class DataStoreSpecificMetaInfoV1 extends Structure {
-	public readonly typeName = 'DataStoreSpecificMetaInfoV1';
+	public get typeName(): string {
+		return className;
+	}
 
 	private dataID = new UInt32();
 	private ownerID = new PID();
@@ -30,8 +34,8 @@ export default class DataStoreSpecificMetaInfoV1 extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

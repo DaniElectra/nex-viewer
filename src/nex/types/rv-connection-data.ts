@@ -5,8 +5,12 @@ import UInt8 from '@/nex/types/uint8';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'RVConnectionData';
+
 export default class RVConnectionData extends Structure {
-	public readonly typeName = 'RVConnectionData';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_urlRegularProtocols = new StationURL();
 	private m_lstSpecialProtocols = new List(new UInt8());
@@ -33,8 +37,8 @@ export default class RVConnectionData extends Structure {
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_urlRegularProtocols: this.m_urlRegularProtocols,
 				m_lstSpecialProtocols: this.m_lstSpecialProtocols,

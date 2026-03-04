@@ -4,8 +4,12 @@ import RVString from '@/nex/types/string';
 import Variant from '@/nex/types/variant';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MatchmakeParam';
+
 export default class MatchmakeParam extends Structure {
-	public readonly typeName = 'MatchmakeParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_Params = new RVMap(new RVString(), new Variant());
 
@@ -22,8 +26,8 @@ export default class MatchmakeParam extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_Params: this.m_Params
 			}

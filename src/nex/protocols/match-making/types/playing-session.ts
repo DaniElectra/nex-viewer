@@ -3,8 +3,12 @@ import PID from '@/nex/types/pid';
 import AnyDataHolder from '@/nex/types/any-data-holder';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'PlayingSession';
+
 export default class PlayingSession extends Structure {
-	public readonly typeName = 'PlayingSession';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_PrincipalId = new PID();
 	private m_Gathering = new AnyDataHolder();
@@ -23,8 +27,8 @@ export default class PlayingSession extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_PrincipalId: this.m_PrincipalId,
 				m_Gathering: this.m_Gathering

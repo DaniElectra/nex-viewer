@@ -4,8 +4,12 @@ import UInt32 from '@/nex/types/uint32';
 import PID from '@/nex/types/pid';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MessageRecipient';
+
 export default class MessageRecipient extends Structure {
-	public readonly typeName = 'MessageRecipient';
+	public get typeName(): string {
+		return className;
+	}
 
 	private libraryVersion?: string;
 	private m_idRecipient = new UInt32(); // * NEX <4.0
@@ -34,8 +38,8 @@ export default class MessageRecipient extends Structure {
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

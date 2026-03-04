@@ -6,9 +6,11 @@ import GameKey from '@/nex/protocols/friends-wiiu/types/game-key';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendRequestMessage';
+
 export default class FriendRequestMessage extends Data {
 	public get typeName(): string {
-		return 'FriendRequestMessage';
+		return className;
 	}
 
 	private friendRequestID = new UInt64();
@@ -42,8 +44,8 @@ export default class FriendRequestMessage extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				friendRequestID: this.friendRequestID,
 				hasRecieved: this.hasRecieved,

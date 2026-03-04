@@ -3,8 +3,12 @@ import PID from '@/nex/types/pid';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'BasicAccountInfo';
+
 export default class BasicAccountInfo extends Structure {
-	public readonly typeName = 'BasicAccountInfo';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_pidOwner = new PID();
 	private m_strName = new RVString();
@@ -23,8 +27,8 @@ export default class BasicAccountInfo extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_pidOwner: this.m_pidOwner,
 				m_strName: this.m_strName

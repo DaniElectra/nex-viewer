@@ -6,9 +6,11 @@ import RVString from '@/nex/types/string';
 import AnyDataHolder from '@/nex/types/any-data-holder';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'Gathering';
+
 export default class Gathering extends Structure {
 	public get typeName(): string {
-		return 'Gathering';
+		return className;
 	}
 
 	private m_idMyself = new UInt32();
@@ -44,8 +46,8 @@ export default class Gathering extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_idMyself: this.m_idMyself,
 				m_pidOwner: this.m_pidOwner,

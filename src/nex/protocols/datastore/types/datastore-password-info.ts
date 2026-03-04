@@ -2,8 +2,12 @@ import Structure from '@/nex/types/structure';
 import UInt64 from '@/nex/types/uint64';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStorePasswordInfo';
+
 export default class DataStorePasswordInfo extends Structure {
-	public readonly typeName = 'DataStorePasswordInfo';
+	public get typeName(): string {
+		return className;
+	}
 
 	private dataID = new UInt64();
 	private accessPassword = new UInt64();
@@ -24,8 +28,8 @@ export default class DataStorePasswordInfo extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

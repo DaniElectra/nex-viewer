@@ -2,9 +2,11 @@ import Data from '@/nex/types/data';
 import Bool from '@/nex/types/bool';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'PrincipalPreference';
+
 export default class PrincipalPreference extends Data {
 	public get typeName(): string {
-		return 'PrincipalPreference';
+		return className;
 	}
 
 	private showOnlinePresence = new Bool();
@@ -26,8 +28,8 @@ export default class PrincipalPreference extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				showOnlinePresence: this.showOnlinePresence,
 				showCurrentlyPlayingTitle: this.showCurrentlyPlayingTitle,

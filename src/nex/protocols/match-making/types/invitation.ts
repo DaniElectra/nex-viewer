@@ -3,8 +3,12 @@ import UInt32 from '@/nex/types/uint32';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'GatheringStats';
+
 export default class GatheringStats extends Structure {
-	public readonly typeName = 'GatheringStats';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_idGathering = new UInt32();
 	private m_idGuest = new UInt32();
@@ -25,8 +29,8 @@ export default class GatheringStats extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_idGathering: this.m_idGathering,
 				m_idGuest: this.m_idGuest,

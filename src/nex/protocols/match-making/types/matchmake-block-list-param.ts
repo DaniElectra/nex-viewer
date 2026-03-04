@@ -2,8 +2,12 @@ import Structure from '@/nex/types/structure';
 import UInt32 from '@/nex/types/uint32';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MatchmakeBlockListParam';
+
 export default class MatchmakeBlockListParam extends Structure {
-	public readonly typeName = 'MatchmakeBlockListParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private optionFlag = new UInt32();
 
@@ -20,8 +24,8 @@ export default class MatchmakeBlockListParam extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				optionFlag: this.optionFlag
 			}

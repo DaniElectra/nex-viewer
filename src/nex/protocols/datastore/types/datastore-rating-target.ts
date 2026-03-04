@@ -3,8 +3,12 @@ import UInt64 from '@/nex/types/uint64';
 import UInt8 from '@/nex/types/uint8';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreRatingTarget';
+
 export default class DataStoreRatingTarget extends Structure {
-	public readonly typeName = 'DataStoreRatingTarget';
+	public get typeName(): string {
+		return className;
+	}
 
 	private dataID = new UInt64();
 	private slot = new UInt8();
@@ -23,8 +27,8 @@ export default class DataStoreRatingTarget extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

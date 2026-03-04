@@ -7,9 +7,11 @@ import PID from '@/nex/types/pid';
 import RVBuffer from '@/nex/types/buffer';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'NintendoPresence';
+
 export default class NintendoPresence extends Data {
 	public get typeName(): string {
-		return 'NintendoPresence';
+		return className;
 	}
 
 	private m_changedBitFlag = new UInt32();
@@ -45,8 +47,8 @@ export default class NintendoPresence extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_changedBitFlag: this.m_changedBitFlag,
 				m_gameKey: this.m_gameKey,

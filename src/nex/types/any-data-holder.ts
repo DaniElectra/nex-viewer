@@ -4,11 +4,15 @@ import RVString from '@/nex/types/string';
 import UInt32 from '@/nex/types/uint32';
 import type RVType from '@/nex/types/rv-type';
 
+const className = 'AnyDataHolder';
+
 // TODO - This class is very wrong, see https://github.com/PretendoNetwork/nex-go/issues/74
 export default class AnyDataHolder extends Structure {
 	public static Classes: Record<string, new () => RVType> = {};
 
-	public readonly typeName = 'AnyDataHolder';
+	public get typeName(): string {
+		return className;
+	}
 
 	private name = new RVString();
 	private length1 = new UInt32();
@@ -35,14 +39,10 @@ export default class AnyDataHolder extends Structure {
 		return new AnyDataHolder();
 	}
 
-	private displayTypeName(): string {
-		return `AnyDataHolder<${this.name.value}>`;
-	}
-
 	public toJSON(): Record<string, any> {
 		return {
-			__displayTypeName: this.displayTypeName(),
-			__typeName: this.typeName,
+			__displayTypeName: `${className}<${this.name.value}>`,
+			__typeName: className,
 			__fields: {
 				name: this.name,
 				length1: this.length1,

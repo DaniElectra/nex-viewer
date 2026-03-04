@@ -6,8 +6,12 @@ import RVBuffer from '@/nex/types/buffer';
 import DataStoreKeyValue from '@/nex/protocols/datastore/types/datastore-key-value';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreReqPostInfo';
+
 export default class DataStoreReqPostInfo extends Structure {
-	public readonly typeName = 'DataStoreReqPostInfo';
+	public get typeName(): string {
+		return className;
+	}
 
 	private dataID = new UInt64();
 	private uRL = new RVString();
@@ -32,8 +36,8 @@ export default class DataStoreReqPostInfo extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

@@ -6,8 +6,12 @@ import Int8 from '@/nex/types/int8';
 import Int16 from '@/nex/types/int16';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreRatingInitParam';
+
 export default class DataStoreRatingInitParam extends Structure {
-	public readonly typeName = 'DataStoreRatingInitParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private flag = new UInt8();
 	private internalFlag = new UInt8();
@@ -38,8 +42,8 @@ export default class DataStoreRatingInitParam extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

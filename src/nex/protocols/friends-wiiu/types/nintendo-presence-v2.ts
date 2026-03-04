@@ -8,9 +8,11 @@ import PID from '@/nex/types/pid';
 import RVBuffer from '@/nex/types/buffer';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'NintendoPresenceV2';
+
 export default class NintendoPresenceV2 extends Data {
 	public get typeName(): string {
-		return 'NintendoPresenceV2';
+		return className;
 	}
 
 	private changedFlags = new UInt32();
@@ -56,8 +58,8 @@ export default class NintendoPresenceV2 extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				changedFlags: this.changedFlags,
 				online: this.online,

@@ -4,8 +4,12 @@ import UInt16 from '@/nex/types/uint16';
 import QBuffer from '@/nex/types/qbuffer';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreReqGetAdditionalMeta';
+
 export default class DataStoreReqGetAdditionalMeta extends Structure {
-	public readonly typeName = 'DataStoreReqGetAdditionalMeta';
+	public get typeName(): string {
+		return className;
+	}
 
 	private ownerID = new PID();
 	private dataType = new UInt16();
@@ -28,8 +32,8 @@ export default class DataStoreReqGetAdditionalMeta extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

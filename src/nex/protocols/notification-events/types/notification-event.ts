@@ -6,8 +6,12 @@ import type NEXByteStream from '@/nex/byte-stream';
 
 // * ONLY IMPLEMENTS THE 3DS AND WII U VERSION!
 // * THE SWITCH USES A DIFFERENT STRUCTURE!
+const className = 'NotificationEvent';
+
 export default class NotificationEvent extends Structure {
-	public readonly typeName = 'NotificationEvent';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_pidSource = new UInt32();
 	private m_uiType = new UInt32();
@@ -38,8 +42,8 @@ export default class NotificationEvent extends Structure {
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_pidSource: this.m_pidSource,
 				m_uiType: this.m_uiType,

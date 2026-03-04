@@ -3,9 +3,11 @@ import UInt8 from '@/nex/types/uint8';
 import RankingResult from '@/nex/protocols/ranking/types/ranking-result';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'RankingCachedResult';
+
 export default class RankingCachedResult extends RankingResult {
 	public get typeName(): string {
-		return 'RankingCachedResult';
+		return className;
 	}
 
 	private createdTime = new DateTime();
@@ -30,8 +32,8 @@ export default class RankingCachedResult extends RankingResult {
 		return {
 			__parent: super.toJSON(),
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				createdTime: this.createdTime,
 				expiredTime: this.expiredTime,

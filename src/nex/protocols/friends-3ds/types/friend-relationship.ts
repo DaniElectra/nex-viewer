@@ -4,9 +4,11 @@ import UInt64 from '@/nex/types/uint64';
 import UInt8 from '@/nex/types/uint8';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendRelationship';
+
 export default class FriendRelationship extends Data {
 	public get typeName(): string {
-		return 'FriendRelationship';
+		return className;
 	}
 
 	private pid = new PID();
@@ -28,8 +30,8 @@ export default class FriendRelationship extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				pid: this.pid,
 				localFriendCode: this.localFriendCode,

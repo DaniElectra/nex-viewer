@@ -4,8 +4,12 @@ import UInt8 from '@/nex/types/uint8';
 import DataStorePersistenceTarget from '@/nex/protocols/datastore/types/datastore-persistence-target';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreGetMetaParam';
+
 export default class DataStoreGetMetaParam extends Structure {
-	public readonly typeName = 'DataStoreGetMetaParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private dataID = new UInt64();
 	private persistenceTarget = new DataStorePersistenceTarget();
@@ -28,8 +32,8 @@ export default class DataStoreGetMetaParam extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

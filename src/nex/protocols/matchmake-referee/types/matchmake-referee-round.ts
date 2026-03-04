@@ -5,8 +5,12 @@ import List from '@/nex/types/list';
 import MatchmakeRefereePersonalRoundResult from '@/nex/protocols/matchmake-referee/types/matchmake-referee-personal-round-result';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MatchmakeRefereeRound';
+
 export default class MatchmakeRefereeRound extends Structure {
-	public readonly typeName = 'MatchmakeRefereeRound';
+	public get typeName(): string {
+		return className;
+	}
 
 	private roundId = new UInt64();
 	private gid = new UInt32();
@@ -31,8 +35,8 @@ export default class MatchmakeRefereeRound extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				roundId: this.roundId,
 				gid: this.gid,

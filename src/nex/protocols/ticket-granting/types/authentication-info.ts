@@ -5,9 +5,11 @@ import UInt32 from '@/nex/types/uint32';
 import UInt8 from '@/nex/types/uint8';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'AuthenticationInfo';
+
 export default class AuthenticationInfo extends Data {
 	public get typeName(): string {
-		return 'AuthenticationInfo';
+		return className;
 	}
 
 	private m_authToken = new RVString();
@@ -40,8 +42,8 @@ export default class AuthenticationInfo extends Data {
 		const json: Record<string, any> = {
 			__parent: super.toJSON(),
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_authToken: this.m_authToken,
 				m_ngsVersion: this.m_ngsVersion

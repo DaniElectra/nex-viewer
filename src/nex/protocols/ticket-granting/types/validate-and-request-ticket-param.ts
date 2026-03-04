@@ -5,8 +5,12 @@ import AnyDataHolder from '@/nex/types/any-data-holder';
 import Bool from '@/nex/types/bool';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'ValidateAndRequestTicketParam';
+
 export default class ValidateAndRequestTicketParam extends Structure {
-	public readonly typeName = 'ValidateAndRequestTicketParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private platformType = new UInt32();
 	private userName = new RVString();
@@ -33,8 +37,8 @@ export default class ValidateAndRequestTicketParam extends Structure {
 	public toJSON(): Record<string, any> {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				platformType: this.platformType,
 				userName: this.userName,

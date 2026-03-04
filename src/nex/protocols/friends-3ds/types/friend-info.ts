@@ -3,8 +3,12 @@ import PID from '@/nex/types/pid';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendInfo';
+
 export default class FriendInfo extends Structure {
-	public readonly typeName = 'FriendInfo';
+	public get typeName(): string {
+		return className;
+	}
 
 	private Principalid = new PID();
 	private Unknown = new DateTime();
@@ -23,8 +27,8 @@ export default class FriendInfo extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				Principalid: this.Principalid,
 				Unknown: this.Unknown

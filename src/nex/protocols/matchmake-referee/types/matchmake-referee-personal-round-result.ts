@@ -5,8 +5,12 @@ import Int32 from '@/nex/types/int32';
 import QBuffer from '@/nex/types/qbuffer';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'MatchmakeRefereePersonalRoundResult';
+
 export default class MatchmakeRefereePersonalRoundResult extends Structure {
-	public readonly typeName = 'MatchmakeRefereePersonalRoundResult';
+	public get typeName(): string {
+		return className;
+	}
 
 	private pid = new PID();
 	private personalRoundResultFlag = new UInt32();
@@ -31,8 +35,8 @@ export default class MatchmakeRefereePersonalRoundResult extends Structure {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				pid: this.pid,
 				personalRoundResultFlag: this.personalRoundResultFlag,

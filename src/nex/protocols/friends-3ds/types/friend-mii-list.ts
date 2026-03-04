@@ -4,9 +4,11 @@ import MiiList from '@/nex/protocols/friends-3ds/types/mii-list';
 import DateTime from '@/nex/types/datetime';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FriendMiiList';
+
 export default class FriendMiiList extends Data {
 	public get typeName(): string {
-		return 'FriendMiiList';
+		return className;
 	}
 
 	private unknown1 = new UInt32();
@@ -28,8 +30,8 @@ export default class FriendMiiList extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				unknown1: this.unknown1,
 				miiList: this.miiList,

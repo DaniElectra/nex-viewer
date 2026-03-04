@@ -2,8 +2,12 @@ import Structure from '@/nex/types/structure';
 import RVString from '@/nex/types/string';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'DataStoreGetNotificationUrlParam';
+
 export default class DataStoreGetNotificationUrlParam extends Structure {
-	public readonly typeName = 'DataStoreGetNotificationUrlParam';
+	public get typeName(): string {
+		return className;
+	}
 
 	private previousURL = new RVString();
 
@@ -20,8 +24,8 @@ export default class DataStoreGetNotificationUrlParam extends Structure {
 	public toJSON(): any {
 		const json: Record<string, any> = {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {}
 		};
 

@@ -3,9 +3,11 @@ import List from '@/nex/types/list';
 import PersistentNotification from '@/nex/protocols/friends-wiiu/types/persistent-notification';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'PersistentNotificationList';
+
 export default class PersistentNotificationList extends Data {
 	public get typeName(): string {
-		return 'PersistentNotificationList';
+		return className;
 	}
 
 	private notifications = new List(new PersistentNotification());
@@ -23,8 +25,8 @@ export default class PersistentNotificationList extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				notifications: this.notifications
 			}

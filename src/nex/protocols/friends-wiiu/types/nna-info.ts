@@ -3,9 +3,11 @@ import PrincipalBasicInfo from '@/nex/protocols/friends-wiiu/types/principal-bas
 import UInt8 from '@/nex/types/uint8';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'NNAInfo';
+
 export default class NNAInfo extends Data {
 	public get typeName(): string {
-		return 'NNAInfo';
+		return className;
 	}
 
 	private principalBasicInfo = new PrincipalBasicInfo();
@@ -27,8 +29,8 @@ export default class NNAInfo extends Data {
 	public toJSON(): any {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				principalBasicInfo: this.principalBasicInfo,
 				unknown1: this.unknown1,

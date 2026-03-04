@@ -3,8 +3,12 @@ import PID from '@/nex/types/pid';
 import MatchmakeSession from '@/nex/protocols/match-making/types/matchmake-session';
 import type NEXByteStream from '@/nex/byte-stream';
 
+const className = 'FindMatchmakeSessionByParticipantResult';
+
 export default class FindMatchmakeSessionByParticipantResult extends Structure {
-	public readonly typeName = 'FindMatchmakeSessionByParticipantResult';
+	public get typeName(): string {
+		return className;
+	}
 
 	private m_principalId = new PID();
 	private m_session = new MatchmakeSession();
@@ -23,8 +27,8 @@ export default class FindMatchmakeSessionByParticipantResult extends Structure {
 	public toJSON(): Record<string, any> {
 		return {
 			__version: this.structureVersion,
-			__displayTypeName: this.typeName,
-			__typeName: this.typeName,
+			__displayTypeName: className,
+			__typeName: className,
 			__fields: {
 				m_principalId: this.m_principalId,
 				m_session: this.m_session
