@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useVirtualList } from '@vueuse/core';
 import { Search } from 'lucide-vue-next';
 import ProtocolSelector from '@renderer/components/TransportSelector.vue';
 import Badge from '@renderer/components/Badge.vue';
 import type { SerializedMessage } from '@/types/serialized-message';
 import type { TransportType } from '@renderer/components/TransportSelector.vue';
+
+const ROW_HEIGHT = 50;
 
 const search = ref('');
 const packets = ref<SerializedMessage[]>([]);
@@ -36,6 +39,11 @@ const filteredPackets = computed(() =>
 		return matchesTransport && matchesSearch;
 	})
 );
+
+const { list, containerProps, wrapperProps } = useVirtualList(filteredPackets, {
+	itemHeight: ROW_HEIGHT,
+	overscan: 10
+});
 
 function handleTransportChange(transports: TransportType[]) {
 	activeTransports.value = transports;
@@ -106,67 +114,64 @@ defineExpose({
 			<input v-model="search" type="search" placeholder="Search packets by transport protocol, source, destination, service, method..." class="w-full pl-8 pr-8 bg-[#121720] border border-[#2e3238] rounded-md py-2 text-sm text-[#F9FAFC] placeholder-[#9a9fa9] focus:outline-none">
 		</div>
 	</div>
-	<div class="flex-1 overflow-auto">
-		<table class="w-full text-sm">
-			<thead class="sticky top-0 bg-[#151c27] z-10">
-				<tr class="border-b border-[#2e3238]">
-					<th class="w-44 px-4 py-3 text-left cursor-pointer">Elapsed Time</th>
-					<th class="w-24 px-4 py-3 text-left cursor-pointer">Transport</th>
-					<th class="px-4 py-3 text-left cursor-pointer">Source</th>
-					<th class="px-4 py-3 text-left cursor-pointer">Destination</th>
-					<th class="px-4 py-3 text-left cursor-pointer">Service/Method</th>
-					<th class="w-24 px-4 py-3 text-left cursor-pointer">Direction</th>
-					<th class="w-28 px-4 py-3 text-left cursor-pointer">Status</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="filteredPackets.length === 0">
-					<td colspan="7" class="text-center py-8 text-[#9a9fa9]">
-						No packets to display
-					</td>
-				</tr>
-				<template v-else>
-					<tr v-for="packet in filteredPackets" :key="packet.id" :class="[ 'border-b border-[#2e3238] cursor-pointer transition-colors', packet.stack_trace ? 'bg-red-900/40 hover:bg-red-900/50' : packet.id === props.selectedPacketId ? 'bg-[#182338] hover:bg-[#1a2740]' : 'hover:bg-[#172030]' ]" @click="emit('selectPacket', packet)">
-						<td class="px-4 py-2 font-mono text-xs">{{ packet.elapsed_time.toFixed(6) }}</td>
-						<td class="px-4 py-2">
-							<Badge :class="transportBadgeColors[packet.transport] || ''">
-								{{ packet.transport }}
-							</Badge>
-						</td>
-						<td class="px-4 py-2 font-mono text-xs">{{ packet.source }}</td>
-						<td class="px-4 py-2">
-							<div class="flex flex-col">
-								<span class="font-medium text-xs">{{ packet.destination }}</span>
-								<span v-if="packet.destination_path" class="text-xs text-[#9a9fa9] truncate max-w-40">{{ packet.destination_path }}</span>
-							</div>
-						</td>
-						<td class="px-4 py-2">
-							<template v-if="packet.service && packet.method">
-								<div class="font-medium text-xs">{{ packet.service }}</div>
-								<div class="text-xs text-[#9a9fa9]">{{ packet.method }}</div>
-							</template>
-							<template v-else-if="packet.method">
-								<Badge class="bg-blue-900/10 text-blue-400 border-blue-800/50">
-									{{ packet.method }}
-								</Badge>
-							</template>
-							<span v-else class="text-[#9a9fa9]">—</span>
-						</td>
-						<td class="px-4 py-2">
-							<span v-if="packet.direction" class="text-xs font-medium">
-								{{ packet.direction.charAt(0).toUpperCase() + packet.direction.slice(1) }}
-							</span>
-							<span v-else class="text-[#9a9fa9]">—</span>
-						</td>
-						<td class="px-4 py-2">
-							<Badge v-if="packet.status" :class="getStatusColor(packet.status, packet.transport)">
-								{{ String(packet.status) }}
-							</Badge>
-							<span v-else class="text-[#9a9fa9]">—</span>
-						</td>
-					</tr>
-				</template>
-			</tbody>
-		</table>
+
+	<div class="flex-shrink-0 bg-[#151c27] border-b border-[#2e3238] z-10">
+		<div class="flex w-full text-sm">
+			<div class="w-44 px-4 py-3 text-left cursor-pointer">Elapsed Time</div>
+			<div class="w-24 px-4 py-3 text-left cursor-pointer">Transport</div>
+			<div class="flex-1 px-4 py-3 text-left cursor-pointer">Source</div>
+			<div class="flex-1 px-4 py-3 text-left cursor-pointer">Destination</div>
+			<div class="flex-1 px-4 py-3 text-left cursor-pointer">Service/Method</div>
+			<div class="w-24 px-4 py-3 text-left cursor-pointer">Direction</div>
+			<div class="w-28 px-4 py-3 text-left cursor-pointer">Status</div>
+		</div>
+	</div>
+
+	<div v-if="filteredPackets.length === 0" class="flex-1 flex items-center justify-center">
+		<span class="text-center py-8 text-[#9a9fa9]">No packets to display</span>
+	</div>
+
+	<div v-else v-bind="containerProps" class="flex-1">
+		<div v-bind="wrapperProps">
+			<div v-for="{ data: packet } in list" :key="packet.id" class="flex items-center border-b border-[#2e3238] cursor-pointer transition-colors text-sm" :class="[ packet.stack_trace ? 'bg-red-900/40 hover:bg-red-900/50' : packet.id === props.selectedPacketId ? 'bg-[#182338] hover:bg-[#1a2740]' : 'hover:bg-[#172030]' ]" :style="{ height: `${ROW_HEIGHT}px` }" @click="emit('selectPacket', packet)">
+				<div class="w-44 px-4 py-2 font-mono text-xs flex-shrink-0">{{ packet.elapsed_time.toFixed(6) }}</div>
+				<div class="w-24 px-4 py-2 flex-shrink-0">
+					<Badge :class="transportBadgeColors[packet.transport] || ''">
+						{{ packet.transport }}
+					</Badge>
+				</div>
+				<div class="flex-1 px-4 py-2 font-mono text-xs">{{ packet.source }}</div>
+				<div class="flex-1 px-4 py-2">
+					<div class="flex flex-col">
+						<span class="font-medium text-xs">{{ packet.destination }}</span>
+						<span v-if="packet.destination_path" class="text-xs text-[#9a9fa9] truncate max-w-40">{{ packet.destination_path }}</span>
+					</div>
+				</div>
+				<div class="flex-1 px-4 py-2">
+					<template v-if="packet.service && packet.method">
+						<div class="font-medium text-xs">{{ packet.service }}</div>
+						<div class="text-xs text-[#9a9fa9]">{{ packet.method }}</div>
+					</template>
+					<template v-else-if="packet.method">
+						<Badge class="bg-blue-900/10 text-blue-400 border-blue-800/50">
+							{{ packet.method }}
+						</Badge>
+					</template>
+					<span v-else class="text-[#9a9fa9]">—</span>
+				</div>
+				<div class="w-24 px-4 py-2 flex-shrink-0">
+					<span v-if="packet.direction" class="text-xs font-medium">
+						{{ packet.direction.charAt(0).toUpperCase() + packet.direction.slice(1) }}
+					</span>
+					<span v-else class="text-[#9a9fa9]">—</span>
+				</div>
+				<div class="w-28 px-4 py-2 flex-shrink-0">
+					<Badge v-if="packet.status" :class="getStatusColor(packet.status, packet.transport)">
+						{{ String(packet.status) }}
+					</Badge>
+					<span v-else class="text-[#9a9fa9]">—</span>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
