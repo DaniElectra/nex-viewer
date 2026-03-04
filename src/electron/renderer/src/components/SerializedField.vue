@@ -99,8 +99,8 @@ function getDisplayValue(field: SerializedField): string {
 	return `${field.__value}`;
 }
 
-const isRMCList = props.field && props.field.__typeName === 'List' && props.field.__value !== null && props.field.__value !== undefined && Array.isArray(props.field.__value);
-const isRMCMap = props.field && props.field.__typeName === 'Map' && props.field.__value !== null && props.field.__value !== undefined && Array.isArray(props.field.__value);
+const isList = props.field && props.field.__typeName === 'List' && props.field.__value !== null && props.field.__value !== undefined && Array.isArray(props.field.__value);
+const isMap = props.field && props.field.__typeName === 'Map' && props.field.__value !== null && props.field.__value !== undefined && Array.isArray(props.field.__value);
 const hasExpandableContent = props.field && (
 	'__fields' in props.field ||
 	(props.field.__value !== null && props.field.__value !== undefined && typeof props.field.__value === 'object' && !Array.isArray(props.field.__value)) ||
@@ -114,7 +114,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 </script>
 
 <template>
-	<AccordionRoot v-if="isRMCList" class="w-full" type="single" :collapsible="true">
+	<AccordionRoot v-if="isList" class="w-full" type="single" :collapsible="true">
 		<AccordionItem v-slot="{ open }" class="border-0" :value="fieldKey">
 			<AccordionTrigger class="flex py-1 hover:no-underline" :class="depth > 0 ? 'ml-4 w-[calc(100%-1rem)]' : 'w-full'">
 				<div class="flex items-center justify-between w-full">
@@ -142,7 +142,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 		</AccordionItem>
 	</AccordionRoot>
 
-	<AccordionRoot v-else-if="isRMCMap" class="w-full" type="single" :collapsible="true">
+	<AccordionRoot v-else-if="isMap" class="w-full" type="single" :collapsible="true">
 		<AccordionItem v-slot="{ open }" class="border-0" :value="fieldKey">
 			<AccordionTrigger class="flex py-1 hover:no-underline" :class="depth > 0 ? 'ml-4 w-[calc(100%-1rem)]' : 'w-full'">
 				<div class="flex items-center justify-between w-full">
