@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { /* FolderOpen, Download, */ GripVertical } from 'lucide-vue-next';
+import { /* FolderOpen, Download, */ Cog, GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
 import ClipboardCopier from '@renderer/components/ClipboardCopier.vue';
+import SettingsPanel from '@renderer/components/settings/SettingsPanel.vue';
+import IconButton from '@/electron/renderer/src/components/IconButton.vue';
 import PacketsList from '@renderer/components/PacketsList.vue';
 import PacketDetails from '@renderer/components/PacketDetails.vue';
-import { SerializedMessage } from '@/types/serialized-message';
+import type { SerializedMessage } from '@/types/serialized-message';
+import type { ConfigurableSettings } from '@/types/settings';
 
+const settingsPanel = ref<InstanceType<typeof SettingsPanel> | null>(null);
 const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);
 const selectedPacket = ref<SerializedMessage | null>(null);
+const settings = ref<ConfigurableSettings | null>(null);
 
 onMounted(() => {
 	// * Clear up any leftover state from hot reloading
@@ -24,20 +29,35 @@ onMounted(() => {
 		packetsList.value?.addPacket(message);
 	});
 
+	window.api.onSettings((newSettings: ConfigurableSettings) => {
+		settings.value = newSettings;
+	});
+
+	window.api.onOpenSettings(() => {
+		settingsPanel.value?.open();
+	});
+
 	window.api.ready();
 });
 </script>
 
 <template>
 	<ClipboardCopier />
+	<SettingsPanel v-if="settings" ref="settingsPanel" :settings="settings" :on-close="() => settingsPanel.close()" />
 	<div class="h-screen flex flex-col">
+		<!-- TODO - Remove the header? The "Settings" button is in the menu bar too, and removing the header would give the UI a bit more room. But, the menu bar uses IPC which is slower -->
 		<header class="sticky top-0 z-50 w-full border-b border-[#2e3238] backdrop-blur-sm">
 			<div class="flex h-16 items-center px-6">
 				<div class="font-semibold tracking-tight text-xl">
 					<span>NEX Viewer</span>
 				</div>
-				<!--
+
 				<div class="ml-auto flex items-center gap-4">
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="settingsPanel.open">
+						<Cog class="h-5 w-5" />
+						<span>Settings</span>
+					</IconButton>
+					<!--
 					<button class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2">
 						<FolderOpen class="h-5 w-5" />
 						<span>Open</span>
@@ -47,8 +67,8 @@ onMounted(() => {
 						<Download class="h-5 w-5" />
 						<span>Export</span>
 					</button>
+					-->
 				</div>
-				-->
 			</div>
 		</header>
 		<main class="flex-1 overflow-hidden">

@@ -1,15 +1,17 @@
 import type { ElectronAPI } from '@electron-toolkit/preload';
 import type { SerializedMessage } from '@/types/serialized-message';
-import type { SettingsJSON } from '@/types/settings';
+import type { ConfigurableSettings } from '@/types/settings';
 
 declare global {
 	interface Window {
 		electron: ElectronAPI;
 		api: {
 			ready: () => void;
+			saveSettings: (newSettings: string) => void;
 			onClearSections: (callback: () => void) => void;
 			onSerializedMessage: (callback: (serializedMessage: SerializedMessage) => void) => void;
-			onSettings: (callback: (newSettings: SettingsJSON) => void) => void;
+			onOpenSettings: (callback: () => void) => void;
+			onSettings: (callback: (newSettings: ConfigurableSettings) => void) => void;
 			copyToClipboard: (text: string) => void; // TODO - Should this go on the electron global instead?
 		};
 	}

@@ -136,6 +136,16 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 			label: 'Settings',
 			submenu: [ // TODO - Add back in the PING packet and maybe RawRMC settings?
 				{
+					label: 'Open Settings',
+					click: (): void => {
+						browserWindow.webContents.send('openSettings');
+					}
+				},
+				{
+					type: 'separator'
+
+				},
+				{
 					label: 'Open settings.json',
 					click: (): void => {
 						shell.openPath(state.settings.path);

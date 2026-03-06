@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { app } from 'electron';
 import fs from 'fs-extra';
-import type { Account, SettingsJSON } from '@/types/settings';
+import type { Account, SettingsJSON, ConfigurableSettings } from '@/types/settings';
 
 class SizedArray<T> {
 	private elements: T[] = [];
@@ -62,6 +62,12 @@ export class Settings {
 		});
 	}
 
+	public update(newSettings: ConfigurableSettings): void {
+		this._accounts = newSettings.accounts;
+
+		this.save();
+	}
+
 	public recentFiles(): string[] {
 		return this._recentFiles.getItems();
 	}
@@ -80,6 +86,12 @@ export class Settings {
 
 	public accounts(): Account[] {
 		return this._accounts;
+	}
+
+	public toJSON(): ConfigurableSettings {
+		return {
+			accounts: this._accounts
+		};
 	}
 }
 

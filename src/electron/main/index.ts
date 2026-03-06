@@ -46,12 +46,18 @@ function createWindow(): void {
 
 	window.webContents.openDevTools();
 
+	ipcMain.on('saveSettings', (_, newSettings: string) => {
+		state.settings.update(JSON.parse(newSettings));
+	});
+
 	ipcMain.on('renderer-ready', () => {
 		if (process.platform === 'darwin') {
 			Menu.setApplicationMenu(createMenu(state, window));
 		} else {
 			window.setMenu(createMenu(state, window));
 		}
+
+		window.webContents.send('settings', JSON.stringify(state.settings));
 	});
 
 	window.on('ready-to-show', () => {
