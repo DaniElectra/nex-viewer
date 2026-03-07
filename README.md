@@ -143,6 +143,14 @@ NEX Viewer supports standard [Quazal Rendez-Vous](http://web.archive.org/web/200
 
 This application is designed with this traffic in mind and tries it's best to support all possible games. Due to Quazal licensing it's Rendez-Vous software to many developers over time, the specifics on how you obtain the account details will vary. Due to Rendez-Vous' ability to be modified and extended (such as with the creation of NEX), some developers may have also made large changes to the protocols which are incompatible with other implementations. One such example is WATCH_DOGS, which changed the structure of RMC payloads. This application does a best attempt at supporting these changes, but it is possible that some changes are impossible to support cleanly along side other implementations. In those cases, a fork of NEX Viewer should be made.
 
+## Using the NPLN Proxy
+
+NEX Viewer implements a built-in gRPC/NPLN proxy server which can be used to capture traffic from NPLN games. It can be started and stopped from the application menu (under "Proxy") and it will listen on port 8080 by default, but it can be configured to listen to any port in the settings.
+
+The proxy should be used alongside a traditional MITM proxy, such as Charles Proxy, like described in the "gRPC (NPLN)" section of Billy's [Switch TLS Dumping Guide](https://blog.billy.wales/3m4ijndvumcow). The generated CA certificates can be obtained by clicking the "Open CA Certificate folder" button in the application menu.
+
+Once the proxy has been set up, incoming gRPC/NPLN requests will automatically be parsed by the viewer and displayed in the packet list.
+
 ## Contributing
 
 ### Recommended IDE Setup
