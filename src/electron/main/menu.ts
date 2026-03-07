@@ -3,8 +3,10 @@ import { Menu, dialog, shell } from 'electron';
 import Session from '@/session';
 import type { MenuItemConstructorOptions, BrowserWindow } from 'electron';
 import type State from '@/types/state';
+import { Proxy } from '@/proxy';
 
 let session: Session;
+let proxy: Proxy | null = null;
 
 function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
 	browserWindow.webContents.send('clear-sections');
@@ -155,6 +157,33 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 					label: 'Open settings.json folder',
 					click: (): void => {
 						shell.openPath(path.dirname(state.settings.path));
+					}
+				}
+			]
+		},
+		{
+			label: "Proxy",
+			submenu: [
+				{
+					label: proxy && proxy.listening ? "Stop NPLN Proxy" : "Start NPLN Proxy",
+					click: async (): Promise<void> => {
+						if (proxy && proxy.listening) {
+							await proxy.stop();
+							proxy = null;
+							refreshMenu(state, browserWindow);
+						} else {
+							proxy = await Proxy.create(browserWindow);
+							await proxy.start(state.settings.proxyPort());
+							refreshMenu(state, browserWindow);
+						}
+						
+					}
+				},
+				{
+					label: "Open CA Certificate folder",
+					click: (): void => {
+						const certPath = Proxy.getCACertPath();
+						shell.openPath(path.dirname(certPath));
 					}
 				}
 			]
