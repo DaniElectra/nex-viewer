@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { useVirtualList } from '@vueuse/core';
-import { Search } from 'lucide-vue-next';
+import { Search, ArrowDownToLine } from 'lucide-vue-next';
 import ProtocolSelector from '@renderer/components/TransportSelector.vue';
 import Badge from '@renderer/components/Badge.vue';
 import type { SerializedMessage } from '@/types/serialized-message';
@@ -40,10 +40,21 @@ const filteredPackets = computed(() =>
 	})
 );
 
+const autoScroll = ref(false);
+
 const { list, containerProps, wrapperProps } = useVirtualList(filteredPackets, {
 	itemHeight: ROW_HEIGHT,
 	overscan: 10
 });
+
+function scrollToBottom() {
+	const el = containerProps.ref.value;
+	if (el) {
+		nextTick(() => {
+			el.scrollTop = el.scrollHeight;
+		});
+	}
+}
 
 function handleTransportChange(transports: TransportType[]) {
 	activeTransports.value = transports;
@@ -51,6 +62,16 @@ function handleTransportChange(transports: TransportType[]) {
 
 function addPacket(packet) {
 	packets.value.push(packet);
+	if (autoScroll.value) {
+		scrollToBottom();
+	}
+}
+
+function updatePacket(id: number, updatedPacket: SerializedMessage) {
+	const index = packets.value.findIndex(p => p.id === id);
+	if (index !== -1) {
+		packets.value[index] = updatedPacket;
+	}
 }
 
 function clear() {
@@ -86,6 +107,14 @@ function getStatusColor(status: string | number | undefined, transport: string) 
 		if (status.toLowerCase() === 'error') {
 			return 'bg-red-900/30 text-red-400 border-red-800/50';
 		}
+
+		if (status.toLowerCase() === 'pending') {
+			return 'bg-yellow-900/30 text-yellow-400 border-yellow-800/50';
+		}
+
+		if (status.toLowerCase() === 'aborted') {
+			return 'bg-gray-900/30 text-gray-400 border-gray-800/50';
+		}
 	}
 
 	return '';
@@ -93,6 +122,7 @@ function getStatusColor(status: string | number | undefined, transport: string) 
 
 defineExpose({
 	addPacket,
+	updatePacket,
 	clear
 });
 </script>
@@ -109,9 +139,19 @@ defineExpose({
 			</div>
 			-->
 		</div>
-		<div class="relative">
-			<Search class="absolute left-2.5 top-2.5 h-4 w-4 text-[#9a9fa9]" />
-			<input v-model="search" type="search" placeholder="Search packets by transport protocol, source, destination, service, method..." class="w-full pl-8 pr-8 bg-[#121720] border border-[#2e3238] rounded-md py-2 text-sm text-[#F9FAFC] placeholder-[#9a9fa9] focus:outline-none">
+		<div class="flex gap-2">
+			<div class="relative flex-1">
+				<Search class="absolute left-2.5 top-2.5 h-4 w-4 text-[#9a9fa9]" />
+				<input v-model="search" type="search" placeholder="Search packets by transport protocol, source, destination, service, method..." class="w-full pl-8 pr-8 bg-[#121720] border border-[#2e3238] rounded-md py-2 text-sm text-[#F9FAFC] placeholder-[#9a9fa9] focus:outline-none">
+			</div>
+			<button
+				class="flex items-center justify-center w-9 h-9 rounded-md border transition-colors"
+				:class="autoScroll ? 'bg-blue-900/30 border-blue-700/50 text-blue-400' : 'bg-[#121720] border-[#2e3238] text-[#9a9fa9] hover:text-[#F9FAFC]'"
+				:title="autoScroll ? 'Auto-scroll enabled' : 'Auto-scroll disabled'"
+				@click="autoScroll = !autoScroll"
+			>
+				<ArrowDownToLine class="h-4 w-4" />
+			</button>
 		</div>
 	</div>
 

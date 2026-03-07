@@ -10,6 +10,7 @@ declare global {
 			saveSettings: (newSettings: string) => void;
 			onClearSections: (callback: () => void) => void;
 			onSerializedMessage: (callback: (serializedMessage: SerializedMessage) => void) => void;
+			onSerializedMessageUpdated: (callback: (id: number, serializedMessage: SerializedMessage) => void) => void;
 			onOpenSettings: (callback: () => void) => void;
 			onSettings: (callback: (newSettings: ConfigurableSettings) => void) => void;
 			copyToClipboard: (text: string) => void; // TODO - Should this go on the electron global instead?

@@ -29,6 +29,14 @@ onMounted(() => {
 		packetsList.value?.addPacket(message);
 	});
 
+	window.api.onSerializedMessageUpdated((id: number, message: SerializedMessage) => {
+		packetsList.value?.updatePacket(id, message);
+
+		if (selectedPacket.value?.id === id) {
+			selectedPacket.value = message;
+		}
+	});
+
 	window.api.onSettings((newSettings: ConfigurableSettings) => {
 		settings.value = newSettings;
 	});
@@ -43,7 +51,7 @@ onMounted(() => {
 
 <template>
 	<ClipboardCopier />
-	<SettingsPanel v-if="settings" ref="settingsPanel" :settings="settings" :on-close="() => settingsPanel.close()" />
+	<SettingsPanel v-if="settings" ref="settingsPanel" :settings="settings" :on-close="() => settingsPanel?.close()" />
 	<div class="h-screen flex flex-col">
 		<!-- TODO - Remove the header? The "Settings" button is in the menu bar too, and removing the header would give the UI a bit more room. But, the menu bar uses IPC which is slower -->
 		<header class="sticky top-0 z-50 w-full border-b border-[#2e3238] backdrop-blur-sm">
@@ -53,7 +61,7 @@ onMounted(() => {
 				</div>
 
 				<div class="ml-auto flex items-center gap-4">
-					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="settingsPanel.open">
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="settingsPanel?.open">
 						<Cog class="h-5 w-5" />
 						<span>Settings</span>
 					</IconButton>
