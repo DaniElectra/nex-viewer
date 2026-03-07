@@ -68,10 +68,7 @@ function addPacket(packet) {
 }
 
 function updatePacket(id: number, updatedPacket: SerializedMessage) {
-	const index = packets.value.findIndex(p => p.id === id);
-	if (index !== -1) {
-		packets.value[index] = updatedPacket;
-	}
+	packets.value[id] = updatedPacket;
 }
 
 function clear() {
@@ -144,12 +141,7 @@ defineExpose({
 				<Search class="absolute left-2.5 top-2.5 h-4 w-4 text-[#9a9fa9]" />
 				<input v-model="search" type="search" placeholder="Search packets by transport protocol, source, destination, service, method..." class="w-full pl-8 pr-8 bg-[#121720] border border-[#2e3238] rounded-md py-2 text-sm text-[#F9FAFC] placeholder-[#9a9fa9] focus:outline-none">
 			</div>
-			<button
-				class="flex items-center justify-center w-9 h-9 rounded-md border transition-colors"
-				:class="autoScroll ? 'bg-blue-900/30 border-blue-700/50 text-blue-400' : 'bg-[#121720] border-[#2e3238] text-[#9a9fa9] hover:text-[#F9FAFC]'"
-				:title="autoScroll ? 'Auto-scroll enabled' : 'Auto-scroll disabled'"
-				@click="autoScroll = !autoScroll"
-			>
+			<button class="flex items-center justify-center w-9 h-9 rounded-md border transition-colors" :class="autoScroll ? 'bg-blue-900/30 border-blue-700/50 text-blue-400' : 'bg-[#121720] border-[#2e3238] text-[#9a9fa9] hover:text-[#F9FAFC]'" :title="autoScroll ? 'Auto-scroll enabled' : 'Auto-scroll disabled'" @click="autoScroll = !autoScroll">
 				<ArrowDownToLine class="h-4 w-4" />
 			</button>
 		</div>
