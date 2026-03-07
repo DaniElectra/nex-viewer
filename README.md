@@ -145,9 +145,12 @@ This application is designed with this traffic in mind and tries it's best to su
 
 ## Using the NPLN Proxy
 
+> [!CAUTION]
+> Use at your own risk. While the proxy has been tested thoroughly, and no bans have occured from its use, Nintendo is much more cautious with NSO. Even irregularities such as the order of headers can trip their alarms. We are not responsible for anything that may happen to your console/NSO account when using this tool.
+
 NEX Viewer implements a built-in gRPC/NPLN proxy server which can be used to capture traffic from NPLN games. It can be started and stopped from the application menu (under "Proxy") and it will listen on port 8080 by default, but it can be configured to listen to any port in the settings.
 
-The proxy should be used alongside a traditional MITM proxy, such as Charles Proxy, like described in the "gRPC (NPLN)" section of Billy's [Switch TLS Dumping Guide](https://blog.billy.wales/3m4ijndvumcow). The generated CA certificates can be obtained by clicking the "Open CA Certificate folder" button in the application menu.
+Before enabling the proxy on your console, you will need to make it trust the CA certificate, generated in the `proxy-ca` folder in the application data directory (Accessible by clicking "Open CA Certificate folder" in the "Proxy" menu) after the proxy has been started atleast once. To do this, you can use a tool like [network_mitm](https://github.com/nookingtons/network_mitm/).
 
 Once the proxy has been set up, incoming gRPC/NPLN requests will automatically be parsed by the viewer and displayed in the packet list.
 
