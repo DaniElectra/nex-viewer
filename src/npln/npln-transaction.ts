@@ -2,9 +2,9 @@ import path from 'node:path';
 import { app } from 'electron';
 import { glob } from 'glob';
 import protobuf from 'protobufjs';
+import type { CompletedRequest, CompletedResponse } from 'mockttp';
 import type { ProxideTransaction } from '@/proxide-parser';
 import type { SerializedMessage } from '@/types/serialized-message';
-import type { CompletedRequest, CompletedResponse } from 'mockttp';
 
 // TODO - I'm just slapping this all into one huge file for now, organize it better later. I am open to changing ALL OF THIS
 
@@ -271,7 +271,7 @@ export default class NPLNTransaction {
 	public fullyQualifiedServiceName!: string;
 	public request!: NPLNMessage;
 	public response!: NPLNMessage;
-	
+
 	public decode(): void {
 		const service = protobufs.lookupService(this.fullyQualifiedServiceName);
 		const method = service.methods[this.methodName];
@@ -328,13 +328,7 @@ export default class NPLNTransaction {
 		return transaction;
 	}
 
-	public static buildPartial(
-		req: CompletedRequest,
-		responseHeaders: Record<string, string>,
-		requestBodyChunks: Buffer[],
-		responseBodyChunks: Buffer[],
-		alreadyDecodedFrames: number
-	): { npln: NPLNTransaction; newFrameCount: number } {
+	public static buildPartial(req: CompletedRequest, responseHeaders: Record<string, string>, requestBodyChunks: Buffer[], responseBodyChunks: Buffer[], alreadyDecodedFrames: number): { npln: NPLNTransaction; newFrameCount: number } {
 		const transaction = new NPLNTransaction();
 		const url = new URL(req.url);
 		const methodPath = url.pathname;
@@ -355,11 +349,11 @@ export default class NPLNTransaction {
 
 		transaction.request = {
 			headers: req.headers as Record<string, string>,
-			body: requestBody,
+			body: requestBody
 		};
 		transaction.response = {
 			headers: responseHeaders,
-			body: responseBody,
+			body: responseBody
 		};
 
 		const service = protobufs.lookupService(fullyQualifiedServiceName);
@@ -400,11 +394,11 @@ export default class NPLNTransaction {
 		transaction.fullyQualifiedServiceName = fullyQualifiedServiceName;
 		transaction.request = {
 			headers: req.headers as Record<string, string>,
-			body: await req.body.getDecodedBuffer() || Buffer.alloc(0),
+			body: await req.body.getDecodedBuffer() || Buffer.alloc(0)
 		};
 		transaction.response = {
 			headers: {},
-			body: Buffer.alloc(0),
+			body: Buffer.alloc(0)
 		};
 
 		transaction.decode();
@@ -428,11 +422,11 @@ export default class NPLNTransaction {
 		transaction.fullyQualifiedServiceName = fullyQualifiedServiceName;
 		transaction.request = {
 			headers: req.headers as Record<string, string>,
-			body: await req.body.getDecodedBuffer() || Buffer.alloc(0),
+			body: await req.body.getDecodedBuffer() || Buffer.alloc(0)
 		};
 		transaction.response = {
 			headers: res.headers as Record<string, string>,
-			body: await res.body.getDecodedBuffer() || Buffer.alloc(0),
+			body: await res.body.getDecodedBuffer() || Buffer.alloc(0)
 		};
 
 		transaction.decode();
