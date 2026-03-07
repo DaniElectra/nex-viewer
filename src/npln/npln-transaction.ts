@@ -4,6 +4,7 @@ import { glob } from 'glob';
 import protobuf from 'protobufjs';
 import type { ProxideTransaction } from '@/proxide-parser';
 import type { SerializedMessage } from '@/types/serialized-message';
+import type { CompletedRequest, CompletedResponse } from 'mockttp';
 
 // TODO - I'm just slapping this all into one huge file for now, organize it better later. I am open to changing ALL OF THIS
 
@@ -270,7 +271,7 @@ export default class NPLNTransaction {
 	public fullyQualifiedServiceName!: string;
 	public request!: NPLNMessage;
 	public response!: NPLNMessage;
-
+	
 	public decode(): void {
 		const service = protobufs.lookupService(this.fullyQualifiedServiceName);
 		const method = service.methods[this.methodName];
@@ -320,6 +321,118 @@ export default class NPLNTransaction {
 		transaction.response = {
 			headers: proxideTransaction.responseHeaders,
 			body: proxideTransaction.responseBody
+		};
+
+		transaction.decode();
+
+		return transaction;
+	}
+
+	public static buildPartial(
+		req: CompletedRequest,
+		responseHeaders: Record<string, string>,
+		requestBodyChunks: Buffer[],
+		responseBodyChunks: Buffer[],
+		alreadyDecodedFrames: number
+	): { npln: NPLNTransaction; newFrameCount: number } {
+		const transaction = new NPLNTransaction();
+		const url = new URL(req.url);
+		const methodPath = url.pathname;
+		const [, fullyQualifiedServiceName, methodName] = methodPath.split('/');
+		const lastDot = fullyQualifiedServiceName.lastIndexOf('.');
+
+		transaction.clientAddress = req.remoteIpAddress || 'unknown';
+		transaction.uri = req.url;
+		transaction.packageName = fullyQualifiedServiceName.substring(0, lastDot);
+		transaction.serviceName = fullyQualifiedServiceName.substring(lastDot + 1);
+		transaction.methodName = methodName;
+		transaction.methodPath = methodPath;
+		transaction.fullyQualifiedServiceName = fullyQualifiedServiceName;
+
+		const requestBody = Buffer.concat(requestBodyChunks);
+		const responseBody = Buffer.concat(responseBodyChunks);
+		const completeFrames = parseGRPCFrames(responseBody);
+
+		transaction.request = {
+			headers: req.headers as Record<string, string>,
+			body: requestBody,
+		};
+		transaction.response = {
+			headers: responseHeaders,
+			body: responseBody,
+		};
+
+		const service = protobufs.lookupService(fullyQualifiedServiceName);
+		const method = service.methods[methodName];
+		method.resolve();
+
+		const requestFrames = parseGRPCFrames(requestBody);
+		if (requestFrames.length > 0) {
+			const requestType = method.resolvedRequestType!;
+			transaction.request.messages = requestFrames.map(
+				frame => requestType.decode(frame)
+			);
+		}
+
+		if (completeFrames.length > alreadyDecodedFrames) {
+			const responseType = method.resolvedResponseType!;
+			transaction.response.messages = completeFrames.map(
+				frame => responseType.decode(frame)
+			);
+		}
+
+		return { npln: transaction, newFrameCount: completeFrames.length };
+	}
+
+	public static async parseFromMockttpPendingRequest(req: CompletedRequest): Promise<NPLNTransaction> {
+		const transaction = new NPLNTransaction();
+		const url = new URL(req.url);
+		const methodPath = url.pathname;
+		const [, fullyQualifiedServiceName, methodName] = methodPath.split('/');
+		const lastDot = fullyQualifiedServiceName.lastIndexOf('.');
+
+		transaction.clientAddress = req.remoteIpAddress || 'unknown';
+		transaction.uri = req.url;
+		transaction.packageName = fullyQualifiedServiceName.substring(0, lastDot);
+		transaction.serviceName = fullyQualifiedServiceName.substring(lastDot + 1);
+		transaction.methodName = methodName;
+		transaction.methodPath = methodPath;
+		transaction.fullyQualifiedServiceName = fullyQualifiedServiceName;
+		transaction.request = {
+			headers: req.headers as Record<string, string>,
+			body: await req.body.getDecodedBuffer() || Buffer.alloc(0),
+		};
+		transaction.response = {
+			headers: {},
+			body: Buffer.alloc(0),
+		};
+
+		transaction.decode();
+
+		return transaction;
+	}
+
+	public static async parseFromMockttpCompleteRequestResponse(req: CompletedRequest, res: CompletedResponse): Promise<NPLNTransaction> {
+		const transaction = new NPLNTransaction();
+		const url = new URL(req.url);
+		const methodPath = url.pathname;
+		const [, fullyQualifiedServiceName, methodName] = methodPath.split('/');
+		const lastDot = fullyQualifiedServiceName.lastIndexOf('.');
+
+		transaction.clientAddress = req.remoteIpAddress || 'unknown';
+		transaction.uri = req.url;
+		transaction.packageName = fullyQualifiedServiceName.substring(0, lastDot);
+		transaction.serviceName = fullyQualifiedServiceName.substring(lastDot + 1);
+		transaction.methodName = methodName;
+		transaction.methodPath = methodPath;
+		transaction.fullyQualifiedServiceName = fullyQualifiedServiceName;
+		transaction.request = {
+			headers: req.headers as Record<string, string>,
+			body: await req.body.getDecodedBuffer() || Buffer.alloc(0),
+		};
+		transaction.response = {
+			headers: res.headers as Record<string, string>,
+			body: await res.body.getDecodedBuffer() || Buffer.alloc(0),
 		};
 
 		transaction.decode();
