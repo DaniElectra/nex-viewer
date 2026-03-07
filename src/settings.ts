@@ -35,6 +35,7 @@ export class Settings {
 
 	private _recentFiles = new SizedArray<string>(10);
 	private _accounts: Account[] = [];
+	private _proxyPort: number = 8080;
 
 	constructor() {
 		this.load();
@@ -49,12 +50,21 @@ export class Settings {
 
 		this._recentFiles.fromData(settings.recent_files);
 		this._accounts = settings.accounts;
+		
+		if (!settings.proxy_port) {
+			settings.proxy_port = 8080;
+			this._proxyPort = 8080;
+			this.save();
+		} else {
+			this._proxyPort = settings.proxy_port;
+		}
 	}
 
 	public save(): void {
 		const settings = {
 			recent_files: this.recentFiles(),
-			accounts: this.accounts()
+			accounts: this.accounts(),
+			proxy_port: this.proxyPort()
 		};
 
 		fs.writeJSONSync(this.path, settings, {
@@ -64,6 +74,7 @@ export class Settings {
 
 	public update(newSettings: ConfigurableSettings): void {
 		this._accounts = newSettings.accounts;
+		this._proxyPort = newSettings.proxy_port ?? this._proxyPort;
 
 		this.save();
 	}
@@ -88,9 +99,14 @@ export class Settings {
 		return this._accounts;
 	}
 
+	public proxyPort(): number {
+		return this._proxyPort;
+	}
+
 	public toJSON(): ConfigurableSettings {
 		return {
-			accounts: this._accounts
+			accounts: this._accounts,
+			proxy_port: this._proxyPort
 		};
 	}
 }
