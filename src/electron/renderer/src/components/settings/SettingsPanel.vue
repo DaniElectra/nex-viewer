@@ -4,6 +4,7 @@ import SettingsMainPage from '@renderer/components/settings/SettingsMainPage.vue
 import SettingsNEXAccountListPage from '@renderer/components/settings/SettingsNEXAccountListPage.vue';
 import SettingsNEXAccountPage from '@renderer/components/settings/SettingsNEXAccountPage.vue';
 import type { ConfigurableSettings } from '@/types/settings';
+import SettingsNPLNProxyPage from './SettingsNPLNProxyPage.vue';
 
 const props = defineProps<{
 	settings: ConfigurableSettings;
@@ -55,6 +56,7 @@ defineExpose({
 				<SettingsMainPage v-show="currentPage === 'main'" :on-close="onClose" :set-page="setPage" />
 				<SettingsNEXAccountListPage v-show="currentPage === 'nex-account-list'" :on-close="onClose" :set-page="setPage" />
 				<SettingsNEXAccountPage v-show="currentPage === 'nex-account'" :page-data="currentPageData || {}" :on-close="onClose" :set-page="setPage" />
+				<SettingsNPLNProxyPage v-show="currentPage === 'npln-proxy-settings'" :on-close="onClose" :set-page="setPage" />
 			</div>
 		</div>
 	</Transition>
