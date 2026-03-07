@@ -1,9 +1,9 @@
 import path from 'node:path';
 import { Menu, dialog, shell } from 'electron';
 import Session from '@/session';
+import Proxy from '@/proxy';
 import type { MenuItemConstructorOptions, BrowserWindow } from 'electron';
 import type State from '@/types/state';
-import { Proxy } from '@/proxy';
 
 let session: Session;
 let proxy: Proxy | null = null;
@@ -162,10 +162,10 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 			]
 		},
 		{
-			label: "Proxy",
+			label: 'Proxy',
 			submenu: [
 				{
-					label: proxy && proxy.listening ? "Stop NPLN Proxy" : "Start NPLN Proxy",
+					label: proxy && proxy.listening ? 'Stop NPLN Proxy' : 'Start NPLN Proxy',
 					click: async (): Promise<void> => {
 						if (proxy && proxy.listening) {
 							await proxy.stop();
@@ -176,11 +176,10 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 							await proxy.start(state.settings.proxyPort());
 							refreshMenu(state, browserWindow);
 						}
-						
 					}
 				},
 				{
-					label: "Open CA Certificate folder",
+					label: 'Open CA Certificate folder',
 					click: (): void => {
 						const certPath = Proxy.getCACertPath();
 						shell.openPath(path.dirname(certPath));

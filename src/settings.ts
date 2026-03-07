@@ -50,7 +50,7 @@ export class Settings {
 
 		this._recentFiles.fromData(settings.recent_files);
 		this._accounts = settings.accounts;
-		
+
 		if (!settings.proxy_port) {
 			settings.proxy_port = 8080;
 			this._proxyPort = 8080;

@@ -3,8 +3,8 @@ import { ref, provide, watch } from 'vue';
 import SettingsMainPage from '@renderer/components/settings/SettingsMainPage.vue';
 import SettingsNEXAccountListPage from '@renderer/components/settings/SettingsNEXAccountListPage.vue';
 import SettingsNEXAccountPage from '@renderer/components/settings/SettingsNEXAccountPage.vue';
+import SettingsNPLNProxyPage from '@renderer/components/settings/SettingsNPLNProxyPage.vue';
 import type { ConfigurableSettings } from '@/types/settings';
-import SettingsNPLNProxyPage from './SettingsNPLNProxyPage.vue';
 
 const props = defineProps<{
 	settings: ConfigurableSettings;
