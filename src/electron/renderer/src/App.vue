@@ -70,11 +70,6 @@ onMounted(() => {
 				</div>
 
 				<div class="ml-auto flex items-center gap-4">
-					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="settingsPanel?.open">
-						<Cog class="h-5 w-5" />
-						<span>Settings</span>
-					</IconButton>
-
 					<!--
 					<button class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2">
 						<FolderOpen class="h-5 w-5" />
@@ -85,6 +80,11 @@ onMounted(() => {
 					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="exportSession">
 						<Download class="h-5 w-5" />
 						<span>Export</span>
+					</IconButton>
+
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="settingsPanel?.open">
+						<Cog class="h-5 w-5" />
+						<span>Settings</span>
 					</IconButton>
 				</div>
 			</div>
