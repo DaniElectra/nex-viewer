@@ -1,4 +1,4 @@
-import { gzipSync, gunzipSync } from 'zlib';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import type { SerializedMessage } from '@/types/serialized-message';
 
 export default class PNSJSession {
