@@ -4,7 +4,7 @@ import { FolderOpen, Download, Cog, GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
 import ClipboardCopier from '@renderer/components/ClipboardCopier.vue';
 import SettingsPanel from '@renderer/components/settings/SettingsPanel.vue';
-import IconButton from '@/electron/renderer/src/components/IconButton.vue';
+import IconButton from '@renderer/components/IconButton.vue';
 import PacketsList from '@renderer/components/PacketsList.vue';
 import PacketDetails from '@renderer/components/PacketDetails.vue';
 import type { SerializedMessage } from '@/types/serialized-message';
