@@ -149,7 +149,7 @@ export default class PRUDPConnection {
 						// * Official PRUDPLite games connect to WebSocket servers with the game server ID in the
 						// * domain, such as "g23380901-lp1.s.n.srv.nintendo.net" where "23380901" is the game
 						// * server ID for Super Smash Bros. Ultimate
-						if (packet.destinationAddress.trim().includes(title.gameServerID)) {
+						if (title.gameServerID != '' && packet.destinationAddress.trim().includes(title.gameServerID)) {
 							this.title = title;
 							break;
 						}
