@@ -7,6 +7,7 @@ import SettingsPanel from '@renderer/components/settings/SettingsPanel.vue';
 import IconButton from '@renderer/components/IconButton.vue';
 import PacketsList from '@renderer/components/PacketsList.vue';
 import PacketDetails from '@renderer/components/PacketDetails.vue';
+import { useFileDrop } from '@renderer/composables/useFileDrop';
 import type { SerializedMessage } from '@/types/serialized-message';
 import type { ConfigurableSettings } from '@/types/settings';
 
@@ -24,9 +25,13 @@ function exportSession(): void {
 	window.api.exportSession(packets as SerializedMessage[]);
 }
 
-function openSession(): void {
-	window.api.openSession();
+function openSelectSession(): void {
+	window.api.openSelectSession();
 }
+
+const { isDragging } = useFileDrop((paths) => {
+	window.api.openSession(paths[0]);
+});
 
 onMounted(() => {
 	// * Clear up any leftover state from hot reloading
@@ -65,6 +70,13 @@ onMounted(() => {
 <template>
 	<ClipboardCopier />
 	<SettingsPanel v-if="settings" ref="settingsPanel" :settings="settings" :on-close="() => settingsPanel?.close()" />
+	<Transition enter-active-class="transition-all duration-100" enter-from-class="opacity-0" leave-active-class="transition-all duration-100" leave-to-class="opacity-0">
+		<div v-if="isDragging" class="fixed inset-[2px] z-[100] flex items-center justify-center pointer-events-none border-2 border-dashed border-blue-500 bg-blue-500/10 rounded-xl">
+			<span class="text-blue-400 text-2xl font-medium tracking-wide select-none">
+				Drop file to open
+			</span>
+		</div>
+	</Transition>
 	<div class="h-screen flex flex-col">
 		<!-- TODO - Remove the header? The "Settings" button is in the menu bar too, and removing the header would give the UI a bit more room. But, the menu bar uses IPC which is slower -->
 		<header class="sticky top-0 z-50 w-full border-b border-[#2e3238] backdrop-blur-sm">
@@ -74,7 +86,7 @@ onMounted(() => {
 				</div>
 
 				<div class="ml-auto flex items-center gap-4">
-					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="openSession">
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="openSelectSession">
 						<FolderOpen class="h-5 w-5" />
 						<span>Open</span>
 					</IconButton>

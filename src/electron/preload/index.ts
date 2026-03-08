@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, clipboard } from 'electron';
+import { contextBridge, ipcRenderer, clipboard, webUtils } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 import type { IpcRenderer } from 'electron';
 import type { SerializedMessage } from '@/types/serialized-message';
@@ -14,8 +14,10 @@ const api = {
 	onOpenSettings: (callback: () => void): IpcRenderer => ipcRenderer.on('openSettings', _event => callback()),
 	onSettings: (callback: (newSettings: ConfigurableSettings) => void): IpcRenderer => ipcRenderer.on('settings', (_event, settings) => callback(JSON.parse(settings))),
 	copyToClipboard: (text: string): void => clipboard.writeText(text), // TODO - Should this go on the electron global instead?
-	openSession: (): void => ipcRenderer.send('openSession'),
-	exportSession: (packets: SerializedMessage[]): void => ipcRenderer.send('exportSession', packets)
+	openSelectSession: (): void => ipcRenderer.send('openSelectSession'),
+	openSession: (path: string): void => ipcRenderer.send('openSession', path),
+	exportSession: (packets: SerializedMessage[]): void => ipcRenderer.send('exportSession', packets),
+	getPathForFile: (file: File): string => webUtils.getPathForFile(file)
 };
 
 if (process.contextIsolated) {

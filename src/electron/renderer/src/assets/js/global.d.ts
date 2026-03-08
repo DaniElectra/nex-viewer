@@ -14,8 +14,10 @@ declare global {
 			onOpenSettings: (callback: () => void) => void;
 			onSettings: (callback: (newSettings: ConfigurableSettings) => void) => void;
 			copyToClipboard: (text: string) => void; // TODO - Should this go on the electron global instead?
-			openSession: () => void;
+			openSelectSession: () => void;
+			openSession: (path: string) => void;
 			exportSession: (packets: SerializedMessage[]) => void;
+			getPathForFile: (file: File) => string;
 		};
 	}
 }

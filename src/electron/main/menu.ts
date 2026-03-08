@@ -16,7 +16,7 @@ function refreshMenu(state: State, browserWindow: BrowserWindow): void {
 	}
 }
 
-function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
+export function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
 	browserWindow.webContents.send('clear-sections');
 	browserWindow.setTitle(`NEX Viewer - ${path}`);
 	session = new Session();
