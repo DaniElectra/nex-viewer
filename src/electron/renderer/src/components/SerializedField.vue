@@ -273,7 +273,7 @@ const variantIsComplex = variantInner && ('__fields' in variantInner || (typeof 
 			<AccordionContent class="overflow-hidden text-sm transition-all">
 				<div class="pb-0 pt-0">
 					<div v-if="'__parent' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">
-						<SerializedField :field="field.__parent" :field-key="'parent'" :depth="depth + 1" />
+						<SerializedField :field="field.__parent!" :field-key="'parent'" :depth="depth + 1" />
 						<div class="border-t border-[#25282d]/70 mx-1 my-0.5" />
 					</div>
 					<div v-if="'__fields' in field" class="pl-2 border-l border-[#25282d] ml-3 space-y-0">

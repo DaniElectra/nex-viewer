@@ -59,6 +59,8 @@ function getPlatformColor(platform: string): string {
 			return 'bg-[#6b7280]/20 border-[#6b7280] hover:bg-[#6b7280]/40';
 		}
 	}
+
+	return '';
 }
 
 // TODO - The "selected" states have no visible border, which doesn't really match up with the design style of the rest of the app
@@ -78,6 +80,8 @@ function getAccountTypeColor(accountType: string): string {
 			return 'bg-[#059669]/20 border-[#059669] hover:bg-[#059669]/40';
 		}
 	}
+
+	return '';
 }
 
 watch(() => props.pageData, (newData) => {
