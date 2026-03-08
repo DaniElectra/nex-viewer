@@ -328,15 +328,15 @@ export default class NPLNTransaction {
 		return transaction;
 	}
 
-	public static buildPartial(req: CompletedRequest, responseHeaders: Record<string, string>, requestBodyChunks: Buffer[], responseBodyChunks: Buffer[], alreadyDecodedFrames: number): { npln: NPLNTransaction; newFrameCount: number } {
+	public static buildPartial(request: CompletedRequest, responseHeaders: Record<string, string>, requestBodyChunks: Buffer[], responseBodyChunks: Buffer[], alreadyDecodedFrames: number): { npln: NPLNTransaction; newFrameCount: number } {
 		const transaction = new NPLNTransaction();
-		const url = new URL(req.url);
+		const url = new URL(request.url);
 		const methodPath = url.pathname;
 		const [, fullyQualifiedServiceName, methodName] = methodPath.split('/');
 		const lastDot = fullyQualifiedServiceName.lastIndexOf('.');
 
-		transaction.clientAddress = req.remoteIpAddress || 'unknown';
-		transaction.uri = req.url;
+		transaction.clientAddress = request.remoteIpAddress || 'unknown';
+		transaction.uri = request.url;
 		transaction.packageName = fullyQualifiedServiceName.substring(0, lastDot);
 		transaction.serviceName = fullyQualifiedServiceName.substring(lastDot + 1);
 		transaction.methodName = methodName;
@@ -348,7 +348,7 @@ export default class NPLNTransaction {
 		const completeFrames = parseGRPCFrames(responseBody);
 
 		transaction.request = {
-			headers: req.headers as Record<string, string>,
+			headers: request.headers as Record<string, string>,
 			body: requestBody
 		};
 		transaction.response = {
@@ -378,23 +378,23 @@ export default class NPLNTransaction {
 		return { npln: transaction, newFrameCount: completeFrames.length };
 	}
 
-	public static async parseFromMockttpPendingRequest(req: CompletedRequest): Promise<NPLNTransaction> {
+	public static async parseFromMockttpPendingRequest(request: CompletedRequest): Promise<NPLNTransaction> {
 		const transaction = new NPLNTransaction();
-		const url = new URL(req.url);
+		const url = new URL(request.url);
 		const methodPath = url.pathname;
 		const [, fullyQualifiedServiceName, methodName] = methodPath.split('/');
 		const lastDot = fullyQualifiedServiceName.lastIndexOf('.');
 
-		transaction.clientAddress = req.remoteIpAddress || 'unknown';
-		transaction.uri = req.url;
+		transaction.clientAddress = request.remoteIpAddress || 'unknown';
+		transaction.uri = request.url;
 		transaction.packageName = fullyQualifiedServiceName.substring(0, lastDot);
 		transaction.serviceName = fullyQualifiedServiceName.substring(lastDot + 1);
 		transaction.methodName = methodName;
 		transaction.methodPath = methodPath;
 		transaction.fullyQualifiedServiceName = fullyQualifiedServiceName;
 		transaction.request = {
-			headers: req.headers as Record<string, string>,
-			body: await req.body.getDecodedBuffer() || Buffer.alloc(0)
+			headers: request.headers as Record<string, string>,
+			body: await request.body.getDecodedBuffer() || Buffer.alloc(0)
 		};
 		transaction.response = {
 			headers: {},
@@ -406,27 +406,27 @@ export default class NPLNTransaction {
 		return transaction;
 	}
 
-	public static async parseFromMockttpCompleteRequestResponse(req: CompletedRequest, res: CompletedResponse): Promise<NPLNTransaction> {
+	public static async parseFromMockttpCompleteRequestResponse(request: CompletedRequest, response: CompletedResponse): Promise<NPLNTransaction> {
 		const transaction = new NPLNTransaction();
-		const url = new URL(req.url);
+		const url = new URL(request.url);
 		const methodPath = url.pathname;
 		const [, fullyQualifiedServiceName, methodName] = methodPath.split('/');
 		const lastDot = fullyQualifiedServiceName.lastIndexOf('.');
 
-		transaction.clientAddress = req.remoteIpAddress || 'unknown';
-		transaction.uri = req.url;
+		transaction.clientAddress = request.remoteIpAddress || 'unknown';
+		transaction.uri = request.url;
 		transaction.packageName = fullyQualifiedServiceName.substring(0, lastDot);
 		transaction.serviceName = fullyQualifiedServiceName.substring(lastDot + 1);
 		transaction.methodName = methodName;
 		transaction.methodPath = methodPath;
 		transaction.fullyQualifiedServiceName = fullyQualifiedServiceName;
 		transaction.request = {
-			headers: req.headers as Record<string, string>,
-			body: await req.body.getDecodedBuffer() || Buffer.alloc(0)
+			headers: request.headers as Record<string, string>,
+			body: await request.body.getDecodedBuffer() || Buffer.alloc(0)
 		};
 		transaction.response = {
-			headers: res.headers as Record<string, string>,
-			body: await res.body.getDecodedBuffer() || Buffer.alloc(0)
+			headers: response.headers as Record<string, string>,
+			body: await response.body.getDecodedBuffer() || Buffer.alloc(0)
 		};
 
 		transaction.decode();

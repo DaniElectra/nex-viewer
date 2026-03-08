@@ -68,7 +68,10 @@ function createWindow(): void {
 			title: 'Export Session',
 			defaultPath: 'session.pnsj',
 			filters: [
-				{ name: 'Pretendo Network Session JSON', extensions: ['pnsj'] }
+				{
+					name: 'Pretendo Network Session JSON',
+					extensions: ['pnsj']
+				}
 			],
 			properties: ['createDirectory', 'showOverwriteConfirmation']
 		});

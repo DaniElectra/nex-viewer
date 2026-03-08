@@ -51,8 +51,8 @@ export default class PNSJSession {
 	}
 
 	public* messages(): Generator<SerializedMessage> {
-		for (const m of this._messages) {
-			yield m;
+		for (const message of this._messages) {
+			yield message;
 		}
 	}
 }

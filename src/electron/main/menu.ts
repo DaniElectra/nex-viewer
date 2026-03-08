@@ -96,7 +96,8 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 										'pcapng', 'pcap',
 										'chls', 'chlz',
 										'flows', 'flow',
-										'bin', 'pnsj'
+										'bin',
+										'pnsj'
 									]
 								}
 							]
@@ -170,12 +171,12 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 						if (proxy && proxy.listening) {
 							await proxy.stop();
 							proxy = null;
-							refreshMenu(state, browserWindow);
 						} else {
 							proxy = await Proxy.create(browserWindow);
 							await proxy.start(state.settings.proxyPort());
-							refreshMenu(state, browserWindow);
 						}
+
+						refreshMenu(state, browserWindow);
 					}
 				},
 				{
