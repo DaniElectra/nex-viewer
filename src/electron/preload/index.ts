@@ -14,6 +14,7 @@ const api = {
 	onOpenSettings: (callback: () => void): IpcRenderer => ipcRenderer.on('openSettings', _event => callback()),
 	onSettings: (callback: (newSettings: ConfigurableSettings) => void): IpcRenderer => ipcRenderer.on('settings', (_event, settings) => callback(JSON.parse(settings))),
 	copyToClipboard: (text: string): void => clipboard.writeText(text), // TODO - Should this go on the electron global instead?
+	openSession: (): void => ipcRenderer.send('openSession'),
 	exportSession: (packets: SerializedMessage[]): void => ipcRenderer.send('exportSession', packets)
 };
 

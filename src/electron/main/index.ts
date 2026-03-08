@@ -3,7 +3,7 @@ import path from 'node:path';
 import sourceMapSupport from 'source-map-support';
 import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
-import createMenu from '@/electron/main/menu';
+import createMenu, { selectSessionFile } from '@/electron/main/menu';
 import settings from '@/settings';
 import PNSJSession from '@/pnsj-session';
 import type { SerializedMessage } from '@/types/serialized-message';
@@ -61,6 +61,10 @@ function createWindow(): void {
 		}
 
 		window.webContents.send('settings', JSON.stringify(state.settings));
+	});
+
+	ipcMain.on('openSession', async () => {
+		await selectSessionFile(window, state);
 	});
 
 	ipcMain.on('exportSession', async (_, packets: SerializedMessage[]) => {

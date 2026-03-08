@@ -8,6 +8,14 @@ import type State from '@/types/state';
 let session: Session;
 let proxy: Proxy | null = null;
 
+function refreshMenu(state: State, browserWindow: BrowserWindow): void {
+	if (process.platform === 'darwin') {
+		Menu.setApplicationMenu(createMenu(state, browserWindow));
+	} else {
+		browserWindow.setMenu(createMenu(state, browserWindow));
+	}
+}
+
 function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
 	browserWindow.webContents.send('clear-sections');
 	browserWindow.setTitle(`NEX Viewer - ${path}`);
@@ -26,11 +34,25 @@ function openSession(path: string, browserWindow: BrowserWindow, state: State): 
 	refreshMenu(state, browserWindow);
 }
 
-function refreshMenu(state: State, browserWindow: BrowserWindow): void {
-	if (process.platform === 'darwin') {
-		Menu.setApplicationMenu(createMenu(state, browserWindow));
-	} else {
-		browserWindow.setMenu(createMenu(state, browserWindow));
+export async function selectSessionFile(browserWindow: BrowserWindow, state: State): Promise<void> {
+	const result = await dialog.showOpenDialog({
+		properties: ['openFile'],
+		filters: [
+			{
+				name: 'Packet Capture',
+				extensions: [
+					'pcapng', 'pcap',
+					'chls', 'chlz',
+					'flows', 'flow',
+					'bin',
+					'pnsj'
+				]
+			}
+		]
+	});
+
+	if (!result.canceled && browserWindow) {
+		openSession(result.filePaths[0], browserWindow, state);
 	}
 }
 
@@ -87,27 +109,7 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 				{
 					label: 'Open...',
 					async click(): Promise<void> {
-						const result = await dialog.showOpenDialog({
-							properties: ['openFile'],
-							filters: [
-								{
-									name: 'Packet Capture',
-									extensions: [
-										'pcapng', 'pcap',
-										'chls', 'chlz',
-										'flows', 'flow',
-										'bin',
-										'pnsj'
-									]
-								}
-							]
-						});
-
-						if (result.canceled || !browserWindow) {
-							return;
-						}
-
-						openSession(result.filePaths[0], browserWindow, state);
+						await selectSessionFile(browserWindow, state);
 					}
 				},
 				{

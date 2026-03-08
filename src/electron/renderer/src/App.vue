@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, toRaw } from 'vue';
-import { /* FolderOpen, */ Download, Cog, GripVertical } from 'lucide-vue-next';
+import { FolderOpen, Download, Cog, GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
 import ClipboardCopier from '@renderer/components/ClipboardCopier.vue';
 import SettingsPanel from '@renderer/components/settings/SettingsPanel.vue';
@@ -22,6 +22,10 @@ function exportSession(): void {
 
 	const packets = toRaw(packetsList.value.getPackets());
 	window.api.exportSession(packets as SerializedMessage[]);
+}
+
+function openSession(): void {
+	window.api.openSession();
 }
 
 onMounted(() => {
@@ -70,12 +74,10 @@ onMounted(() => {
 				</div>
 
 				<div class="ml-auto flex items-center gap-4">
-					<!--
-					<button class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2">
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="openSession">
 						<FolderOpen class="h-5 w-5" />
 						<span>Open</span>
-					</button>
-					-->
+					</IconButton>
 
 					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="exportSession">
 						<Download class="h-5 w-5" />
