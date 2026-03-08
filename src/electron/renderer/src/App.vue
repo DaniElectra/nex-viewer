@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { /* FolderOpen, Download, */ Cog, GripVertical } from 'lucide-vue-next';
+import { ref, onMounted, toRaw } from 'vue';
+import { /* FolderOpen, */ Download, Cog, GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
 import ClipboardCopier from '@renderer/components/ClipboardCopier.vue';
 import SettingsPanel from '@renderer/components/settings/SettingsPanel.vue';
@@ -15,6 +15,15 @@ const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);
 const selectedPacket = ref<SerializedMessage | null>(null);
 const settings = ref<ConfigurableSettings | null>(null);
 
+function exportSession(): void {
+	if (!packetsList.value) {
+		return;
+	}
+
+	const packets = toRaw(packetsList.value.getPackets());
+	window.api.exportSession(packets as SerializedMessage[]);
+}
+
 onMounted(() => {
 	// * Clear up any leftover state from hot reloading
 	packetsList.value?.clear();
@@ -27,6 +36,14 @@ onMounted(() => {
 
 	window.api.onSerializedMessage((message: SerializedMessage) => {
 		packetsList.value?.addPacket(message);
+	});
+
+	window.api.onSerializedMessageUpdated((id: number, message: SerializedMessage) => {
+		packetsList.value?.updatePacket(id, message);
+
+		if (selectedPacket.value?.id === id) {
+			selectedPacket.value = message;
+		}
 	});
 
 	window.api.onSettings((newSettings: ConfigurableSettings) => {
@@ -43,7 +60,7 @@ onMounted(() => {
 
 <template>
 	<ClipboardCopier />
-	<SettingsPanel v-if="settings" ref="settingsPanel" :settings="settings" :on-close="() => settingsPanel.close()" />
+	<SettingsPanel v-if="settings" ref="settingsPanel" :settings="settings" :on-close="() => settingsPanel?.close()" />
 	<div class="h-screen flex flex-col">
 		<!-- TODO - Remove the header? The "Settings" button is in the menu bar too, and removing the header would give the UI a bit more room. But, the menu bar uses IPC which is slower -->
 		<header class="sticky top-0 z-50 w-full border-b border-[#2e3238] backdrop-blur-sm">
@@ -53,21 +70,22 @@ onMounted(() => {
 				</div>
 
 				<div class="ml-auto flex items-center gap-4">
-					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="settingsPanel.open">
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="settingsPanel?.open">
 						<Cog class="h-5 w-5" />
 						<span>Settings</span>
 					</IconButton>
+
 					<!--
 					<button class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2">
 						<FolderOpen class="h-5 w-5" />
 						<span>Open</span>
 					</button>
+					-->
 
-					<button class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2">
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="exportSession">
 						<Download class="h-5 w-5" />
 						<span>Export</span>
-					</button>
-					-->
+					</IconButton>
 				</div>
 			</div>
 		</header>

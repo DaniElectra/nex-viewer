@@ -15,6 +15,7 @@ import PRUDPPacketV1 from '@/nex/prudp-packetv1';
 import PRUDPPacketLite from '@/nex/prudp-packetLite';
 import RawRMCPacket from '@/nex/raw-rmc-packet';
 import NPLNTransaction from '@/npln/npln-transaction';
+import PNSJSession from '@/pnsj-session';
 import type { PCAPFrame } from '@/pcap-parser';
 import type { SimplePacketBlock, EnhancedPacketBlock } from '@/pcapng-parser';
 import type UDPPacket from '@/types/nex/udp-packet';
@@ -60,6 +61,9 @@ export default class Session extends EventEmitter {
 				break;
 			case '.bin': // TODO - Replace this with a `parseBin` function that supports other .bin formats
 				this.parseProxideConnection(capturePath); // TODO - Always assumes gRPC connections. Make this more generic?
+				break;
+			case '.pnsj':
+				this.parsePNSJSession(capturePath);
 				break;
 			default:
 				throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
@@ -306,6 +310,15 @@ export default class Session extends EventEmitter {
 			if (contentType.startsWith('application/grpc')) {
 				this.emitSerialized(NPLNTransaction.parseFromProxideTransaction(transaction));
 			}
+		}
+	}
+
+	private parsePNSJSession(capturePath: string): void {
+		const captureData = fs.readFileSync(capturePath);
+		const parser = new PNSJSession(captureData);
+
+		for (const message of parser.messages()) {
+			this.emitSerialized(message);
 		}
 	}
 

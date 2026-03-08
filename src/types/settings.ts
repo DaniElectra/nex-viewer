@@ -11,6 +11,7 @@ export type Account = {
 export type SettingsJSON = {
 	recent_files: string[];
 	accounts: Account[];
+	proxy_port?: number;
 };
 
 export type ConfigurableSettings = Omit<SettingsJSON, 'recent_files'>;
