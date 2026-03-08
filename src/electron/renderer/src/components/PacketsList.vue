@@ -71,6 +71,10 @@ function updatePacket(id: number, updatedPacket: SerializedMessage) {
 	packets.value[id] = updatedPacket;
 }
 
+function getPackets() {
+	return packets.value;
+}
+
 function clear() {
 	packets.value = [];
 }
@@ -120,6 +124,7 @@ function getStatusColor(status: string | number | undefined, transport: string) 
 defineExpose({
 	addPacket,
 	updatePacket,
+	getPackets,
 	clear
 });
 </script>

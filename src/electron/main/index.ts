@@ -1,9 +1,12 @@
+import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import sourceMapSupport from 'source-map-support';
-import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import createMenu from '@/electron/main/menu';
 import settings from '@/settings';
+import PNSJSession from '@/pnsj-session';
+import type { SerializedMessage } from '@/types/serialized-message';
 import type State from '@/types/state';
 
 function quitApp(): void {
@@ -58,6 +61,22 @@ function createWindow(): void {
 		}
 
 		window.webContents.send('settings', JSON.stringify(state.settings));
+	});
+
+	ipcMain.on('exportSession', async (_, packets: SerializedMessage[]) => {
+		const exportPath = await dialog.showSaveDialog(window, {
+			title: 'Export Session',
+			defaultPath: 'session.pnsj',
+			filters: [
+				{ name: 'Pretendo Network Session JSON', extensions: ['pnsj'] }
+			],
+			properties: ['createDirectory', 'showOverwriteConfirmation']
+		});
+
+		if (!exportPath.canceled && exportPath.filePath) {
+			const serialized = PNSJSession.serialize(packets);
+			writeFileSync(exportPath.filePath, serialized);
+		}
 	});
 
 	window.on('ready-to-show', () => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { /* FolderOpen, Download, */ Cog, GripVertical } from 'lucide-vue-next';
+import { ref, onMounted, toRaw } from 'vue';
+import { /* FolderOpen, */ Download, Cog, GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
 import ClipboardCopier from '@renderer/components/ClipboardCopier.vue';
 import SettingsPanel from '@renderer/components/settings/SettingsPanel.vue';
@@ -14,6 +14,15 @@ const settingsPanel = ref<InstanceType<typeof SettingsPanel> | null>(null);
 const packetsList = ref<InstanceType<typeof PacketsList> | null>(null);
 const selectedPacket = ref<SerializedMessage | null>(null);
 const settings = ref<ConfigurableSettings | null>(null);
+
+function exportSession(): void {
+	if (!packetsList.value) {
+		return;
+	}
+
+	const packets = toRaw(packetsList.value.getPackets());
+	window.api.exportSession(packets as SerializedMessage[]);
+}
 
 onMounted(() => {
 	// * Clear up any leftover state from hot reloading
@@ -65,17 +74,18 @@ onMounted(() => {
 						<Cog class="h-5 w-5" />
 						<span>Settings</span>
 					</IconButton>
+
 					<!--
 					<button class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2">
 						<FolderOpen class="h-5 w-5" />
 						<span>Open</span>
 					</button>
+					-->
 
-					<button class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2">
+					<IconButton class="flex items-center gap-2 rounded-full border border-[#2e3238] px-4 py-2" @click="exportSession">
 						<Download class="h-5 w-5" />
 						<span>Export</span>
-					</button>
-					-->
+					</IconButton>
 				</div>
 			</div>
 		</header>

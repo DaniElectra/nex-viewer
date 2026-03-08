@@ -13,7 +13,8 @@ const api = {
 	onSerializedMessageUpdated: (callback: (id: number, message: SerializedMessage) => void): IpcRenderer => ipcRenderer.on('serializedMessageUpdated', (_event, id, transaction) => callback(id, JSON.parse(transaction))),
 	onOpenSettings: (callback: () => void): IpcRenderer => ipcRenderer.on('openSettings', _event => callback()),
 	onSettings: (callback: (newSettings: ConfigurableSettings) => void): IpcRenderer => ipcRenderer.on('settings', (_event, settings) => callback(JSON.parse(settings))),
-	copyToClipboard: (text: string): void => clipboard.writeText(text) // TODO - Should this go on the electron global instead?
+	copyToClipboard: (text: string): void => clipboard.writeText(text), // TODO - Should this go on the electron global instead?
+	exportSession: (packets: SerializedMessage[]): void => ipcRenderer.send('exportSession', packets)
 };
 
 if (process.contextIsolated) {

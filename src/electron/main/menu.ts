@@ -96,7 +96,7 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 										'pcapng', 'pcap',
 										'chls', 'chlz',
 										'flows', 'flow',
-										'bin'
+										'bin', 'pnsj'
 									]
 								}
 							]
