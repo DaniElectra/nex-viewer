@@ -34,7 +34,7 @@ function save(): void {
 		<div class="overflow-y-auto p-4 space-y-4">
 			<div class="space-y-1.5">
 				<label class="block text-xs font-medium text-[#aab0bb] uppercase tracking-wider">Proxy Port</label>
-				<input v-model="port" class="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#151c27] h-8 text-sm bg-[#1d222a] border border-[#2e3238] w-full rounded-md px-3 py-2" placeholder="Port" type="number" min="1" max="65535">
+				<input v-model="port" class="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#151c27] h-8 text-sm bg-[#1d222a] border border-[#2e3238] w-full rounded-md px-3 py-2" placeholder="Port" type="number" min="1" max="65535">
 			</div>
 			<div class="flex gap-2 pt-2">
 				<IconButton class="flex-1 h-9 text-sm border-2 border-blue-900 bg-blue-900/50 hover:bg-blue-800/50" @click="save">
