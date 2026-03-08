@@ -1,6 +1,6 @@
 {
-  "name": "nex-viewer",
-  "productName": "NEX Viewer",
+  "name": "pretendo-network-viewer",
+  "productName": "Pretendo Network Viewer",
   "version": "2.0.0",
   "description": "Utility for parsing and viewing NEX connections from packet captures",
   "main": "./dist/main/index.js",

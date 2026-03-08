@@ -85,8 +85,8 @@ export default class Proxy {
 			const certificate = await generateCACertificate({
 				subject: {
 					// TODO - Change these to be more generic, as the viewer isn't really NEX focused anymore
-					commonName: 'NEX Viewer Proxy CA',
-					organizationName: 'NEX Viewer',
+					commonName: 'Pretendo Network Viewer Proxy CA',
+					organizationName: 'Pretendo Network Viewer',
 					countryName: 'XX'
 				}
 			});

@@ -82,7 +82,7 @@ onMounted(() => {
 		<header class="sticky top-0 z-50 w-full border-b border-[#2e3238] backdrop-blur-sm">
 			<div class="flex h-16 items-center px-6">
 				<div class="font-semibold tracking-tight text-xl">
-					<span>NEX Viewer</span>
+					<span>Pretendo Network Viewer</span>
 				</div>
 
 				<div class="ml-auto flex items-center gap-4">

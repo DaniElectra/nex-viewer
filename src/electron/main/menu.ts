@@ -18,7 +18,7 @@ function refreshMenu(state: State, browserWindow: BrowserWindow): void {
 
 export function openSession(path: string, browserWindow: BrowserWindow, state: State): void {
 	browserWindow.webContents.send('clear-sections');
-	browserWindow.setTitle(`NEX Viewer - ${path}`);
+	browserWindow.setTitle(`Pretendo Network Viewer - ${path}`);
 	session = new Session();
 
 	browserWindow.webContents.send('clearSections');
@@ -89,7 +89,7 @@ export default function createMenu(state: State, browserWindow: BrowserWindow): 
 
 	return Menu.buildFromTemplate([
 		{
-			label: 'NEX Viewer', // TODO - This doesn't seem to work? Always says "Electron". Also swap to getting the name from the app itself (app.name)?
+			label: 'Pretendo Network Viewer', // TODO - This doesn't seem to work? Always says "Electron". Also swap to getting the name from the app itself (app.name)?
 			submenu: [
 				{ role: 'about' },
 				{ type: 'separator' },

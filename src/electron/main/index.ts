@@ -30,7 +30,7 @@ global.Object.defineProperty(global.BigInt.prototype, 'toJSON', {
 	writable: true
 });
 
-app.setName('NEX Viewer');
+app.setName('Pretendo Network Viewer');
 
 // TODO - Should all of this just be combined into the Settings class and remove State?
 const state: State = {
