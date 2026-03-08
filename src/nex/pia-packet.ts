@@ -125,7 +125,108 @@ export default class PIAPacket {
 			transport: 'PIA',
 			source: `${this.sourceAddress}:${this.sourcePort}`,
 			destination: `${this.destinationAddress}:${this.destinationPort}`,
-			overview_sections: [],
+			overview_sections: [
+				{
+					title: 'General',
+					columns: 2,
+					fields: [
+						{
+							name: 'Elapsed Time',
+							value: ''
+						},
+						{
+							name: 'Protocol',
+							value: 'PIA'
+						},
+						{
+							name: 'Source',
+							value: `${this.sourceAddress}:${this.sourcePort}`
+						},
+						{
+							name: 'Destination',
+							value: `${this.destinationAddress}:${this.destinationPort}`
+						},
+						...(this.version !== undefined
+							? [{
+									name: 'Version',
+									value: this.version
+								}]
+							: []),
+						...(this.encrypted !== undefined
+							? [{
+									name: 'Encrypted',
+									value: this.encrypted ? 'True' : 'False'
+								}]
+							: []),
+						...(this.headerVersion !== undefined
+							? [{
+									name: 'Header Version',
+									value: `${this.headerVersion}`
+								}]
+							: []),
+						...(this.connectionID !== undefined
+							? [{
+									name: 'Connection ID',
+									value: `${this.connectionID}`
+								}]
+							: []),
+						...(this.packetID !== undefined
+							? [{
+									name: 'Packet ID',
+									value: `${this.packetID}`
+								}]
+							: []),
+						...(this.sourceTimer !== undefined
+							? [{
+									name: 'Source Timer',
+									value: `${this.sourceTimer}`
+								}]
+							: []),
+						...(this.destinationTimer !== undefined
+							? [{
+									name: 'Destination Timer',
+									value: `${this.destinationTimer}`
+								}]
+							: []),
+						...(this.AESGCMNonce !== undefined
+							? [{
+									name: 'AES-GCM Nonce',
+									value: this.AESGCMNonce.toString('hex')
+								}]
+							: []),
+						...(this.AESGCMAuthenticationTag !== undefined
+							? [{
+									name: 'AES-GCM Authentication Tag',
+									value: this.AESGCMAuthenticationTag.toString('hex')
+								}]
+							: []),
+						...(this.footerSize !== undefined
+							? [{
+									name: 'Footer Size',
+									value: `${this.footerSize}`
+								}]
+							: []),
+						...(this.destinationVariableID !== undefined
+							? [{
+									name: 'Destination Variable ID',
+									value: `${this.destinationVariableID}`
+								}]
+							: []),
+						...(this.sourceVariableID !== undefined
+							? [{
+									name: 'Source Variable ID',
+									value: `${this.sourceVariableID}`
+								}]
+							: []),
+						...(this.paddingSize !== undefined
+							? [{
+									name: 'Padding Size',
+									value: `${this.paddingSize}`
+								}]
+							: [])
+					]
+				}
+			],
 			hex_views: [],
 			serialized_tabs: []
 		};
