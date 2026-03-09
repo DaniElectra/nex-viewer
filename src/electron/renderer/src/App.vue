@@ -43,6 +43,10 @@ onMounted(() => {
 		selectedPacket.value = null;
 	});
 
+	window.api.onSetDumpLoadingstate((isLoading: boolean) => {
+		packetsList.value.setLoading(isLoading);
+	});
+
 	window.api.onSerializedMessageList((messages: SerializedMessage[]) => {
 		packetsList.value.setPackets(messages);
 	});

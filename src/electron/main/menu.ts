@@ -22,6 +22,7 @@ export function openSession(path: string, browserWindow: BrowserWindow, state: S
 	session = new Session();
 
 	browserWindow.webContents.send('clearSections');
+	browserWindow.webContents.send('setDumpLoadingState', true);
 
 	session.on('serializedMessage', (message) => {
 		browserWindow.webContents.send('serializedMessage', JSON.stringify(message));
@@ -29,6 +30,7 @@ export function openSession(path: string, browserWindow: BrowserWindow, state: S
 
 	session.on('serializedMessageList', (messages) => {
 		browserWindow.webContents.send('serializedMessageList', JSON.stringify(messages));
+		browserWindow.webContents.send('setDumpLoadingState', false);
 	});
 
 	session.parse(path);

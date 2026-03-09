@@ -9,6 +9,7 @@ import type { TransportType } from '@renderer/components/TransportSelector.vue';
 
 const ROW_HEIGHT = 50;
 
+const loading = ref(false);
 const search = ref('');
 const packets = ref<SerializedMessage[]>([]);
 const props = defineProps<{
@@ -83,6 +84,10 @@ function clear() {
 	packets.value = [];
 }
 
+function setLoading(isLoading: boolean) {
+	loading.value = isLoading;
+}
+
 function getStatusColor(status: string | number | undefined, transport: string) {
 	if (status === undefined) {
 		return '';
@@ -130,7 +135,8 @@ defineExpose({
 	updatePacket,
 	getPackets,
 	setPackets,
-	clear
+	clear,
+	setLoading
 });
 </script>
 
@@ -170,7 +176,15 @@ defineExpose({
 		</div>
 	</div>
 
-	<div v-if="filteredPackets.length === 0" class="flex-1 flex items-center justify-center">
+	<div v-if="loading" class="flex-1 flex items-center justify-center">
+		<span class="flex text-center py-8 text-[#9a9fa9]">
+			<!-- * Lucide has a spinner but it's not very good, so just using our own -->
+			<svg class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+			Loading network dump...
+		</span>
+	</div>
+
+	<div v-else-if="filteredPackets.length === 0" class="flex-1 flex items-center justify-center">
 		<span class="text-center py-8 text-[#9a9fa9]">No packets to display</span>
 	</div>
 

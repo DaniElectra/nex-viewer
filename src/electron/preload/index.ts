@@ -9,6 +9,7 @@ const api = {
 	ready: (): void => ipcRenderer.send('renderer-ready'),
 	saveSettings: (newSettings: string): void => ipcRenderer.send('saveSettings', newSettings),
 	onClearSections: (callback: () => void): IpcRenderer => ipcRenderer.on('clear-sections', _event => callback()),
+	onSetDumpLoadingstate: (callback: (isLoading: boolean) => void): IpcRenderer => ipcRenderer.on('setDumpLoadingState', (_event, isLoading) => callback(isLoading)),
 	onSerializedMessageList: (callback: (messages: SerializedMessage[]) => void): IpcRenderer => ipcRenderer.on('serializedMessageList', (_event, messages) => callback(JSON.parse(messages))),
 	onSerializedMessage: (callback: (message: SerializedMessage) => void): IpcRenderer => ipcRenderer.on('serializedMessage', (_event, transaction) => callback(JSON.parse(transaction))),
 	onSerializedMessageUpdated: (callback: (id: number, message: SerializedMessage) => void): IpcRenderer => ipcRenderer.on('serializedMessageUpdated', (_event, id, transaction) => callback(id, JSON.parse(transaction))),
