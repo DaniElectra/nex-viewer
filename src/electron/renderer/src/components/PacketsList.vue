@@ -75,6 +75,10 @@ function getPackets() {
 	return packets.value;
 }
 
+function setPackets(messages: SerializedMessage[]) {
+	packets.value = messages;
+}
+
 function clear() {
 	packets.value = [];
 }
@@ -125,6 +129,7 @@ defineExpose({
 	addPacket,
 	updatePacket,
 	getPackets,
+	setPackets,
 	clear
 });
 </script>

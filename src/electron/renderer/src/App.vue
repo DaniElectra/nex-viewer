@@ -43,6 +43,10 @@ onMounted(() => {
 		selectedPacket.value = null;
 	});
 
+	window.api.onSerializedMessageList((messages: SerializedMessage[]) => {
+		packetsList.value.setPackets(messages);
+	});
+
 	window.api.onSerializedMessage((message: SerializedMessage) => {
 		packetsList.value?.addPacket(message);
 	});

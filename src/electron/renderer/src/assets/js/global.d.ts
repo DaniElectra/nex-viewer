@@ -9,6 +9,7 @@ declare global {
 			ready: () => void;
 			saveSettings: (newSettings: string) => void;
 			onClearSections: (callback: () => void) => void;
+			onSerializedMessageList: (callback: (serializedMessages: SerializedMessage[]) => void) => void;
 			onSerializedMessage: (callback: (serializedMessage: SerializedMessage) => void) => void;
 			onSerializedMessageUpdated: (callback: (id: number, serializedMessage: SerializedMessage) => void) => void;
 			onOpenSettings: (callback: () => void) => void;

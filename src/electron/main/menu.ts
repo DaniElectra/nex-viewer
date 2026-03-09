@@ -27,6 +27,10 @@ export function openSession(path: string, browserWindow: BrowserWindow, state: S
 		browserWindow.webContents.send('serializedMessage', JSON.stringify(message));
 	});
 
+	session.on('serializedMessageList', (messages) => {
+		browserWindow.webContents.send('serializedMessageList', JSON.stringify(messages));
+	});
+
 	session.parse(path);
 
 	state.settings.addRecentFile(path);

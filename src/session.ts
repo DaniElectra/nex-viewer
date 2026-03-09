@@ -21,6 +21,7 @@ import type { SimplePacketBlock, EnhancedPacketBlock } from '@/pcapng-parser';
 import type UDPPacket from '@/types/nex/udp-packet';
 import type { ProxideTransaction } from '@/proxide-parser';
 import type PRUDPPacket from '@/types/nex/prudp-packet';
+import type { SerializedMessage } from '@/types/serialized-message';
 
 type RawNetworkFrame = SimplePacketBlock | EnhancedPacketBlock | PCAPFrame;
 
@@ -36,6 +37,7 @@ export default class Session extends EventEmitter {
 	private lastPacketTime = 0;
 	private elapsedTime = 0;
 	private messageID = 0;
+	private serializedMessages: SerializedMessage[] = [];
 
 	constructor() {
 		super();
@@ -70,9 +72,14 @@ export default class Session extends EventEmitter {
 		}
 	}
 
-	private emitSerialized(message: any): void {
+	private addSerializedMessage(message: SerializedMessage): void {
 		message.id = this.messageID++;
-		this.emit('serializedMessage', message);
+		this.serializedMessages.push(message);
+	}
+
+	private emitSerializedMessageList(): void {
+		this.emit('serializedMessageList', this.serializedMessages);
+		this.serializedMessages = [];
 	}
 
 	private parsePCAP(capturePath: string): void {
@@ -105,7 +112,7 @@ export default class Session extends EventEmitter {
 			this.handlePCAPFrame(frame, elapsedTime);
 		}
 
-		this.emit('finished', this.prudpConnections);
+		this.emitSerializedMessageList();
 	}
 
 	private parseCharles(capturePath: string): void {
@@ -142,11 +149,11 @@ export default class Session extends EventEmitter {
 				packet.elapsedTime = elapsedTime;
 
 				this.processPRUDPPacket(packet);
-				this.emitSerialized(packet);
+				this.addSerializedMessage(packet.toJSON());
 			}
 		}
 
-		this.emit('finished', this.prudpConnections);
+		this.emitSerializedMessageList();
 	}
 
 	private parseCharlesZip(captureZipPath: string): void {
@@ -183,11 +190,11 @@ export default class Session extends EventEmitter {
 				packet.elapsedTime = elapsedTime;
 
 				this.processPRUDPPacket(packet);
-				this.emitSerialized(packet);
+				this.addSerializedMessage(packet.toJSON());
 			}
 		}
 
-		this.emit('finished', this.prudpConnections);
+		this.emitSerializedMessageList();
 	}
 
 	private parseMitmproxyFlows(capturePath: string): void {
@@ -213,12 +220,12 @@ export default class Session extends EventEmitter {
 					}
 
 					this.processPRUDPPacket(packet);
-					this.emitSerialized(packet);
+					this.addSerializedMessage(packet.toJSON());
 				}
 			}
 		}
 
-		this.emit('finished', this.prudpConnections);
+		this.emitSerializedMessageList();
 	}
 
 	private parseProxideConnection(capturePath: string): void {
@@ -308,9 +315,11 @@ export default class Session extends EventEmitter {
 			const contentType = transaction.requestHeaders['content-type'] ?? transaction.responseHeaders['content-type'] ?? '';
 
 			if (contentType.startsWith('application/grpc')) {
-				this.emitSerialized(NPLNTransaction.parseFromProxideTransaction(transaction));
+				this.addSerializedMessage(NPLNTransaction.parseFromProxideTransaction(transaction).toJSON());
 			}
 		}
+
+		this.emitSerializedMessageList();
 	}
 
 	private parsePNSJSession(capturePath: string): void {
@@ -318,8 +327,10 @@ export default class Session extends EventEmitter {
 		const parser = new PNSJSession(captureData);
 
 		for (const message of parser.messages()) {
-			this.emitSerialized(message);
+			this.addSerializedMessage(message);
 		}
+
+		this.emitSerializedMessageList();
 	}
 
 	private handlePCAPFrame(frame: RawNetworkFrame, elapsedTime?: number): void {
@@ -345,7 +356,7 @@ export default class Session extends EventEmitter {
 
 				packet.elapsedTime = elapsedTime;
 
-				this.emitSerialized(packet);
+				this.addSerializedMessage(packet.toJSON());
 			} else {
 				const udpPacket = this.parseUDPPacket(frame.data);
 
@@ -372,7 +383,7 @@ export default class Session extends EventEmitter {
 						packet.destinationAddress = udpPacket.destination;
 						packet.destinationPort = udpPacket.destinationPort;
 
-						this.emitSerialized(packet);
+						this.addSerializedMessage(packet.toJSON());
 						return; // * This assumes the whole frame is just one packet. This is likely not the case, we will need to work this out at some point
 					} else {
 						let packet: PRUDPPacket;
@@ -405,7 +416,7 @@ export default class Session extends EventEmitter {
 
 						packet.elapsedTime = elapsedTime;
 
-						this.emitSerialized(packet);
+						this.addSerializedMessage(packet.toJSON());
 					}
 				}
 			}
