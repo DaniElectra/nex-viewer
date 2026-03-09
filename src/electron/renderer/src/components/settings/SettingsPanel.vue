@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, provide, watch } from 'vue';
+import { useNotifications } from '@renderer/composables/useNotifications';
 import SettingsMainPage from '@renderer/components/settings/SettingsMainPage.vue';
 import SettingsNEXAccountListPage from '@renderer/components/settings/SettingsNEXAccountListPage.vue';
 import SettingsNEXAccountPage from '@renderer/components/settings/SettingsNEXAccountPage.vue';
@@ -14,6 +15,8 @@ const props = defineProps<{
 const showPanel = ref<boolean>(false);
 const currentPage = ref<string>('main');
 const currentPageData = ref<any>();
+
+const { notify } = useNotifications();
 
 function open(): void {
 	showPanel.value = true;
@@ -36,6 +39,7 @@ provide('settings', props.settings);
 
 watch(props.settings, (newSettings: ConfigurableSettings) => {
 	window.api.saveSettings(JSON.stringify(newSettings));
+	notify('Settings saved successfully.');
 }, {
 	deep: true
 });

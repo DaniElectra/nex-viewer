@@ -2,6 +2,7 @@
 import { ref, onMounted, toRaw } from 'vue';
 import { FolderOpen, Download, Cog, GripVertical } from 'lucide-vue-next';
 import { Panel, PanelGroup, PanelResizeHandle } from 'vue-resizable-panels';
+import NotificationStack from '@renderer/components/NotificationStack.vue';
 import ClipboardCopier from '@renderer/components/ClipboardCopier.vue';
 import SettingsPanel from '@renderer/components/settings/SettingsPanel.vue';
 import IconButton from '@renderer/components/IconButton.vue';
@@ -76,6 +77,7 @@ onMounted(() => {
 </script>
 
 <template>
+	<NotificationStack />
 	<ClipboardCopier />
 	<SettingsPanel v-if="settings" ref="settingsPanel" :settings="settings" :on-close="() => settingsPanel?.close()" />
 	<Transition enter-active-class="transition-all duration-100" enter-from-class="opacity-0" leave-active-class="transition-all duration-100" leave-to-class="opacity-0">

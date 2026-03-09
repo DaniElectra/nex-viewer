@@ -4,6 +4,7 @@ const { tooltip, tooltipKey } = useClipboard();
 </script>
 
 <template>
+	<!-- TODO - Replace this with the new NotificationStack? -->
 	<div v-if="tooltip" :key="tooltipKey" class="copied-tooltip fixed z-50 px-2.5 py-0.5 text-xs font-semibold border pointer-events-none select-none bg-[#132d28] text-green-400 border-[#0b4a2d] rounded" :style="{ left: `${tooltip.x}px`, top: `${tooltip.y - 8}px` }">
 		Copied
 	</div>
