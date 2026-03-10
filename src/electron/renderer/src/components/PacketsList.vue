@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
-import { useVirtualList } from '@vueuse/core';
+import { ref, shallowRef, computed, nextTick } from 'vue';
+import { useVirtualList, refDebounced } from '@vueuse/core';
 import { Search, ArrowDownToLine } from 'lucide-vue-next';
 import ProtocolSelector from '@renderer/components/TransportSelector.vue';
 import Badge from '@renderer/components/Badge.vue';
@@ -10,7 +10,8 @@ import type { TransportType } from '@renderer/components/TransportSelector.vue';
 const ROW_HEIGHT = 50;
 
 const loading = ref(false);
-const search = ref('');
+const search = shallowRef('');
+const searchDebounced = refDebounced(search, 300);
 const packets = ref<SerializedMessage[]>([]);
 const props = defineProps<{
 	selectedPacketId?: number;
@@ -34,8 +35,8 @@ const activeTransports = ref<TransportType[]>(Object.keys(transportBadgeColors) 
 const filteredPackets = computed(() =>
 	packets.value.filter((p) => {
 		const matchesTransport = activeTransports.value.includes(p.transport as TransportType);
-		const matchesSearch = search.value
-			? JSON.stringify(p).toLowerCase().includes(search.value.toLowerCase())
+		const matchesSearch = searchDebounced.value
+			? JSON.stringify(p).toLowerCase().includes(searchDebounced.value.toLowerCase())
 			: true;
 		return matchesTransport && matchesSearch;
 	})
