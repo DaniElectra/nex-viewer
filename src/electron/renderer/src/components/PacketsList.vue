@@ -13,6 +13,8 @@ const loading = ref(false);
 const search = shallowRef('');
 const searchDebounced = refDebounced(search, 300);
 const packets = ref<SerializedMessage[]>([]);
+const searchIndex = ref<Map<number, string>>(new Map());
+
 const props = defineProps<{
 	selectedPacketId?: number;
 }>();
@@ -32,15 +34,22 @@ const transportBadgeColors = {
 
 const activeTransports = ref<TransportType[]>(Object.keys(transportBadgeColors) as TransportType[]);
 
-const filteredPackets = computed(() =>
-	packets.value.filter((p) => {
-		const matchesTransport = activeTransports.value.includes(p.transport as TransportType);
-		const matchesSearch = searchDebounced.value
-			? JSON.stringify(p).toLowerCase().includes(searchDebounced.value.toLowerCase())
-			: true;
-		return matchesTransport && matchesSearch;
-	})
-);
+const filteredPackets = computed(() => {
+	const query = searchDebounced.value.toLowerCase();
+	const transports = activeTransports.value;
+
+	return packets.value.filter((message) => {
+		if (!transports.includes(message.transport as TransportType)) {
+			return false;
+		}
+
+		if (query) {
+			return searchIndex.value.get(message.id)?.includes(query);
+		}
+
+		return true;
+	});
+});
 
 const autoScroll = ref(false);
 
@@ -58,12 +67,19 @@ function scrollToBottom() {
 	}
 }
 
+function buildSearchString(message: SerializedMessage): string {
+	// TODO - Can this be better? I've always felt like this was kinda hacky
+	return JSON.stringify(message).toLowerCase();
+}
+
 function handleTransportChange(transports: TransportType[]) {
 	activeTransports.value = transports;
 }
 
-function addPacket(packet) {
+function addPacket(packet: SerializedMessage) {
 	packets.value.push(packet);
+	searchIndex.value.set(packet.id, buildSearchString(packet));
+
 	if (autoScroll.value) {
 		scrollToBottom();
 	}
@@ -71,6 +87,7 @@ function addPacket(packet) {
 
 function updatePacket(id: number, updatedPacket: SerializedMessage) {
 	packets.value[id] = updatedPacket;
+	searchIndex.value.set(updatedPacket.id, buildSearchString(updatedPacket));
 }
 
 function getPackets() {
@@ -78,11 +95,18 @@ function getPackets() {
 }
 
 function setPackets(messages: SerializedMessage[]) {
+	clear();
+
+	for (const message of messages) {
+		searchIndex.value.set(message.id, buildSearchString(message));
+	}
+
 	packets.value = messages;
 }
 
 function clear() {
 	packets.value = [];
+	searchIndex.value = new Map();
 }
 
 function setLoading(isLoading: boolean) {
