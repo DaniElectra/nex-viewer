@@ -180,7 +180,7 @@ export default class PRUDPPacketV1 extends PRUDPPacket {
 			service: this.message ? this.message.protocolName : undefined,
 			method: this.message ? this.message.methodName : this.serializeType(),
 			direction: this.message ? this.message.type === RMCMessage.REQUEST ? 'REQUEST' : 'RESPONSE' : undefined,
-			status: this.message ? this.message.error ? `${this.message.error.name} (0x${this.message.error.code!.toString(16)})` : 'SUCCESS' : undefined,
+			status: this.message ? this.message.error ? this.message.error.name() : 'SUCCESS' : undefined,
 			overview_sections: [
 				{
 					title: 'General',
