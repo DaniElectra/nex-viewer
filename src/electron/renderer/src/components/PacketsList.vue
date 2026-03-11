@@ -139,7 +139,8 @@ function getStatusColor(status: string | number | undefined, transport: string) 
 			return 'bg-green-900/30 text-green-400 border-green-800/50';
 		}
 
-		if (status.toLowerCase() === 'error') {
+		// * Assume a status that includes "::" is an RMC error name
+		if (status.toLowerCase() === 'error' || status.includes('::')) {
 			return 'bg-red-900/30 text-red-400 border-red-800/50';
 		}
 
