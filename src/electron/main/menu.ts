@@ -47,7 +47,7 @@ export async function selectSessionFile(browserWindow: BrowserWindow, state: Sta
 			{
 				name: 'Packet Capture',
 				extensions: [
-					'pcapng', 'pcap',
+					'pcapng', 'pcap', 'pcapng.gz',
 					'chls', 'chlz',
 					'flows', 'flow',
 					'bin',

@@ -1,5 +1,6 @@
 import EventEmitter from 'node:events';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import fs from 'fs-extra';
 import ByteStream from '@/byte-stream';
 import PCAPParser from '@/pcap-parser';
@@ -44,28 +45,34 @@ export default class Session extends EventEmitter {
 	}
 
 	public parse(capturePath: string): void {
-		const extension = path.extname(capturePath);
+		let captureData = fs.readFileSync(capturePath);
+		let extension = path.extname(capturePath);
+
+		if (extension === '.gz') {
+			captureData = zlib.gunzipSync(captureData);
+			extension = path.extname(capturePath.slice(0, -3));
+		}
 
 		switch (extension) {
 			case '.pcapng':
 			case '.pcap':
-				this.parsePCAP(capturePath); // TODO - Always assumes NEX connections. Make this more generic
+				this.parsePCAP(captureData); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			case '.chls':
-				this.parseCharles(capturePath); // TODO - Always assumes NEX connections. Make this more generic
+				this.parseCharles(captureData); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			case '.chlz':
-				this.parseCharlesZip(capturePath); // TODO - Always assumes NEX connections. Make this more generic
+				this.parseCharlesZip(captureData); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			case '.flows':
 			case '.flow':
-				this.parseMitmproxyFlows(capturePath); // TODO - Always assumes NEX connections. Make this more generic
+				this.parseMitmproxyFlows(captureData); // TODO - Always assumes NEX connections. Make this more generic
 				break;
 			case '.bin': // TODO - Replace this with a `parseBin` function that supports other .bin formats
-				this.parseProxideConnection(capturePath); // TODO - Always assumes gRPC connections. Make this more generic?
+				this.parseProxideConnection(captureData); // TODO - Always assumes gRPC connections. Make this more generic?
 				break;
 			case '.pnsj':
-				this.parsePNSJSession(capturePath);
+				this.parsePNSJSession(captureData);
 				break;
 			default:
 				throw new Error(`Invalid file type. Got ${extension}, expected .pcapng, .pcap or .chls`);
@@ -82,8 +89,7 @@ export default class Session extends EventEmitter {
 		this.serializedMessages = [];
 	}
 
-	private parsePCAP(capturePath: string): void {
-		const captureData = fs.readFileSync(capturePath);
+	private parsePCAP(captureData: Buffer): void {
 		let parser: PCAPParser | PCAPNGParser;
 
 		const magic = captureData.readUInt32LE();
@@ -115,8 +121,7 @@ export default class Session extends EventEmitter {
 		this.emitSerializedMessageList();
 	}
 
-	private parseCharles(capturePath: string): void {
-		const captureData = fs.readFileSync(capturePath);
+	private parseCharles(captureData: Buffer): void {
 		const parser = new CharlesParser(captureData);
 		let elapsedTime = 0;
 
@@ -156,8 +161,7 @@ export default class Session extends EventEmitter {
 		this.emitSerializedMessageList();
 	}
 
-	private parseCharlesZip(captureZipPath: string): void {
-		const captureData = fs.readFileSync(captureZipPath);
+	private parseCharlesZip(captureData: Buffer): void {
 		const parser = new CharlesZipParser(captureData);
 		let elapsedTime = 0;
 
@@ -197,8 +201,7 @@ export default class Session extends EventEmitter {
 		this.emitSerializedMessageList();
 	}
 
-	private parseMitmproxyFlows(capturePath: string): void {
-		const captureData = fs.readFileSync(capturePath);
+	private parseMitmproxyFlows(captureData: Buffer): void {
 		const parser = new FlowsParser(captureData);
 
 		for (const flow of parser.flows()) {
@@ -228,8 +231,7 @@ export default class Session extends EventEmitter {
 		this.emitSerializedMessageList();
 	}
 
-	private parseProxideConnection(capturePath: string): void {
-		const captureData = fs.readFileSync(capturePath);
+	private parseProxideConnection(captureData: Buffer): void {
 		const parser = new ProxideParser(captureData);
 		const partialTransactions = new Map<string, Partial<ProxideTransaction> & { requestChunks: Buffer[]; responseChunks: Buffer[] }>();
 		const clientAddresses = new Map<string, string>(); // * Sort of a hack, but it works
@@ -322,8 +324,7 @@ export default class Session extends EventEmitter {
 		this.emitSerializedMessageList();
 	}
 
-	private parsePNSJSession(capturePath: string): void {
-		const captureData = fs.readFileSync(capturePath);
+	private parsePNSJSession(captureData: Buffer): void {
 		const parser = new PNSJSession(captureData);
 
 		for (const message of parser.messages()) {
