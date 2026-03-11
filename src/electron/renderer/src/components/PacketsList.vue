@@ -209,14 +209,14 @@ defineExpose({
 
 	<div class="flex-shrink-0 bg-[#151c27] border-b border-[#2e3238] z-10">
 		<div class="flex w-full text-sm">
-			<div class="w-44 px-4 py-3 text-left cursor-pointer">ID</div>
-			<div class="w-44 px-4 py-3 text-left cursor-pointer">Elapsed Time</div>
+			<div class="w-16 px-4 py-3 text-left cursor-pointer">ID</div>
+			<div class="w-32 px-4 py-3 text-left cursor-pointer">Elapsed Time</div>
 			<div class="w-24 px-4 py-3 text-left cursor-pointer">Transport</div>
 			<div class="flex-1 px-4 py-3 text-left cursor-pointer">Source</div>
 			<div class="flex-1 px-4 py-3 text-left cursor-pointer">Destination</div>
 			<div class="flex-1 px-4 py-3 text-left cursor-pointer">Service/Method</div>
 			<div class="w-24 px-4 py-3 text-left cursor-pointer">Direction</div>
-			<div class="w-28 px-4 py-3 text-left cursor-pointer">Status</div>
+			<div class="w-44 px-4 py-3 text-left cursor-pointer">Status</div>
 		</div>
 	</div>
 
@@ -235,8 +235,8 @@ defineExpose({
 	<div v-else v-bind="containerProps" class="flex-1">
 		<div v-bind="wrapperProps">
 			<div v-for="{ data: packet } in list" :key="packet.id" class="flex items-center border-b border-[#2e3238] cursor-pointer transition-colors text-sm" :class="[ packet.stack_trace ? 'bg-red-900/40 hover:bg-red-900/50' : packet.id === props.selectedPacketId ? 'bg-[#182338] hover:bg-[#1a2740]' : 'hover:bg-[#172030]' ]" :style="{ height: `${ROW_HEIGHT}px` }" @click="emit('selectPacket', packet)">
-				<div class="w-44 px-4 py-2 font-mono text-xs flex-shrink-0">{{ packet.id }}</div>
-				<div class="w-44 px-4 py-2 font-mono text-xs flex-shrink-0">{{ packet.elapsed_time.toFixed(6) }}</div>
+				<div class="w-16 px-4 py-2 font-mono text-xs flex-shrink-0">{{ packet.id }}</div>
+				<div class="w-32 px-4 py-2 font-mono text-xs flex-shrink-0">{{ packet.elapsed_time.toFixed(6) }}</div>
 				<div class="w-24 px-4 py-2 flex-shrink-0">
 					<Badge :class="transportBadgeColors[packet.transport] || ''">
 						{{ packet.transport }}
@@ -267,7 +267,7 @@ defineExpose({
 					</span>
 					<span v-else class="text-[#9a9fa9]">—</span>
 				</div>
-				<div class="w-28 px-4 py-2 flex-shrink-0">
+				<div class="w-44 px-4 py-2 flex-shrink-0">
 					<Badge v-if="packet.status" :class="getStatusColor(packet.status, packet.transport)">
 						{{ String(packet.status) }}
 					</Badge>
