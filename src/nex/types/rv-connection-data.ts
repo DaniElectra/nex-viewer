@@ -24,7 +24,7 @@ export default class RVConnectionData extends DDLClass {
 		this.m_lstSpecialProtocols.extractFrom(stream);
 		this.m_urlSpecialProtocols.extractFrom(stream);
 
-		if (this.revision <= 1) {
+		if (this.revision >= 1) {
 			this.m_currentUTCTime = new DateTime();
 			this.m_currentUTCTime.extractFrom(stream);
 		}
