@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, shallowRef, computed, nextTick } from 'vue';
+import { ref, shallowRef, computed, nextTick, watch } from 'vue';
 import { useVirtualList, refDebounced } from '@vueuse/core';
 import { Search, ArrowDownToLine } from 'lucide-vue-next';
 import ProtocolSelector from '@renderer/components/TransportSelector.vue';
@@ -154,6 +154,25 @@ function getStatusColor(status: string | number | undefined, transport: string) 
 
 	return '';
 }
+
+watch(filteredPackets, async () => {
+	// * Can't just use scrollIntoView() since we're using virtual lists,
+	// * need to calculate the scroll position manually
+	if (props.selectedPacketId === undefined) {
+		return;
+	}
+
+	const container = containerProps.ref.value;
+	const index = filteredPackets.value.findIndex(message => message.id === props.selectedPacketId);
+
+	if (index === -1) {
+		return;
+	}
+
+	await nextTick();
+
+	container.scrollTop = index * ROW_HEIGHT - (container.clientHeight / 2) + (ROW_HEIGHT / 2);
+});
 
 defineExpose({
 	addPacket,
