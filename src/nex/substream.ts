@@ -28,6 +28,11 @@ export default class Substream {
 		const pendingPackets = packet.fromClientToServer ? this.pendingClientToServerPackets : this.pendingservertoClientPackets;
 		const sequenceIDCounter = packet.fromClientToServer ? this.clientToServerSequenceIDCounter : this.servertoClientSequenceIDCounter;
 
+		// * Ignore reliable PING packets
+		if (packet.isTypePing()) {
+			return packets;
+		}
+
 		if (!(packet.sequenceID < sequenceIDCounter.value || pendingPackets[packet.sequenceID])) {
 			pendingPackets[packet.sequenceID] = packet;
 
