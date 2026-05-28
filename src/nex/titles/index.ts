@@ -69,6 +69,7 @@ import SushiStrikerTheWayofSushido from '@/nex/titles/sushi-striker-the-way-of-s
 import TeamKirbyClashDeluxe from '@/nex/titles/team-kirby-clash-deluxe';
 import TEKKENTAGTOURNAMENT2WiiUEDITION from '@/nex/titles/tekken-tag-tournament-2-wii-u-edition';
 import Terraria from '@/nex/titles/terraria';
+import TetrisAxis from '@/nex/titles/tetris-axis';
 import TheLegendofZeldaTriForceHeroes from '@/nex/titles/the-legend-of-zelda-tri-force-heroes';
 import Trine2DirectorsCut from '@/nex/titles/trine-2-directors-cut';
 import WARRIORSOROCHI3Hyper from '@/nex/titles/warriors-orochi-3-hyper';
@@ -153,6 +154,7 @@ export default [
 	TeamKirbyClashDeluxe,
 	TEKKENTAGTOURNAMENT2WiiUEDITION,
 	Terraria,
+	TetrisAxis,
 	TheLegendofZeldaTriForceHeroes,
 	Trine2DirectorsCut,
 	WARRIORSOROCHI3Hyper,
