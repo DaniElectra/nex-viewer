@@ -19,7 +19,6 @@ import NPLNTransaction from '@/npln/npln-transaction';
 import PNSJSession from '@/pnsj-session';
 import type { PCAPFrame } from '@/pcap-parser';
 import type { SimplePacketBlock, EnhancedPacketBlock } from '@/pcapng-parser';
-import type UDPPacket from '@/types/nex/udp-packet';
 import type { ProxideTransaction } from '@/proxide-parser';
 import type PRUDPPacket from '@/types/nex/prudp-packet';
 import type { SerializedMessage } from '@/types/serialized-message';
@@ -39,6 +38,8 @@ export default class Session extends EventEmitter {
 	private elapsedTime = 0;
 	private messageID = 0;
 	private serializedMessages: SerializedMessage[] = [];
+	private websocketPCAPBuffer: Buffer = Buffer.alloc(0); // * WebSocket messages can be split between multiple TCP frames, so we have to buffer them
+	private resolvedAddresses: Record<string, string> = {};
 
 	constructor() {
 		super();
@@ -358,14 +359,192 @@ export default class Session extends EventEmitter {
 				packet.elapsedTime = elapsedTime;
 
 				this.addSerializedMessage(packet.toJSON());
-			} else {
-				const udpPacket = this.parseUDPPacket(frame.data);
 
-				if (!udpPacket) {
+				return;
+			}
+
+			const frameStream = new ByteStream(frame.data);
+
+			const versionAndHeaderLength = frameStream.readUInt8();
+			const version = (versionAndHeaderLength >> 4) & 0x0F;
+
+			// * All packets we care about are
+			// * assumed to be IPv4
+			if (version !== 4) {
+				return;
+			}
+
+			const headerLength = (versionAndHeaderLength & 0x0F) * 4;
+
+			frameStream.skip(1); // * Service type
+			const totalLength = frameStream.readUInt16BE();
+			frameStream.skip(2); // * Identification
+			frameStream.skip(2); // * Flags and fragment offset. Fragment offset is the last 13 bits (& 0x1FFF)
+			frameStream.skip(1); // * Time to live
+			const protocol = frameStream.readUInt8();
+			frameStream.skip(2); // * Checksum
+
+			let source = int2ip(frameStream.readUInt32BE());
+			let destination = int2ip(frameStream.readUInt32BE());
+
+			if (this.resolvedAddresses[source]) {
+				source = this.resolvedAddresses[source];
+			}
+
+			if (this.resolvedAddresses[destination]) {
+				destination = this.resolvedAddresses[destination];
+			}
+
+			// TODO - Add this back with the new offsets
+			// if (frame.subarray(17, 20).equals(XID_MAGIC)) {
+			//	return;
+			// }
+
+			let sourcePort: number;
+			let destinationPort: number;
+			const payloads: Buffer[] = [];
+
+			if (protocol === 0x11) {
+				// * UDP protocol
+				const udpLength = totalLength - headerLength;
+				const udpStream = new ByteStream(frameStream.readBytes(udpLength));
+
+				// * Parse UDP header
+				sourcePort = udpStream.readUInt16BE();
+				destinationPort = udpStream.readUInt16BE();
+				const udpPacketLength = udpStream.readUInt16BE();
+
+				if (sourcePort === 53 || destinationPort === 53) {
+					// * DNS packet
 					return;
 				}
 
-				const stream = new ByteStream(udpPacket.payload);
+				if (udpPacketLength !== udpLength) {
+					throw new Error(`Got bad UDP packet length. Expected ${udpLength}, got ${udpPacketLength}`);
+				}
+
+				udpStream.skip(0x2); // * Checksum
+
+				payloads.push(udpStream.readBytes(udpLength - 0x8));
+			} else if (protocol === 0x06) {
+				// * TCP protocol
+				// TODO - This section is only being designed to work with PRUDPLite packets made via https://github.com/nookingtons/network_mitm.
+				//        Any other TCP packets, including HTTP packets, are not supported. This section should be expanded to support more kinds of TCP
+				const tcpLength = totalLength - headerLength;
+				const tcpStream = new ByteStream(frameStream.readBytes(tcpLength));
+
+				sourcePort = tcpStream.readUInt16BE();
+				destinationPort = tcpStream.readUInt16BE();
+
+				// * WebSocket packets in this case always either come from or go to port 80
+				if (sourcePort !== 80 && destinationPort !== 80) {
+					return;
+				}
+
+				tcpStream.skip(0x4); // * Sequence number
+				tcpStream.skip(0x4); // * Acknowledgment number
+
+				const offsetAndFlags = tcpStream.readUInt16BE();
+				const tcpHeaderLength = (offsetAndFlags >> 12) * 4;
+
+				if (tcpHeaderLength < 0x14 || tcpHeaderLength > tcpLength) {
+					throw new Error(`Got bad TCP data offset. Got ${tcpHeaderLength}`);
+				}
+
+				tcpStream.skip(tcpHeaderLength - 0xE);
+
+				// * Assume every packet here is a WebSocket packet
+				// TODO - Track what connections are actually WebSocket connections by inspecting the HTTP packets better
+				// TODO - This skips a LOT of WebSocket/TCP features like interleaved frames, TCP fragments, assuming always binary messages, etc. just to keep it simple for now
+				const websocketStream = new ByteStream(tcpStream.readBytes(tcpLength - tcpHeaderLength));
+
+				while (websocketStream.hasDataLeft()) {
+					const maybeHTTPStartLine = websocketStream.readBytes(0x7).toString();
+
+					websocketStream.skip(-0x7); // * Skip back to realign the stream position
+
+					// * Filter out HTTP packets
+					if (
+						maybeHTTPStartLine.startsWith('HTTP') ||
+						maybeHTTPStartLine.startsWith('GET') ||
+						maybeHTTPStartLine.startsWith('HEAD') ||
+						maybeHTTPStartLine.startsWith('POST') ||
+						maybeHTTPStartLine.startsWith('PUT') ||
+						maybeHTTPStartLine.startsWith('DELETE') ||
+						maybeHTTPStartLine.startsWith('CONNECT') ||
+						maybeHTTPStartLine.startsWith('OPTIONS') ||
+						maybeHTTPStartLine.startsWith('TRACE') ||
+						maybeHTTPStartLine.startsWith('PATCH') ||
+						maybeHTTPStartLine.startsWith('QUERY')
+					) {
+						// * Hack to get the real hostname of the PRUDPLite connection.
+						// * This is used to identify the game when the Lite Signature is not available
+						// TODO - Eventually replace this with a full HTTP message parser, we're gonna need one anyway
+						if (maybeHTTPStartLine.startsWith('GET')) {
+							const httpMessage = websocketStream.readRest().toString();
+							const lines = httpMessage.split('\r\n');
+
+							for (const line of lines) {
+								if (line.toLowerCase().startsWith('host')) {
+									const address = line.split(': ')[1];
+									this.resolvedAddresses[destination] = address;
+								}
+							}
+						}
+
+						return;
+					}
+
+					const byte1 = websocketStream.readUInt8();
+					const byte2 = websocketStream.readUInt8();
+
+					const fin = (byte1 & 0x80) !== 0;
+					// * const rsv1 = (byte1 & 0x40) !== 0;
+					// * const rsv2 = (byte1 & 0x20) !== 0;
+					// * const rsv3 = (byte1 & 0x10) !== 0;
+					// * const opcode = byte1 & 0x0F;
+
+					const masked = (byte2 & 0x80) !== 0;
+					let length = byte2 & 0x7F;
+					let maskKey: Buffer | undefined;
+
+					if (length === 126) {
+						length = websocketStream.readUInt16BE();
+					} else if (length === 127) {
+						// TODO - Swap this out with a BigInt everywhere?
+						length = Number(websocketStream.readUInt64BE());
+					}
+
+					if (masked) {
+						maskKey = websocketStream.readBytes(4);
+					}
+
+					let payload = websocketStream.readBytes(length);
+
+					if (maskKey) {
+						// TODO - Remove this "as" cast, uggo
+						payload = payload.map((byte, i) => byte ^ maskKey[i % 4]) as Buffer;
+					}
+
+					this.websocketPCAPBuffer = Buffer.concat([
+						this.websocketPCAPBuffer,
+						payload
+					]);
+
+					if (fin) {
+						payloads.push(this.websocketPCAPBuffer);
+						this.websocketPCAPBuffer = Buffer.alloc(0);
+					} else {
+						// * Wait for more data in other frames
+						return;
+					}
+				}
+			} else {
+				return;
+			}
+
+			for (const payload of payloads) {
+				const stream = new ByteStream(payload!); // TODO - Remove "!"
 
 				// * Some PRUDP packets are bundled together. Need to split them apart
 				while (stream.hasDataLeft()) {
@@ -379,21 +558,29 @@ export default class Session extends EventEmitter {
 						//        and then loop back through them with the PIA version determined by the PRUDP connections title. This is just a stubx
 						const packet = new PIAPacket(stream);
 
-						packet.sourceAddress = udpPacket.source;
-						packet.sourcePort = udpPacket.sourcePort;
-						packet.destinationAddress = udpPacket.destination;
-						packet.destinationPort = udpPacket.destinationPort;
+						packet.sourceAddress = source;
+						packet.sourcePort = sourcePort;
+						packet.destinationAddress = destination;
+						packet.destinationPort = destinationPort;
 
 						this.addSerializedMessage(packet.toJSON());
 						return; // * This assumes the whole frame is just one packet. This is likely not the case, we will need to work this out at some point
 					} else {
 						let packet: PRUDPPacket;
-						const magic = stream.readBytes(0x2);
+						// * Nasty hack to get both the PRUDPv1 and PRUDPLite magics
+						// * without needing the jump backwards twice
+						const maybeMagicLite = stream.readBytes(0x1);
+						const maybeMagicV1 = Buffer.concat([
+							maybeMagicLite,
+							stream.readBytes(0x1)
+						]);
 
 						stream.skip(-0x2); // * Skip back to realign the stream position
 
-						if (magic.equals(PRUDPPacketV1.Magic)) {
+						if (maybeMagicV1.equals(PRUDPPacketV1.Magic)) {
 							packet = new PRUDPPacketV1(stream);
+						} else if (maybeMagicLite.equals(PRUDPPacketLite.Magic)) {
+							packet = new PRUDPPacketLite(stream);
 						} else {
 							// * Assume packet is v0 and just Try It
 							// *
@@ -408,10 +595,10 @@ export default class Session extends EventEmitter {
 							return;
 						}
 
-						packet.sourceAddress = udpPacket.source;
-						packet.sourcePort = udpPacket.sourcePort;
-						packet.destinationAddress = udpPacket.destination;
-						packet.destinationPort = udpPacket.destinationPort;
+						packet.sourceAddress = source;
+						packet.sourcePort = sourcePort;
+						packet.destinationAddress = destination;
+						packet.destinationPort = destinationPort;
 
 						this.processPRUDPPacket(packet);
 
@@ -453,80 +640,28 @@ export default class Session extends EventEmitter {
 			return false;
 		}
 
-		if (packet.sourceStreamID !== 1 && packet.destinationStreamID !== 1) {
-			// * In NEX on the Wii U and 3DS the server stream ID is ALWAYS 1. IF NEITHER are 1, assume invalid
-			// TODO - THIS IS UNTESTED ON QRV, AND PRUDPLITE USES MORE SERVER STREAM IDS THAN JUST 1. TESTED AND UPDATE FOR PRUDPLITE
-			return false;
-		}
+		if (packet.version === 2) {
+			// * PRUDPLite
 
-		// TODO - PRUDPLite packets can only have stream IDs ≤ 0x1F. Add check for this once PRUDPLite is implemented
+			if (packet.sourceStreamID > 0x1F || packet.destinationStreamID > 0x1F) {
+				return false;
+			}
+
+			if (
+				packet.sourceStreamID !== 1 && packet.sourceStreamID !== 2 &&
+				packet.destinationStreamID !== 1 && packet.destinationStreamID !== 2
+			) {
+				return false;
+			}
+		} else {
+			if (packet.sourceStreamID !== 1 && packet.destinationStreamID !== 1) {
+				// * In NEX on the Wii U and 3DS the server stream ID is ALWAYS 1. IF NEITHER are 1, assume invalid
+				// TODO - THIS IS UNTESTED ON QRV, AND PRUDPLITE USES MORE SERVER STREAM IDS THAN JUST 1
+				return false;
+			}
+		}
 
 		return true;
-	}
-
-	private parseUDPPacket(data: Buffer): UDPPacket | undefined {
-		const stream = new ByteStream(data);
-
-		const versionAndHeaderLength = stream.readUInt8();
-		const version = (versionAndHeaderLength >> 4) & 0x0F;
-
-		// * All packets we care about are
-		// * assumed to be IPv4
-		if (version !== 4) {
-			return;
-		}
-
-		const headerLength = (versionAndHeaderLength & 0x0F) * 4;
-
-		stream.skip(1); // * Service type
-		const totalLength = stream.readUInt16BE();
-		stream.skip(2); // * Identification
-		stream.skip(2); // * Flags and fragment offset. Fragment offset is the last 13 bits (& 0x1FFF)
-		stream.skip(1); // * Time to live
-		const protocol = stream.readUInt8();
-		stream.skip(2); // * Checksum
-
-		const source = int2ip(stream.readUInt32BE());
-		const destination = int2ip(stream.readUInt32BE());
-
-		// TODO - Add this back with the new offsets
-		// if (frame.subarray(17, 20).equals(XID_MAGIC)) {
-		//	return;
-		// }
-
-		// * UDP protocol
-		if (protocol !== 0x11) {
-			return;
-		}
-
-		const udpLength = totalLength - headerLength;
-		const udpStream = new ByteStream(stream.readBytes(udpLength));
-
-		// * Parse UDP header
-		const sourcePort = udpStream.readUInt16BE();
-		const destinationPort = udpStream.readUInt16BE();
-		const udpPacketLength = udpStream.readUInt16BE();
-
-		if (sourcePort === 53 || destinationPort === 53) {
-			// * DNS packet
-			return;
-		}
-
-		if (udpPacketLength !== udpLength) {
-			throw new Error(`Got bad UDP packet length. Expected ${udpLength}, got ${udpPacketLength}`);
-		}
-
-		udpStream.skip(0x2); // * Checksum
-
-		const payload = udpStream.readBytes(udpLength - 0x8);
-
-		return {
-			source,
-			destination,
-			sourcePort,
-			destinationPort,
-			payload
-		};
 	}
 
 	private processPRUDPPacket(packet: PRUDPPacket): void {
