@@ -1,4 +1,6 @@
 import Title from '@/nex/titles/title';
+import DataStoreProtocol from '@/nex/protocols/datastore';
+import UtilityProtocol from '@/nex/protocols/utility';
 
 export default class SuperSmashBrosUltimate extends Title {
 	public static displayName = 'Super Smash Bros. Ultimate';
@@ -28,5 +30,8 @@ export default class SuperSmashBrosUltimate extends Title {
 		'01006A800016E000'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		DataStoreProtocol,
+		UtilityProtocol
+	]; // * Populate with the protocols this title uses
 }
