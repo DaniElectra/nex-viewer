@@ -17,6 +17,7 @@ import PRUDPPacketLite from '@/nex/prudp-packetLite';
 import RawRMCPacket from '@/nex/raw-rmc-packet';
 import NPLNTransaction from '@/npln/npln-transaction';
 import PNSJSession from '@/pnsj-session';
+import parseHTTPMessage, { HTTPMessageDirection } from '@/http-message';
 import type { PCAPFrame } from '@/pcap-parser';
 import type { SimplePacketBlock, EnhancedPacketBlock } from '@/pcapng-parser';
 import type { ProxideTransaction } from '@/proxide-parser';
@@ -479,16 +480,12 @@ export default class Session extends EventEmitter {
 					) {
 						// * Hack to get the real hostname of the PRUDPLite connection.
 						// * This is used to identify the game when the Lite Signature is not available
-						// TODO - Eventually replace this with a full HTTP message parser, we're gonna need one anyway
-						if (maybeHTTPStartLine.startsWith('GET')) {
-							const httpMessage = websocketStream.readRest().toString();
-							const lines = httpMessage.split('\r\n');
+						const httpMessage = parseHTTPMessage(websocketStream.readRest());
+						if (httpMessage.direction === HTTPMessageDirection.REQUEST) {
+							const host = httpMessage.header('host');
 
-							for (const line of lines) {
-								if (line.toLowerCase().startsWith('host')) {
-									const address = line.split(': ')[1];
-									this.resolvedAddresses[destination] = address;
-								}
+							if (host) {
+								this.resolvedAddresses[destination] = host;
 							}
 						}
 
