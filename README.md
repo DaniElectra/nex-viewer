@@ -71,7 +71,7 @@
 - [x] [Ranking](https://nintendo-wiki.pretendo.network/docs/nex/protocols/ranking)
 - [x] [DataStore](https://nintendo-wiki.pretendo.network/docs/nex/protocols/datastore)
 - [ ] [Debug](https://nintendo-wiki.pretendo.network/docs/nex/protocols/debug)
-- [ ] [Subscription](https://nintendo-wiki.pretendo.network/docs/nex/protocols/subscription)
+- [x] [Subscription](https://nintendo-wiki.pretendo.network/docs/nex/protocols/subscription)
 - [ ] [Rating](https://nintendo-wiki.pretendo.network/docs/nex/protocols/rating)
 - [ ] [ServiceItem](https://nintendo-wiki.pretendo.network/docs/nex/protocols/service-item)
 - [x] [MatchmakeReferee](https://nintendo-wiki.pretendo.network/docs/nex/protocols/matchmake-referee)
