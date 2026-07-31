@@ -14,6 +14,8 @@ export default class SubscriptionData extends Data {
     private UnknownQBuffer = new QBuffer();
 
     public extractFrom(stream: NEXByteStream): void {
+        super.extractFrom(stream);
+        
         this.extractHeaderFrom(stream);
 
         this.PrincipalID.extractFrom(stream);

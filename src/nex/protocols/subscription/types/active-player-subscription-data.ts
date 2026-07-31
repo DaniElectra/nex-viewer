@@ -1,6 +1,7 @@
 import type NEXByteStream from '@/nex/byte-stream';
 import SubscriptionData from '@/nex/protocols/subscription/types/subscription-data';
 import Bool from '@/nex/types/bool';
+
 const className = 'ActivePlayerSubscriptionData';
 
 export default class ActivePlayerSubscriptionData extends SubscriptionData {
@@ -11,6 +12,8 @@ export default class ActivePlayerSubscriptionData extends SubscriptionData {
     private UnknownBool = new Bool();
 
     public extractFrom(stream: NEXByteStream): void {
+        super.extractFrom(stream);
+        
         this.extractHeaderFrom(stream);
 
         this.UnknownBool.extractFrom(stream);
