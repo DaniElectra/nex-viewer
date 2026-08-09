@@ -1,4 +1,4 @@
-import UInt32 from '@/nex/types/uint32';
+import PID from '@/nex/types/pid';
 import Data from '@/nex/types/data';
 import QBuffer from '@/nex/types/qbuffer';
 import type NEXByteStream from '@/nex/byte-stream';
@@ -10,7 +10,7 @@ export default class SubscriptionData extends Data {
 		return className;
 	}
 
-	private PrincipalID = new UInt32();
+	private pid = new PID();
 	private unknownQBuffer = new QBuffer();
 
 	public extractFrom(stream: NEXByteStream): void {
@@ -18,7 +18,7 @@ export default class SubscriptionData extends Data {
 
 		this.extractHeaderFrom(stream);
 
-		this.PrincipalID.extractFrom(stream);
+		this.pid.extractFrom(stream);
 		this.unknownQBuffer.extractFrom(stream);
 	}
 
@@ -33,7 +33,7 @@ export default class SubscriptionData extends Data {
 			__displayTypeName: className,
 			__typeName: className,
 			__fields: {
-				PrincipalID: this.PrincipalID,
+				pid: this.pid,
 				unknownQBuffer: this.unknownQBuffer
 			}
 		};
