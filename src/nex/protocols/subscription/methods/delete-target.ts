@@ -1,12 +1,12 @@
-import list from '@/nex/types/list';
+import List from '@/nex/types/list';
+import PID from '@/nex/types/pid';
 import NEXByteStream from '@/nex/byte-stream';
 import type RMCMessage from '@/nex/rmc-message';
-import PID from '@/nex/types/pid';
 
 export class Request {
 	public static Name = 'DeleteTarget';
 
-	private targets = new list(new PID());
+	private targets = new List(new PID());
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
@@ -25,7 +25,7 @@ export class Request {
 export class Response {
 	public static Name = 'DeleteTarget';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};

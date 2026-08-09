@@ -2,7 +2,7 @@
 export class Request {
 	public static Name = 'ClearTarget';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};
@@ -13,7 +13,7 @@ export class Request {
 export class Response {
 	public static Name = 'ClearTarget';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};

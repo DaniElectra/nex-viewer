@@ -7,7 +7,7 @@ import type RMCMessage from '@/nex/rmc-message';
 export class Request {
 	public static Name = 'GetTargetSubscriptionData';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};

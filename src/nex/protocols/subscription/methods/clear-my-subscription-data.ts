@@ -11,11 +11,11 @@ export class Request {
 
 // * No response data
 export class Response {
-    public static Name = 'ClearMySubscriptionData';
+	public static Name = 'ClearMySubscriptionData';
 
-    constructor() {}
+	constructor() {}
 
-    public toJSON(): any {
-        return {};
-    }
+	public toJSON(): any {
+		return {};
+	}
 }

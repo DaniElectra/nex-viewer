@@ -1,7 +1,7 @@
 import List from '@/nex/types/list';
+import PID from '@/nex/types/pid';
 import NEXByteStream from '@/nex/byte-stream';
 import type RMCMessage from '@/nex/rmc-message';
-import PID from '@/nex/types/pid';
 
 export class Request {
 	public static Name = 'AddTarget';
@@ -25,7 +25,7 @@ export class Request {
 export class Response {
 	public static Name = 'AddTarget';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};

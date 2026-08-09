@@ -1,8 +1,8 @@
 import UInt32 from '@/nex/types/uint32';
-import type RMCMessage from '@/nex/rmc-message';
 import NEXByteStream from '@/nex/byte-stream';
 import List from '@/nex/types/list';
 import ActivePlayerSubscriptionData from '@/nex/protocols/subscription/types/active-player-subscription-data';
+import type RMCMessage from '@/nex/rmc-message';
 
 export class Request {
 	public static Name = 'GetActivePlayerSubscriptionData';
@@ -31,17 +31,17 @@ export class Request {
 export class Response {
 	public static Name = 'GetActivePlayerSubscriptionData';
 
-	private unknown1 = new List(new ActivePlayerSubscriptionData());
+	private unknown = new List(new ActivePlayerSubscriptionData());
 
 	constructor(message: RMCMessage) {
 		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
 
-		this.unknown1.extractFrom(stream);
+		this.unknown.extractFrom(stream);
 	}
 
 	public toJSON(): any {
 		return {
-			unknown1: this.unknown1
+			unknown: this.unknown
 		};
 	}
 }

@@ -24,7 +24,7 @@ export class Request {
 export class Response {
 	public static Name = 'UpdateMySubscriptionData';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};

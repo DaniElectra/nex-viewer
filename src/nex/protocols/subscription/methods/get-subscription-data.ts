@@ -1,8 +1,8 @@
-import type RMCMessage from "@/nex/rmc-message";
-import List from "@/nex/types/list";
-import SubscriptionData from "@/nex/protocols/subscription/types/subscription-data";
-import PID from "@/nex/types/pid";
-import NEXByteStream from "@/nex/byte-stream"
+import List from '@/nex/types/list';
+import SubscriptionData from '@/nex/protocols/subscription/types/subscription-data';
+import PID from '@/nex/types/pid';
+import NEXByteStream from '@/nex/byte-stream';
+import type RMCMessage from '@/nex/rmc-message';
 
 export class Request {
 	public static Name = 'GetSubscriptionData';
@@ -10,8 +10,8 @@ export class Request {
 	private PIDs = new List(new PID());
 
 	constructor(message: RMCMessage) {
-		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!)
-	
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
+
 		this.PIDs.extractFrom(stream);
 	}
 

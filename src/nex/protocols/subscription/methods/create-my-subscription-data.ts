@@ -29,11 +29,10 @@ export class Request {
 }
 
 // * No response data
-
 export class Response {
 	public static Name = 'CreateMySubscriptionData';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};

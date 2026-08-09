@@ -7,7 +7,7 @@ import type RMCMessage from '@/nex/rmc-message';
 export class Request {
 	public static Name = 'GetFriendSubscriptionData';
 
-	constructor() { }
+	constructor() {}
 
 	public toJSON(): any {
 		return {};
