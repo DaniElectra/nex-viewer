@@ -1,6 +1,6 @@
 // * No request data
 export class Request {
-	public static Name = 'ClearMySubscriptionData';
+	public static Name = 'ClearTarget';
 
 	constructor() { }
 
@@ -11,7 +11,7 @@ export class Request {
 
 // * No response data
 export class Response {
-	public static Name = 'ClearMySubscriptionData';
+	public static Name = 'ClearTarget';
 
 	constructor() { }
 
