@@ -47,6 +47,7 @@ import PIKMIN3 from '@/nex/titles/pikmin-3';
 import PokemonBank from '@/nex/titles/pokemon-bank';
 import PokemonRumbleWorld from '@/nex/titles/pokemon-rumble-world';
 import PokemonXY from '@/nex/titles/pokemon-xy';
+import PokemonORAS from '@/nex/titles/pokemon-oras';
 import POKKENTOURNAMENT from '@/nex/titles/pokken-tournament';
 import Puddle from '@/nex/titles/puddle';
 import PuyoPuyoTetris from '@/nex/titles/puyo-puyo-tetris';
@@ -132,6 +133,7 @@ export default [
 	PokemonBank,
 	PokemonRumbleWorld,
 	PokemonXY,
+	PokemonORAS,
 	POKKENTOURNAMENT,
 	Puddle,
 	PuyoPuyoTetris,
