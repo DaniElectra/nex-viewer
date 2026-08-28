@@ -1,4 +1,4 @@
-import DataStoreProtocol from '@/nex/protocols/datastore';
+import DataStoreProtocolSuperMarioMaker from '@/nex/protocols/datastore/super-mario-maker';
 import Title from '@/nex/titles/title';
 
 export default class SuperMarioMaker extends Title {
@@ -36,6 +36,6 @@ export default class SuperMarioMaker extends Title {
 	];
 
 	public static protocols = [
-		DataStoreProtocol
+		DataStoreProtocolSuperMarioMaker
 	];
 }
