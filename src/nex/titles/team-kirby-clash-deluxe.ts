@@ -1,4 +1,5 @@
 import Title from '@/nex/titles/title';
+import ServiceItemProtocolTeamKirbyClashDeluxe from '@/nex/protocols/service-item/team-kirby-clash-deluxe';
 
 export default class TeamKirbyClashDeluxe extends Title {
 	public static displayName = 'Team Kirby Clash Deluxe';
@@ -33,5 +34,7 @@ export default class TeamKirbyClashDeluxe extends Title {
 		'00040000001CAD00'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		ServiceItemProtocolTeamKirbyClashDeluxe
+	];
 }
