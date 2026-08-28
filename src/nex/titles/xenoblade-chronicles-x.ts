@@ -1,6 +1,7 @@
 import DataStoreProtocolXenobladeChroniclesX from '@/nex/protocols/datastore/xenoblade-chronicles-x';
 import MatchmakeExtensionProtocolXenobladeChroniclesX from '@/nex/protocols/matchmake-extension/xenoblade-chronicles-x';
 import RankingProtocolXenobladeChroniclesX from '@/nex/protocols/ranking/xenoblade-chronicles-x';
+import SubscriptionProtocolXenobladeChroniclesX from '@/nex/protocols/subscription/xenoblade-chronicles-x';
 import Title from '@/nex/titles/title';
 
 export default class XenobladeChroniclesX extends Title {
@@ -36,6 +37,7 @@ export default class XenobladeChroniclesX extends Title {
 	public static protocols = [
 		DataStoreProtocolXenobladeChroniclesX,
 		MatchmakeExtensionProtocolXenobladeChroniclesX,
-		RankingProtocolXenobladeChroniclesX
+		RankingProtocolXenobladeChroniclesX,
+		SubscriptionProtocolXenobladeChroniclesX
 	];
 }
