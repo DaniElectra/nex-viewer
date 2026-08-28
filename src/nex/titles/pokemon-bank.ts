@@ -1,4 +1,5 @@
 import DataStoreProtocolPokemonBank from '@/nex/protocols/datastore/pokemon-bank';
+import ShopProtocol from '@/nex/protocols/shop';
 import Title from '@/nex/titles/title';
 
 export default class PokemonBank extends Title {
@@ -30,6 +31,7 @@ export default class PokemonBank extends Title {
 	];
 
 	public static protocols = [
-		DataStoreProtocolPokemonBank
+		DataStoreProtocolPokemonBank,
+		ShopProtocol
 	];
 }
