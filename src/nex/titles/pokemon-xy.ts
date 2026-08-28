@@ -1,5 +1,5 @@
 import Title from '@/nex/titles/title';
-import Datastore from '@/nex/protocols/datastore';
+import DataStoreProtocolPokemonGeneration6 from '@/nex/protocols/datastore/pokemon-generation-6';
 import MatchmakeExtension from '@/nex/protocols/matchmake-extension';
 import Matchmaking from '@/nex/protocols/match-making';
 import MatchMakingExt from '@/nex/protocols/match-making-ext';
@@ -41,7 +41,7 @@ export default class PokemonXY extends Title {
 	];
 
 	public static protocols = [
-		Datastore,
+		DataStoreProtocolPokemonGeneration6,
 		MatchmakeExtension,
 		Matchmaking,
 		MatchMakingExt,
