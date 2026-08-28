@@ -1,7 +1,7 @@
 import Title from '@/nex/titles/title';
 import DataStoreProtocolSuperSmashBrosUltimate from '@/nex/protocols/datastore/super-smash-bros-ultimate';
 import MatchmakeExtensionProtocolSuperSmashBrosUltimate from '@/nex/protocols/matchmake-extension/super-smash-bros-ultimate';
-import UtilityProtocol from '@/nex/protocols/utility';
+import UtilityProtocolSuperSmashBrosUltimate from '@/nex/protocols/utility/super-smash-bros-ultimate';
 
 export default class SuperSmashBrosUltimate extends Title {
 	public static displayName = 'Super Smash Bros. Ultimate';
@@ -34,6 +34,6 @@ export default class SuperSmashBrosUltimate extends Title {
 	public static protocols = [
 		DataStoreProtocolSuperSmashBrosUltimate,
 		MatchmakeExtensionProtocolSuperSmashBrosUltimate,
-		UtilityProtocol
+		UtilityProtocolSuperSmashBrosUltimate
 	]; // * Populate with the protocols this title uses
 }
