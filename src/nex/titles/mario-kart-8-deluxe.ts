@@ -3,7 +3,7 @@ import NotificationEventsProtocol from '@/nex/protocols/notification-events';
 import MatchMakingExtProtocol from '@/nex/protocols/friends-3ds';
 import MatchmakeExtensionProtocolMarioKart8Deluxe from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe';
 import MatchMakingProtocol from '@/nex/protocols/match-making';
-import RankingProtocol from '@/nex/protocols/ranking';
+import RankingProtocolMarioKart8Deluxe from '@/nex/protocols/ranking/mario-kart-8-deluxe';
 import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import UtilityProtocol from '@/nex/protocols/utility';
 
@@ -40,7 +40,7 @@ export default class MarioKart8Deluxe extends Title {
 		MatchMakingExtProtocol,
 		MatchmakeExtensionProtocolMarioKart8Deluxe,
 		MatchMakingProtocol,
-		RankingProtocol,
+		RankingProtocolMarioKart8Deluxe,
 		NATTraversalProtocol,
 		UtilityProtocol
 		// DataStoreProtocol,
