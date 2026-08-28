@@ -1,0 +1,9 @@
+export * as PrepareUploadPokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/prepare-upload-pokemon';
+export * as UploadPokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/upload-pokemon';
+export * as SearchPokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/search-pokemon';
+export * as PrepareTradePokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/prepare-trade-pokemon';
+export * as TradePokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/trade-pokemon';
+export * as DownloadOtherPokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/download-other-pokemon';
+export * as DownloadMyPokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/download-my-pokemon';
+export * as DeletePokemon from '@/nex/protocols/datastore/pokemon-generation-7/methods/delete-pokemon';
+export * as SearchPokemonV2 from '@/nex/protocols/datastore/pokemon-generation-7/methods/search-pokemon-v2';
