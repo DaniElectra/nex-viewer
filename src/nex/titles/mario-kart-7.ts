@@ -1,10 +1,10 @@
+import Title from '@/nex/titles/title';
 import MatchMakingProtocol from '@/nex/protocols/match-making';
 import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
 import MatchmakeExtensionrotocol from '@/nex/protocols/matchmake-extension';
 import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import NotificationEventsProtocol from '@/nex/protocols/notification-events';
 import RankingProtocolMarioKart7 from '@/nex/protocols/ranking/mario-kart-7';
-import Title from '@/nex/titles/title';
 
 export default class MARIOKART7 extends Title {
 	public static displayName = 'MARIO KART 7';

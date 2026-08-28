@@ -1,5 +1,6 @@
-import MatchmakeExtensionProtocolMarioKart8 from '@/nex/protocols/matchmake-extension/mario-kart-8';
 import Title from '@/nex/titles/title';
+import MatchmakeExtensionProtocolMarioKart8 from '@/nex/protocols/matchmake-extension/mario-kart-8';
+import RankingProtocolMarioKart8 from '@/nex/protocols/ranking/mario-kart-8';
 
 export default class MARIOKART8 extends Title {
 	public static displayName = 'MARIO KART 8';
@@ -32,6 +33,7 @@ export default class MARIOKART8 extends Title {
 	];
 
 	public static protocols = [
-		MatchmakeExtensionProtocolMarioKart8
+		MatchmakeExtensionProtocolMarioKart8,
+		RankingProtocolMarioKart8
 	];
 }
