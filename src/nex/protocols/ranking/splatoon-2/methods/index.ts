@@ -1,0 +1,11 @@
+export * as UploadLeaguePoint from '@/nex/protocols/ranking/splatoon-2/methods/upload-league-point';
+export * as GetLeagueResult from '@/nex/protocols/ranking/splatoon-2/methods/get-league-result';
+export * as GetFestivalResult from '@/nex/protocols/ranking/splatoon-2/methods/get-festival-result';
+export * as UploadFestivalVote from '@/nex/protocols/ranking/splatoon-2/methods/upload-festival-vote';
+export * as UploadFestivalScore from '@/nex/protocols/ranking/splatoon-2/methods/upload-festival-score';
+export * as DeleteFestival from '@/nex/protocols/ranking/splatoon-2/methods/delete-festival';
+export * as UploadXPower from '@/nex/protocols/ranking/splatoon-2/methods/upload-x-power';
+export * as GetXPowerRanking from '@/nex/protocols/ranking/splatoon-2/methods/get-x-power-ranking';
+export * as UploadEventMatchResult from '@/nex/protocols/ranking/splatoon-2/methods/upload-event-match-result';
+export * as GetEventMatchResult from '@/nex/protocols/ranking/splatoon-2/methods/get-event-match-result';
+export * as AcquireEventMatchRight from '@/nex/protocols/ranking/splatoon-2/methods/acquire-event-match-right';
