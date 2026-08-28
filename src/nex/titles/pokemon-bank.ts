@@ -1,3 +1,4 @@
+import DataStoreProtocolPokemonBank from '@/nex/protocols/datastore/pokemon-bank';
 import Title from '@/nex/titles/title';
 
 export default class PokemonBank extends Title {
@@ -28,5 +29,7 @@ export default class PokemonBank extends Title {
 		'00040000000C9B00'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		DataStoreProtocolPokemonBank
+	];
 }
