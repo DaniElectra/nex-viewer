@@ -3,6 +3,7 @@ import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
 import MatchmakeExtensionrotocol from '@/nex/protocols/matchmake-extension';
 import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import NotificationEventsProtocol from '@/nex/protocols/notification-events';
+import RankingProtocolMarioKart7 from '@/nex/protocols/ranking/mario-kart-7';
 import Title from '@/nex/titles/title';
 
 export default class MARIOKART7 extends Title {
@@ -42,6 +43,7 @@ export default class MARIOKART7 extends Title {
 		MatchMakingExtProtocol,
 		MatchmakeExtensionrotocol,
 		NATTraversalProtocol,
-		NotificationEventsProtocol
+		NotificationEventsProtocol,
+		RankingProtocolMarioKart7
 	]; // TODO - Legacy Ranking and Storage Manager protocols
 }
