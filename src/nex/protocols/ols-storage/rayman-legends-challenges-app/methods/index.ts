@@ -1,0 +1,16 @@
+export * as LoadVersion from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/load-version';
+export * as SaveLocale from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/save-locale';
+export * as SaveProfile from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/save-profile';
+export * as LoadIDCard from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/load-id-card';
+export * as QueryFriendProfiles from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-friend-profiles';
+export * as QueryUbisoftProfiles from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-ubisoft-profiles';
+export * as CreateMessage from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/create-message';
+export * as QueryMessage from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-message';
+export * as QueryLeaderboard from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-leaderboard';
+export * as QuerySmartSelection from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-smart-selection';
+export * as SaveScore from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/save-score';
+export * as SaveGhost from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/save-ghost';
+export * as QueryCompetitionsInfos from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-competitions-infos';
+export * as QueryCompetitionsHistory from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-competitions-history';
+export * as QueryCompetitionOfTheDay from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-competition-of-the-day';
+export * as QueryCompetition from '@/nex/protocols/ols-storage/rayman-legends-challenges-app/methods/query-competition';
