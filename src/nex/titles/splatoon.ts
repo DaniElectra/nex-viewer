@@ -3,7 +3,7 @@ import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
 import MatchmakeExtensionProtocol from '@/nex/protocols/matchmake-extension';
 import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import NotificationEventsProtocol from '@/nex/protocols/notification-events';
-import RankingProtocol from '@/nex/protocols/ranking';
+import RankingProtocolSplatoon from '@/nex/protocols/ranking/splatoon';
 import Title from '@/nex/titles/title';
 
 export default class Splatoon extends Title {
@@ -46,7 +46,7 @@ export default class Splatoon extends Title {
 
 	public static protocols = [
 		NATTraversalProtocol,
-		RankingProtocol,
+		RankingProtocolSplatoon,
 		MatchMakingProtocol,
 		MatchmakeExtensionProtocol,
 		MatchMakingExtProtocol,
