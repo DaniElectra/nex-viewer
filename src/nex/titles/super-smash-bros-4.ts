@@ -4,7 +4,7 @@ import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
 import MatchmakeExtensionProtocolSuperSmashBros4 from '@/nex/protocols/matchmake-extension/super-smash-bros-4';
 import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import NotificationEventsProtocol from '@/nex/protocols/notification-events';
-import RankingProtocol from '@/nex/protocols/ranking';
+import RankingProtocolSuperSmashBros4 from '@/nex/protocols/ranking/super-smash-bros-4';
 import Title from '@/nex/titles/title';
 
 export default class SuperSmashBros4 extends Title {
@@ -43,7 +43,7 @@ export default class SuperSmashBros4 extends Title {
 
 	public static protocols = [
 		NATTraversalProtocol,
-		RankingProtocol,
+		RankingProtocolSuperSmashBros4,
 		MatchMakingProtocol,
 		MatchmakeExtensionProtocolSuperSmashBros4,
 		MatchMakingExtProtocol,
