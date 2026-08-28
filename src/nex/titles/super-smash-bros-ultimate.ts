@@ -1,5 +1,5 @@
 import Title from '@/nex/titles/title';
-import DataStoreProtocol from '@/nex/protocols/datastore';
+import DataStoreProtocolSuperSmashBrosUltimate from '@/nex/protocols/datastore/super-smash-bros-ultimate';
 import UtilityProtocol from '@/nex/protocols/utility';
 
 export default class SuperSmashBrosUltimate extends Title {
@@ -31,7 +31,7 @@ export default class SuperSmashBrosUltimate extends Title {
 	];
 
 	public static protocols = [
-		DataStoreProtocol,
+		DataStoreProtocolSuperSmashBrosUltimate,
 		UtilityProtocol
 	]; // * Populate with the protocols this title uses
 }
