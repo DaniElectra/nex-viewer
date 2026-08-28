@@ -1,4 +1,5 @@
 import Title from '@/nex/titles/title';
+import ServiceItemProtocolWiiSportsClub from '@/nex/protocols/service-item/wii-sports-club';
 
 export default class WiiSportsClub extends Title {
 	public static displayName = 'Wii Sports Club';
@@ -31,5 +32,7 @@ export default class WiiSportsClub extends Title {
 		'0005000010171E00'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		ServiceItemProtocolWiiSportsClub
+	];
 }
