@@ -1,4 +1,5 @@
 import Title from '@/nex/titles/title';
+import SecureConnectionProtocolNintendoBadgeArcade from '@/nex/protocols/secure-connection/nintendo-badge-arcade';
 
 export default class NintendoBadgeArcade extends Title {
 	public static displayName = 'Nintendo Badge Arcade';
@@ -29,5 +30,7 @@ export default class NintendoBadgeArcade extends Title {
 		'0004000000153600'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		SecureConnectionProtocolNintendoBadgeArcade
+	];
 }
