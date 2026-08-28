@@ -1,0 +1,10 @@
+export * as PutScore from '@/nex/protocols/ranking-2/methods/put-score';
+export * as GetCommonData from '@/nex/protocols/ranking-2/methods/get-common-data';
+export * as PutCommonData from '@/nex/protocols/ranking-2/methods/put-common-data';
+export * as DeleteCommonData from '@/nex/protocols/ranking-2/methods/delete-common-data';
+export * as GetRanking from '@/nex/protocols/ranking-2/methods/get-ranking';
+export * as GetRankingByPrincipalId from '@/nex/protocols/ranking-2/methods/get-ranking-by-principal-id';
+export * as GetCategorySetting from '@/nex/protocols/ranking-2/methods/get-category-setting';
+export * as GetRankingChart from '@/nex/protocols/ranking-2/methods/get-ranking-chart';
+export * as GetRankingCharts from '@/nex/protocols/ranking-2/methods/get-ranking-charts';
+export * as GetEstimateScoreRank from '@/nex/protocols/ranking-2/methods/get-estimate-score-rank';
