@@ -1,3 +1,4 @@
+import DataStoreProtocolXenobladeChroniclesX from '@/nex/protocols/datastore/xenoblade-chronicles-x';
 import Title from '@/nex/titles/title';
 
 export default class XenobladeChroniclesX extends Title {
@@ -30,5 +31,7 @@ export default class XenobladeChroniclesX extends Title {
 		'00050000101C4D00'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		DataStoreProtocolXenobladeChroniclesX
+	];
 }
