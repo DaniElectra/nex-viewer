@@ -1,0 +1,9 @@
+export * as UnknownMethod0x1 from '@/nex/protocols/rating/methods/unknown-method-1';
+export * as UnknownMethod0x2 from '@/nex/protocols/rating/methods/unknown-method-2';
+export * as ReportRatingStats from '@/nex/protocols/rating/methods/report-rating-stats';
+export * as GetRanking from '@/nex/protocols/rating/methods/get-ranking';
+export * as DeleteScore from '@/nex/protocols/rating/methods/delete-score';
+export * as UnknownMethod0x6 from '@/nex/protocols/rating/methods/unknown-method-6';
+export * as UploadCommonData from '@/nex/protocols/rating/methods/upload-common-data';
+export * as GetCommonData from '@/nex/protocols/rating/methods/get-common-data';
+export * as UnknownMethod0x9 from '@/nex/protocols/rating/methods/unknown-method-9';
