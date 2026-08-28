@@ -1,7 +1,7 @@
 import DataStoreProtocolSuperSmashBros4 from '@/nex/protocols/datastore/super-smash-bros-4';
 import MatchMakingProtocol from '@/nex/protocols/match-making';
 import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
-import MatchmakeExtensionProtocol from '@/nex/protocols/matchmake-extension';
+import MatchmakeExtensionProtocolSuperSmashBros4 from '@/nex/protocols/matchmake-extension/super-smash-bros-4';
 import NATTraversalProtocol from '@/nex/protocols/nat-traversal';
 import NotificationEventsProtocol from '@/nex/protocols/notification-events';
 import RankingProtocol from '@/nex/protocols/ranking';
@@ -45,7 +45,7 @@ export default class SuperSmashBros4 extends Title {
 		NATTraversalProtocol,
 		RankingProtocol,
 		MatchMakingProtocol,
-		MatchmakeExtensionProtocol,
+		MatchmakeExtensionProtocolSuperSmashBros4,
 		MatchMakingExtProtocol,
 		NotificationEventsProtocol,
 		DataStoreProtocolSuperSmashBros4
