@@ -1,3 +1,4 @@
+import DataStoreProtocolMiitopia3DS from '@/nex/protocols/datastore/miitopia-3ds';
 import Title from '@/nex/titles/title';
 
 export default class Miitopia extends Title {
@@ -30,5 +31,7 @@ export default class Miitopia extends Title {
 		'0004000000178800'
 	];
 
-	public static protocols = []; // * Populate with the protocols this title uses
+	public static protocols = [
+		DataStoreProtocolMiitopia3DS
+	];
 }
