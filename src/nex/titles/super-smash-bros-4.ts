@@ -1,3 +1,4 @@
+import DataStoreProtocolSuperSmashBros4 from '@/nex/protocols/datastore/super-smash-bros-4';
 import MatchMakingProtocol from '@/nex/protocols/match-making';
 import MatchMakingExtProtocol from '@/nex/protocols/match-making-ext';
 import MatchmakeExtensionProtocol from '@/nex/protocols/matchmake-extension';
@@ -46,6 +47,7 @@ export default class SuperSmashBros4 extends Title {
 		MatchMakingProtocol,
 		MatchmakeExtensionProtocol,
 		MatchMakingExtProtocol,
-		NotificationEventsProtocol
+		NotificationEventsProtocol,
+		DataStoreProtocolSuperSmashBros4
 	];
 }
