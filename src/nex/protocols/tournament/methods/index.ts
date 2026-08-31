@@ -1,0 +1,15 @@
+export * as UnknownMethod0x1 from '@/nex/protocols/tournament/methods/unknown-method-1';
+export * as UnknownMethod0x2 from '@/nex/protocols/tournament/methods/unknown-method-2';
+export * as UnknownMethod0x3 from '@/nex/protocols/tournament/methods/unknown-method-3';
+export * as UnknownMethod0x4 from '@/nex/protocols/tournament/methods/unknown-method-4';
+export * as UnknownMethod0x5 from '@/nex/protocols/tournament/methods/unknown-method-5';
+export * as UnknownMethod0x6 from '@/nex/protocols/tournament/methods/unknown-method-6';
+export * as UnknownMethod0x7 from '@/nex/protocols/tournament/methods/unknown-method-7';
+export * as UnknownMethod0x8 from '@/nex/protocols/tournament/methods/unknown-method-8';
+export * as UnknownMethod0x9 from '@/nex/protocols/tournament/methods/unknown-method-9';
+export * as UnknownMethod0xA from '@/nex/protocols/tournament/methods/unknown-method-a';
+export * as UnknownMethod0xB from '@/nex/protocols/tournament/methods/unknown-method-b';
+export * as UnknownMethod0xC from '@/nex/protocols/tournament/methods/unknown-method-c';
+export * as UnknownMethod0xD from '@/nex/protocols/tournament/methods/unknown-method-d';
+export * as UnknownMethod0xE from '@/nex/protocols/tournament/methods/unknown-method-e';
+export * as UnknownMethod0xF from '@/nex/protocols/tournament/methods/unknown-method-f';

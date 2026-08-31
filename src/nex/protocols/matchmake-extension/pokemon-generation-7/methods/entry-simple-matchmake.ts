@@ -1,0 +1,38 @@
+import NEXByteStream from '@/nex/byte-stream';
+import UInt32 from '@/nex/types/uint32';
+import RVBuffer from '@/nex/types/buffer';
+import type RMCMessage from '@/nex/rmc-message';
+
+// TODO - Add strict types for toJSON methods
+
+export class Request {
+	public static Name = 'EntrySimpleMatchmake';
+
+	private groupId = new UInt32();
+	private sessionKey = new RVBuffer();
+
+	constructor(message: RMCMessage) {
+		const stream = new NEXByteStream(message.parametersData!, message.connection!.title!);
+
+		this.groupId.extractFrom(stream);
+		this.sessionKey.extractFrom(stream);
+	}
+
+	public toJSON(): any {
+		return {
+			groupId: this.groupId,
+			sessionKey: this.sessionKey
+		};
+	}
+}
+
+// * No response data
+export class Response {
+	public static Name = 'EntrySimpleMatchmake';
+
+	constructor() {}
+
+	public toJSON(): any {
+		return {};
+	}
+}

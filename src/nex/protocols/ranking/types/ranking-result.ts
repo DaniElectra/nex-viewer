@@ -1,0 +1,43 @@
+import DDLClass from '@/nex/types/ddl-class';
+import List from '@/nex/types/list';
+import RankingRankData from '@/nex/protocols/ranking/types/ranking-rank-data';
+import UInt32 from '@/nex/types/uint32';
+import DateTime from '@/nex/types/datetime';
+import type NEXByteStream from '@/nex/byte-stream';
+
+const className = 'RankingResult';
+
+export default class RankingResult extends DDLClass {
+	public get typeName(): string {
+		return className;
+	}
+
+	private rankDataList = new List(new RankingRankData());
+	private totalCount = new UInt32();
+	private sinceTime = new DateTime();
+
+	public extractFrom(stream: NEXByteStream): void {
+		this.extractHeaderFrom(stream);
+
+		this.rankDataList.extractFrom(stream);
+		this.totalCount.extractFrom(stream);
+		this.sinceTime.extractFrom(stream);
+	}
+
+	public new(): this {
+		return new (this.constructor as new () => this)();
+	}
+
+	public toJSON(): any {
+		return {
+			__version: this.revision,
+			__displayTypeName: className,
+			__typeName: className,
+			__fields: {
+				rankDataList: this.rankDataList,
+				totalCount: this.totalCount,
+				sinceTime: this.sinceTime
+			}
+		};
+	}
+}

@@ -1,0 +1,47 @@
+export interface BasicSerializedField {
+	__displayTypeName?: string;
+	__typeName?: string;
+	__value?: any;
+}
+
+export interface ExpandableSerializedField extends BasicSerializedField {
+	__parent?: ExpandableSerializedField;
+	__version?: number;
+	__fields?: Record<string, SerializedField | ExpandableSerializedField>;
+}
+
+export type SerializedField = BasicSerializedField | ExpandableSerializedField;
+
+export type SerializedMessage = {
+	id: number;
+	elapsed_time: number;
+	transport: string;
+	source: string;
+	destination: string;
+	destination_path?: string;
+	service?: string;
+	method?: string;
+	direction?: string;
+	status?: string;
+	overview_sections: {
+		title: string;
+		columns: number;
+		fields: {
+			name: string;
+			value: string;
+		}[];
+	}[];
+	hex_views: {
+		title: string;
+		bytes: number[];
+	}[];
+	serialized_tabs: {
+		title: string;
+		subtitle?: string;
+		fields: {
+			name: string;
+			data: SerializedField;
+		}[];
+	}[];
+	stack_trace?: string;
+};

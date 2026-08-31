@@ -1,0 +1,13 @@
+export * as AddFriend from '@/nex/protocols/friends/methods/add-friend';
+export * as AddFriendByName from '@/nex/protocols/friends/methods/add-friend-by-name';
+export * as AddFriendWithDetails from '@/nex/protocols/friends/methods/add-friend-with-details';
+export * as AddFriendByNameWithDetails from '@/nex/protocols/friends/methods/add-friend-by-name-with-details';
+export * as AcceptFriendship from '@/nex/protocols/friends/methods/accept-friendship';
+export * as DeclineFriendship from '@/nex/protocols/friends/methods/decline-friendship';
+export * as BlackList from '@/nex/protocols/friends/methods/black-list';
+export * as BlackListByName from '@/nex/protocols/friends/methods/black-list-by-name';
+export * as ClearRelationship from '@/nex/protocols/friends/methods/clear-relationship';
+export * as UpdateDetails from '@/nex/protocols/friends/methods/update-details';
+export * as GetList from '@/nex/protocols/friends/methods/get-list';
+export * as GetDetailedList from '@/nex/protocols/friends/methods/get-detailed-list';
+export * as GetRelationships from '@/nex/protocols/friends/methods/get-relationships';

@@ -1,0 +1,16 @@
+export * as CreateSimpleSearchObject from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/create-simple-search-object';
+export * as UpdateSimpleSearchObject from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/update-simple-search-object';
+export * as DeleteSimpleSearchObject from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/delete-simple-search-object';
+export * as SearchSimpleSearchObject from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/search-simple-search-object';
+export * as SearchSimpleSearchObjectByObjectIds from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/search-simple-search-object-by-object-ids';
+export * as JoinMatchmakeSessionWithExtraParticipants from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/join-matchmake-session-with-extra-participants';
+export * as CustomGetSimplePlayingSession from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/custom-get-simple-playing-session';
+export * as CreateCompetition from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/create-competition';
+export * as DeleteCompetition from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/delete-competition';
+export * as RegisterFavoriteCompetition from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/register-favorite-competition';
+export * as UnregisterFavoriteCompetition from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/unregister-favorite-competition';
+export * as GetFavoriteCompetition from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/get-favorite-competition';
+export * as GetTeamParticipants from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/get-team-participants';
+export * as FindCommunityByOwner from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/find-community-by-owner';
+export * as UnknownMethod0x44 from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/unknown-method-44';
+export * as UnknownMethod0x45 from '@/nex/protocols/matchmake-extension/mario-kart-8-deluxe/methods/unknown-method-45';

@@ -58,7 +58,10 @@ typings/
 .env
 
 # custom
-nex-keys.txt
+dist
+*.pcap
 *.pcapng
-t.js
-builds
+.DS_Store
+
+# electron-forge
+out

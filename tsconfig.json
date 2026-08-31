@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+		"skipLibCheck": true,
+		"types": ["node", "electron"],
+    "lib": ["ES2020", "DOM"],
+		"esModuleInterop": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@main/*": ["src/electron/main/*"],
+      "@preload/*": ["src/electron/preload/*"],
+      "@renderer/*": ["src/electron/renderer/src/*"]
+    }
+  },
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.web.json" }
+  ]
+}
